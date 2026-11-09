@@ -31,3 +31,4 @@ export const DOWNLOAD_LINKS = {
   linuxAppImageDirect: `https://github.com/HelloWorld-Farhan/ClueAI/releases/latest/download/ClueAI-${APP_VERSION}-linux.AppImage`,
   linuxScript: `curl -fsSL https://github.com/HelloWorld-Farhan/ClueAI/releases/latest/download/ClueAI-${APP_VERSION}-linux.AppImage -o ClueAI.AppImage && chmod +x ClueAI.AppImage && ./ClueAI.AppImage`,
 };
+

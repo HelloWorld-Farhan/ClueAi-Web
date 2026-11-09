@@ -7,13 +7,15 @@ import { BottomFloatingDock } from './components/BottomFloatingDock';
 import { Footer } from './components/Footer';
 import { FeedbackModal } from './components/FeedbackModal';
 import { IntroPreloader } from './components/IntroPreloader';
+import { FeatureModal, FeatureKey } from './components/FeatureModal';
 
 export function App() {
   // Cinematic word-by-word blur preloader on whole black background
   const [showPreloader, setShowPreloader] = useState(true);
-  // Starts with Zeitgeist ("This is no substitute for hard code") as front view by default
+  // Starts with Clue AI Ambient ("This is no substitute for hard code") as front view by default
   const [activeView, setActiveView] = useState<'arc' | 'ambient' | 'download'>('ambient');
   const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [selectedFeature, setSelectedFeature] = useState<FeatureKey | null>(null);
 
   const handleScrollToDownload = () => {
     setActiveView('download');
@@ -77,13 +79,23 @@ export function App() {
         onOpenOptions={() => setFeedbackOpen(true)}
       />
 
-      {/* Page Footer (Exact from code7.html) */}
-      <Footer onOpenFeedback={() => setFeedbackOpen(true)} />
+      {/* Page Footer */}
+      <Footer
+        onOpenFeedback={() => setFeedbackOpen(true)}
+        onSelectFeature={(key) => setSelectedFeature(key)}
+      />
 
       {/* Google Apps Script Feedback Popup */}
       <FeedbackModal
         isOpen={feedbackOpen}
         onClose={() => setFeedbackOpen(false)}
+      />
+
+      {/* Interactive Feature Simulation Modal */}
+      <FeatureModal
+        featureKey={selectedFeature}
+        onClose={() => setSelectedFeature(null)}
+        onGoToDownload={handleScrollToDownload}
       />
     </div>
   );

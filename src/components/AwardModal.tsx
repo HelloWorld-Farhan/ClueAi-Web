@@ -225,3 +225,4 @@ export function AwardModal({ awardType, onClose }: AwardModalProps) {
     </AnimatePresence>
   );
 }
+

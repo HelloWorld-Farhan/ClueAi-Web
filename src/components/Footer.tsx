@@ -1,11 +1,13 @@
 import React from 'react';
 import { CREATOR } from '../config/version';
+import { FeatureKey } from './FeatureModal';
 
 interface FooterProps {
   onOpenFeedback: () => void;
+  onSelectFeature?: (key: FeatureKey) => void;
 }
 
-export function Footer({ onOpenFeedback }: FooterProps) {
+export function Footer({ onOpenFeedback, onSelectFeature }: FooterProps) {
   return (
     <footer
       className="relative z-20 pb-20 pt-10 flex flex-col items-center gap-4 text-center px-4 border-t border-neutral-900/60 mt-12 bg-black"
@@ -29,7 +31,7 @@ export function Footer({ onOpenFeedback }: FooterProps) {
         <a className="pill-link" href={CREATOR.website} target="_blank" rel="noopener noreferrer">
           Website
         </a>
-        <a className="pill-link" href={CREATOR.github} target="_blank" rel="noopener noreferrer">
+        <a className="pill-link" href={CREATOR.desktopRepo} target="_blank" rel="noopener noreferrer" title="Clue AI Desktop Software on GitHub">
           GitHub
         </a>
         <a className="pill-link" href="https://x.com" target="_blank" rel="noopener noreferrer">
@@ -44,34 +46,55 @@ export function Footer({ onOpenFeedback }: FooterProps) {
         <a className="pill-link" href="#" onClick={(e) => { e.preventDefault(); onOpenFeedback(); }}>
           Feedback
         </a>
-        <a className="pill-link" href="https://github.com/HelloWorld-Farhan/ClueAi-Web/releases.atom" target="_blank" rel="noopener noreferrer">
+        <a className="pill-link" href="https://github.com/HelloWorld-Farhan/ClueAi/releases.atom" target="_blank" rel="noopener noreferrer">
           RSS
         </a>
       </nav>
 
-      {/* Row 2: Secondary Navigation Pills (Exact from code7.html lines 318-326) */}
+      {/* Row 2: Secondary Navigation Pills with Interactive Feature Simulation Popups */}
       <nav aria-label="Content Navigation" className="flex flex-wrap items-center justify-center gap-1.5 max-w-2xl">
-        <a className="pill-link" href="#stealth">
+        <button
+          onClick={() => onSelectFeature?.('stealth')}
+          className="pill-link cursor-pointer hover:border-[#00E85D]/60 hover:text-white transition-all"
+        >
           Stealth Shield
-        </a>
-        <a className="pill-link" href="#whisper">
+        </button>
+        <button
+          onClick={() => onSelectFeature?.('whisper')}
+          className="pill-link cursor-pointer hover:border-[#00E85D]/60 hover:text-white transition-all"
+        >
           Whisper STT
-        </a>
-        <a className="pill-link" href="#llm">
+        </button>
+        <button
+          onClick={() => onSelectFeature?.('llm')}
+          className="pill-link cursor-pointer hover:border-[#00E85D]/60 hover:text-white transition-all"
+        >
           Multi-LLM
-        </a>
-        <a className="pill-link" href="#sandbox">
+        </button>
+        <button
+          onClick={() => onSelectFeature?.('sandbox')}
+          className="pill-link cursor-pointer hover:border-[#00E85D]/60 hover:text-white transition-all"
+        >
           Code Sandbox
-        </a>
-        <a className="pill-link" href="#updater">
+        </button>
+        <button
+          onClick={() => onSelectFeature?.('updater')}
+          className="pill-link cursor-pointer hover:border-[#00E85D]/60 hover:text-white transition-all"
+        >
           Silent Updater
-        </a>
-        <a className="pill-link" href="https://github.com/HelloWorld-Farhan/ClueAi-Web/releases" target="_blank" rel="noopener noreferrer">
+        </button>
+        <button
+          onClick={() => onSelectFeature?.('releases')}
+          className="pill-link cursor-pointer hover:border-[#00E85D]/60 hover:text-white transition-all"
+        >
           Releases
-        </a>
-        <a className="pill-link" href="https://github.com/HelloWorld-Farhan/ClueAi-Web/raw/main/package.json" target="_blank" rel="noopener noreferrer">
+        </button>
+        <button
+          onClick={() => onSelectFeature?.('data')}
+          className="pill-link cursor-pointer hover:border-[#00E85D]/60 hover:text-white transition-all"
+        >
           Data (JSON)
-        </a>
+        </button>
       </nav>
 
       {/* Row 3: Bottom Credits & Legal Links */}
