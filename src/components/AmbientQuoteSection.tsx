@@ -1,116 +1,241 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 interface AmbientQuoteSectionProps {
   onActionClick: () => void;
 }
 
+interface ClueFeatureQuote {
+  col: string;
+  row: string;
+  sizeClass: string;
+  text: string;
+  pill?: string;
+}
+
+const CLUE_FEATURES: ClueFeatureQuote[] = [
+  // Top Row
+  {
+    col: 'col-start-1 col-span-1',
+    row: 'row-start-1',
+    sizeClass: 'text-xs md:text-sm font-medium tracking-tight text-neutral-500/50',
+    text: 'Stealth Invisibility · OBS & Zoom screen share bypass',
+    pill: 'STEALTH',
+  },
+  {
+    col: 'col-start-2 col-span-1',
+    row: 'row-start-1',
+    sizeClass: 'text-sm md:text-base font-semibold text-neutral-400/50',
+    text: 'Whisper STT · <50ms dual-channel audio stream',
+  },
+  {
+    col: 'col-start-3 col-span-1',
+    row: 'row-start-1',
+    sizeClass: 'text-base md:text-xl font-bold text-neutral-400/50 leading-snug',
+    text: 'Multi-LLM Matrix · Gemini 2.0, Claude 3.5 Sonnet, GPT-4o',
+  },
+  {
+    col: 'col-start-4 col-span-1',
+    row: 'row-start-1',
+    sizeClass: 'text-sm md:text-lg font-medium text-neutral-400/40',
+    text: 'DeepSeek-R1 · Real-time Chain-of-Thought reasoning',
+  },
+  {
+    col: 'col-start-5 col-span-1',
+    row: 'row-start-1',
+    sizeClass: 'text-xs md:text-sm text-neutral-500/50',
+    text: 'Zero Telemetry · 100% Client-Side SQLite encryption',
+  },
+  {
+    col: 'col-start-6 col-span-1',
+    row: 'row-start-1',
+    sizeClass: 'text-2xl md:text-4xl font-extrabold text-neutral-500/35 uppercase tracking-tighter',
+    text: 'UNDETECTED',
+  },
+
+  // Upper Middle Row
+  {
+    col: 'col-start-1 col-span-1',
+    row: 'row-start-2',
+    sizeClass: 'text-sm md:text-base font-semibold text-neutral-400/50 leading-snug max-w-xs',
+    text: 'Voice-Activated Teleprompter · Hands-free speech-gated scrolling',
+  },
+  {
+    col: 'col-start-2 col-span-1',
+    row: 'row-start-2',
+    sizeClass: 'text-xl md:text-3xl font-extrabold text-neutral-400/45 tracking-tight',
+    text: 'LeetCode Hard in 12s',
+  },
+  {
+    col: 'col-start-3 col-span-1',
+    row: 'row-start-2',
+    sizeClass: 'text-base md:text-xl font-bold text-neutral-300/50',
+    text: 'In-App Code Sandbox · Python 3 & TypeScript test-runner',
+  },
+  {
+    col: 'col-start-4 col-span-1',
+    row: 'row-start-2',
+    sizeClass: 'text-sm md:text-base text-neutral-400/45',
+    text: 'Dual-Resume Priority Engine · Matches job specs',
+  },
+  {
+    col: 'col-start-5 col-span-1',
+    row: 'row-start-2',
+    sizeClass: 'text-xs md:text-sm font-medium text-neutral-400/45',
+    text: 'Global Hotkey Ctrl + \\ · Instant 1ms stealth toggle',
+  },
+  {
+    col: 'col-start-6 col-span-1',
+    row: 'row-start-2',
+    sizeClass: 'text-sm md:text-base font-medium text-neutral-400/50 leading-tight',
+    text: 'Vision OCR Snipper · Instant diagram & IDE problem capture',
+  },
+
+  // Mid Row (Sides of Hero)
+  {
+    col: 'col-start-1 col-span-1',
+    row: 'row-start-3',
+    sizeClass: 'text-2xl md:text-3xl font-black text-neutral-300/50 leading-none',
+    text: '42px Compact Dimension',
+  },
+  {
+    col: 'col-start-2 col-span-1',
+    row: 'row-start-3',
+    sizeClass: 'text-xs md:text-sm font-semibold text-neutral-400/50',
+    text: 'Multi-Inbox Cloud Sync · Automated Google Apps Script alerts',
+  },
+  {
+    col: 'col-start-5 col-span-1',
+    row: 'row-start-3',
+    sizeClass: 'text-xs md:text-sm font-medium text-neutral-400/45',
+    text: 'Silent Dual Updater · Zero terminal flash on relaunch',
+  },
+  {
+    col: 'col-start-6 col-span-1',
+    row: 'row-start-3',
+    sizeClass: 'text-lg md:text-2xl font-black text-neutral-300/55 leading-tight',
+    text: 'Ace Every Interview Undetected',
+  },
+
+  // Lower Mid Row
+  {
+    col: 'col-start-1 col-span-1',
+    row: 'row-start-4',
+    sizeClass: 'text-sm md:text-base font-semibold text-neutral-400/50',
+    text: 'Transparent Borderless HUD · Floats over all IDEs',
+  },
+  {
+    col: 'col-start-2 col-span-1',
+    row: 'row-start-4',
+    sizeClass: 'text-lg md:text-xl font-bold text-neutral-400/45',
+    text: 'Session History & PDF Export',
+  },
+  {
+    col: 'col-start-3 col-span-1',
+    row: 'row-start-4',
+    sizeClass: 'text-xs md:text-sm text-neutral-500/50',
+    text: 'Anti-Collision Mutex · Single instance launch guard',
+  },
+  {
+    col: 'col-start-4 col-span-1',
+    row: 'row-start-4',
+    sizeClass: 'text-base md:text-lg font-bold text-neutral-400/40',
+    text: 'Offline Voice VAD Filter',
+  },
+  {
+    col: 'col-start-5 col-span-1',
+    row: 'row-start-4',
+    sizeClass: 'text-xs md:text-sm text-neutral-500/50',
+    text: 'Cross-Platform Windows, macOS Universal & Linux',
+  },
+  {
+    col: 'col-start-6 col-span-1',
+    row: 'row-start-4',
+    sizeClass: 'text-xl md:text-3xl font-black text-neutral-400/50',
+    text: 'The AI is my secret pair programmer',
+  },
+
+  // Bottom Row
+  {
+    col: 'col-start-1 col-span-1',
+    row: 'row-start-5',
+    sizeClass: 'text-xs text-neutral-500/60 leading-tight',
+    text: 'Real-time Waveform Audio Visualizer with live decibel response',
+  },
+  {
+    col: 'col-start-2 col-span-1',
+    row: 'row-start-5',
+    sizeClass: 'text-sm md:text-base font-bold text-neutral-500/50',
+    text: 'Zero Lag Relaunch Architecture',
+  },
+  {
+    col: 'col-start-3 col-span-1',
+    row: 'row-start-5',
+    sizeClass: 'text-xs md:text-sm text-neutral-500/45',
+    text: 'Human-Like Voice Cadence & Conversational Answers',
+  },
+  {
+    col: 'col-start-4 col-span-1',
+    row: 'row-start-5',
+    sizeClass: 'text-xs md:text-sm text-neutral-500/50',
+    text: 'High-Priority Resume Context Matching',
+  },
+  {
+    col: 'col-start-5 col-span-1',
+    row: 'row-start-5',
+    sizeClass: 'text-xs text-neutral-500/50',
+    text: 'Instant Diagnostic Logs & Telemetry-Free Privacy',
+  },
+  {
+    col: 'col-start-6 col-span-1',
+    row: 'row-start-5',
+    sizeClass: 'text-2xl md:text-4xl font-extrabold text-neutral-400/40',
+    text: 'V5.9.9 ACTIVE',
+  },
+];
+
 export function AmbientQuoteSection({ onActionClick }: AmbientQuoteSectionProps) {
   return (
     <section className="relative w-full min-h-screen overflow-hidden flex items-center justify-center py-20">
-      {/* Ambient Quotes Grid / Layer (Exact 6x5 grid from code.html) */}
+      {/* Ambient Quotes Grid / Layer with Framer Motion & Glow on Hover */}
       <div
-        className="absolute inset-0 pointer-events-none quote-ambient grid grid-cols-6 grid-rows-5 gap-3 p-8 text-neutral-600/35 overflow-hidden"
+        className="absolute inset-0 pointer-events-none grid grid-cols-6 grid-rows-5 gap-3 p-8 overflow-hidden"
         data-purpose="ambient-quote-cloud"
       >
-        {/* Top Row Quotes */}
-        <div className="col-start-1 col-span-1 row-start-1 text-xs md:text-sm font-medium tracking-tight text-neutral-600/40">
-          the use of AI to mask the learning that hasn't happened
-        </div>
-        <div className="col-start-2 col-span-1 row-start-1 text-sm md:text-base font-semibold text-neutral-500/30">
-          and a lot of data trump more elaborate models
-        </div>
-        <div className="col-start-3 col-span-1 row-start-1 text-base md:text-xl font-bold text-neutral-500/30 leading-snug">
-          very much designed for people
-        </div>
-        <div className="col-start-4 col-span-1 row-start-1 text-sm md:text-lg font-medium text-neutral-500/25">
-          thinks about the work that it is doing
-        </div>
-        <div className="col-start-5 col-span-1 row-start-1 text-xs md:text-sm text-neutral-600/35">
-          ill-prepared, uncontrolled experiment
-        </div>
-        <div className="col-start-6 col-span-1 row-start-1 text-2xl md:text-4xl font-extrabold text-neutral-600/20 uppercase tracking-tighter">
-          optional
-        </div>
-
-        {/* Upper Middle Row */}
-        <div className="col-start-1 col-span-1 row-start-2 text-sm md:text-base font-semibold text-neutral-600/40 leading-snug max-w-xs">
-          The probability of catastrophe is higher, and the probability of dystopia is very high
-        </div>
-        <div className="col-start-2 col-span-1 row-start-2 text-xl md:text-3xl font-extrabold text-neutral-500/30 tracking-tight">
-          Stop complaining
-        </div>
-        <div className="col-start-3 col-span-1 row-start-2 text-base md:text-xl font-bold text-neutral-400/40">
-          No one person should be trusted here
-        </div>
-        <div className="col-start-4 col-span-1 row-start-2 text-sm md:text-base text-neutral-500/30">
-          generator of randomness
-        </div>
-        <div className="col-start-5 col-span-1 row-start-2 text-xs md:text-sm font-medium text-neutral-500/30">
-          As refreshing as taking a walk in the woods
-        </div>
-        <div className="col-start-6 col-span-1 row-start-2 text-sm md:text-base font-medium text-neutral-600/35 leading-tight">
-          AI must automate mathematical labour without automating mathematical meaning
-        </div>
-
-        {/* Mid Row (Sides of Main Hero) */}
-        <div className="col-start-1 col-span-1 row-start-3 text-2xl md:text-3xl font-black text-neutral-400/40 leading-none">
-          It's your world, you can prompt it
-        </div>
-        <div className="col-start-2 col-span-1 row-start-3 text-xs md:text-sm font-semibold text-neutral-500/35">
-          Decisions are of immense public importance and should be explained
-        </div>
-        {/* col 3, 4 covered by hero */}
-        <div className="col-start-5 col-span-1 row-start-3 text-xs md:text-sm font-medium text-neutral-500/30">
-          Help solve the problems sooner
-        </div>
-        <div className="col-start-6 col-span-1 row-start-3 text-lg md:text-2xl font-black text-neutral-400/45 leading-tight">
-          The only way we're going to solve the national debt is with AI and robots
-        </div>
-
-        {/* Lower Mid Row */}
-        <div className="col-start-1 col-span-1 row-start-4 text-sm md:text-base font-semibold text-neutral-500/35">
-          Pre-cybernetic machines could be haunted
-        </div>
-        <div className="col-start-2 col-span-1 row-start-4 text-lg md:text-xl font-bold text-neutral-500/30">
-          A new AI pair programmer
-        </div>
-        <div className="col-start-3 col-span-1 row-start-4 text-xs md:text-sm text-neutral-600/35">
-          Whole research programs wiped out on tuesday by their dump
-        </div>
-        <div className="col-start-4 col-span-1 row-start-4 text-base md:text-lg font-bold text-neutral-500/25">
-          Slop-vestigation
-        </div>
-        <div className="col-start-5 col-span-1 row-start-4 text-xs md:text-sm text-neutral-600/35">
-          sets the most ambitious AI goals, but who puts them into practice
-        </div>
-        <div className="col-start-6 col-span-1 row-start-4 text-xl md:text-3xl font-black text-neutral-500/35">
-          The model is my colleague
-        </div>
-
-        {/* Bottom Row */}
-        <div className="col-start-1 col-span-1 row-start-5 text-xs text-neutral-700/50 leading-tight">
-          A world model is not a painter that generates videos
-        </div>
-        <div className="col-start-2 col-span-1 row-start-5 text-sm md:text-base font-bold text-neutral-600/35">
-          Present-day man does not feel happy in his Godlikeness
-        </div>
-        <div className="col-start-3 col-span-1 row-start-5 text-xs md:text-sm text-neutral-600/30">
-          You won't be able to tell that the agent made a mistake
-        </div>
-        <div className="col-start-4 col-span-1 row-start-5 text-xs md:text-sm text-neutral-600/35">
-          Maybe it's brave, maybe
-        </div>
-        <div className="col-start-5 col-span-1 row-start-5 text-xs text-neutral-700/40">
-          Remove the struggle too quickly, and we deny opportunities
-        </div>
-        <div className="col-start-6 col-span-1 row-start-5 text-2xl md:text-4xl font-extrabold text-neutral-500/25">
-          Now there is a God
-        </div>
+        {CLUE_FEATURES.map((item, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0.6 }}
+            animate={{
+              y: [0, (idx % 2 === 0 ? -4 : 4), 0],
+              opacity: [0.55, 0.75, 0.55],
+            }}
+            transition={{
+              duration: 5 + (idx % 5),
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+            whileHover={{
+              scale: 1.08,
+              opacity: 1,
+              zIndex: 30,
+              transition: { duration: 0.2 },
+            }}
+            className={`${item.col} ${item.row} ${item.sizeClass} pointer-events-auto cursor-pointer p-2.5 rounded-xl border border-transparent hover:border-[#00E85D]/60 hover:bg-[#00E85D]/[0.08] hover:text-white transition-all duration-200 select-none group relative`}
+            style={{
+              textShadow: '0 0 1px transparent',
+            }}
+          >
+            <span className="group-hover:text-[#00E85D] group-hover:drop-shadow-[0_0_12px_rgba(0,232,93,0.85)] transition-all">
+              {item.text}
+            </span>
+          </motion.div>
+        ))}
       </div>
 
       {/* BEGIN: Hero Focus Quote (Exact from code.html) */}
       <div
-        className="relative z-20 flex flex-col items-center justify-center text-center px-4 max-w-5xl mx-auto"
+        className="relative z-20 flex flex-col items-center justify-center text-center px-4 max-w-5xl mx-auto pointer-events-auto"
         data-purpose="hero-quote-container"
       >
         {/* Dominant Foreground Quote */}
@@ -126,7 +251,7 @@ export function AmbientQuoteSection({ onActionClick }: AmbientQuoteSectionProps)
         <div className="mt-8 sm:mt-10">
           <button
             onClick={onActionClick}
-            className="neon-glow-btn inline-flex items-center space-x-2 bg-[#00E85D] hover:bg-[#05f566] text-black font-extrabold text-sm sm:text-base px-6 py-3 rounded-full cursor-pointer transition transform hover:scale-105"
+            className="neon-glow-btn inline-flex items-center space-x-2 bg-[#00E85D] hover:bg-[#05f566] text-black font-extrabold text-sm sm:text-base px-6 py-3 rounded-full cursor-pointer transition transform hover:scale-105 active:scale-95 shadow-[0_0_24px_rgba(0,232,93,0.6)]"
           >
             {/* Person / Speaker Icon */}
             <svg
@@ -149,4 +274,3 @@ export function AmbientQuoteSection({ onActionClick }: AmbientQuoteSectionProps)
     </section>
   );
 }
-

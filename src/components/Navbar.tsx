@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface NavbarProps {
   activeView: 'arc' | 'ambient' | 'download';
@@ -7,8 +7,21 @@ interface NavbarProps {
 }
 
 export function Navbar({ activeView, setActiveView, onOpenFeedback }: NavbarProps) {
+  const [totalSeconds, setTotalSeconds] = useState(2 * 3600 + 11 * 60 + 57);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTotalSeconds((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+  const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+  const seconds = String(totalSeconds % 60).padStart(2, '0');
+
   return (
-    <header className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-4 bg-gradient-to-b from-black/95 via-black/70 to-transparent backdrop-blur-[4px] border-b border-white/[0.04]">
+    <header className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-3.5 bg-gradient-to-b from-black/95 via-black/80 to-transparent backdrop-blur-[6px] border-b border-white/[0.04] select-none">
       {/* Left: Brand Identity (exact from code.html) */}
       <div
         className="flex items-center space-x-3 cursor-pointer group"
@@ -28,14 +41,20 @@ export function Navbar({ activeView, setActiveView, onOpenFeedback }: NavbarProp
         </div>
       </div>
 
-      {/* Center: Section Indicator (exact from code.html) */}
-      <div className="hidden md:flex items-center" data-purpose="center-category">
-        <span
-          onClick={() => setActiveView('ambient')}
-          className="text-[#00E85D] font-semibold text-sm tracking-wide neon-glow-text cursor-pointer hover:opacity-90 transition-opacity"
-        >
-          {activeView === 'arc' ? 'Celestial Horizon & Gallery' : activeView === 'ambient' ? 'All quotes about AI & Code' : 'Cross-Platform Installer'}
-        </span>
+      {/* Center: Live Date & Time Indicator Pill in Top Bar */}
+      <div className="hidden lg:flex items-center space-x-3 bg-neutral-950/80 border border-neutral-800/80 px-4 py-1.5 rounded-full shadow-[0_0_15px_rgba(0,232,93,0.1)] hover:border-[#00E85D]/50 transition-colors">
+        {/* Date circle badge */}
+        <div className="flex items-center space-x-1.5">
+          <span className="w-2 h-2 rounded-full bg-[#00E85D] animate-ping" />
+          <span className="text-[11px] font-mono font-bold text-white tracking-wider">09 NOV</span>
+        </div>
+        <span className="text-neutral-600">|</span>
+        {/* Live ticking countdown timer */}
+        <div className="text-xs font-mono font-bold text-[#00E85D] tracking-wider drop-shadow-[0_0_8px_rgba(0,232,93,0.5)]">
+          {hours} <span className="animate-pulse">·</span> {minutes} <span className="animate-pulse">·</span> {seconds}
+        </div>
+        <span className="text-neutral-600 hidden xl:inline">|</span>
+        <span className="text-[11px] text-neutral-400 hidden xl:inline">AI Engine Active</span>
       </div>
 
       {/* Right: Navigation Pills & Controls (exact from code.html) */}
@@ -44,7 +63,7 @@ export function Navbar({ activeView, setActiveView, onOpenFeedback }: NavbarProp
         <div className="bg-neutral-900/90 border border-neutral-800 rounded-full p-1 flex items-center text-xs backdrop-blur-md">
           <button
             onClick={() => setActiveView('arc')}
-            className={`px-3 py-1.5 rounded-full transition-all font-semibold ${
+            className={`px-3 py-1.5 rounded-full transition-all font-semibold cursor-pointer ${
               activeView === 'arc'
                 ? 'bg-white text-black shadow-sm'
                 : 'text-neutral-300 hover:text-white'
@@ -54,7 +73,7 @@ export function Navbar({ activeView, setActiveView, onOpenFeedback }: NavbarProp
           </button>
           <button
             onClick={() => setActiveView('ambient')}
-            className={`relative px-3 py-1.5 rounded-full font-medium transition-all flex items-center ${
+            className={`relative px-3 py-1.5 rounded-full font-medium transition-all flex items-center cursor-pointer ${
               activeView === 'ambient'
                 ? 'bg-white text-black shadow-sm'
                 : 'text-neutral-300 hover:text-white'
@@ -68,7 +87,7 @@ export function Navbar({ activeView, setActiveView, onOpenFeedback }: NavbarProp
           </button>
           <button
             onClick={() => setActiveView('download')}
-            className={`px-3 py-1.5 rounded-full font-medium transition-all flex items-center space-x-1 ${
+            className={`px-3 py-1.5 rounded-full font-medium transition-all flex items-center space-x-1 cursor-pointer ${
               activeView === 'download'
                 ? 'bg-white text-black shadow-sm'
                 : 'text-neutral-300 hover:text-white'
@@ -79,25 +98,25 @@ export function Navbar({ activeView, setActiveView, onOpenFeedback }: NavbarProp
           </button>
         </div>
 
-        {/* Feedback Button */}
+        {/* Feedback Button with glowing indicator */}
         <button
           onClick={onOpenFeedback}
-          className="flex items-center space-x-1.5 bg-neutral-900/90 border border-neutral-800 hover:border-neutral-700 text-neutral-200 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition hover:text-white"
-          title="Send Feedback"
+          className="flex items-center space-x-1.5 bg-neutral-900/90 border border-neutral-800 hover:border-[#00E85D]/60 text-neutral-200 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all hover:text-white hover:shadow-[0_0_12px_rgba(0,232,93,0.3)] cursor-pointer"
+          title="Send Direct Feedback"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-[#00E85D] animate-ping" />
           <span>Feedback</span>
         </button>
 
-        {/* GitHub / External Icon */}
+        {/* GitHub repository icon */}
         <a
           href="https://github.com/HelloWorld-Farhan/ClueAi-Web"
           target="_blank"
           rel="noopener noreferrer"
-          className="w-9 h-9 rounded-full bg-neutral-900/90 border border-neutral-800 hover:border-neutral-700 flex items-center justify-center text-neutral-300 hover:text-white transition"
+          className="w-9 h-9 rounded-full bg-neutral-900/90 border border-neutral-800 hover:border-[#00E85D]/50 flex items-center justify-center text-neutral-300 hover:text-white transition cursor-pointer"
           title="View GitHub Repository"
         >
-          <svg className="w-4 h-4 fill-currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
             <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
           </svg>
         </a>

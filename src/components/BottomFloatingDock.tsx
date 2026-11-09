@@ -14,9 +14,9 @@ export function BottomFloatingDock({
   onOpenOptions,
 }: BottomFloatingDockProps) {
   const [isPlaying, setIsPlaying] = useState(true);
-  const [totalSeconds, setTotalSeconds] = useState(2 * 3600 + 13 * 60 + 17);
+  const [totalSeconds, setTotalSeconds] = useState(2 * 3600 + 11 * 60 + 57);
 
-  // Active ticking countdown simulator (exact from code.html lines 303-319)
+  // Active ticking countdown simulator with Framer pulses
   useEffect(() => {
     if (!isPlaying) return;
     const interval = setInterval(() => {
@@ -38,52 +38,55 @@ export function BottomFloatingDock({
   };
 
   return (
-    <footer className="fixed bottom-6 left-0 w-full z-40 px-6 flex items-center justify-between pointer-events-none">
-      {/* Bottom Left: Live Audience / Active User Status Pill (Exact from code.html) */}
+    <footer className="fixed bottom-6 left-0 w-full z-40 px-6 flex items-center justify-between pointer-events-none select-none">
+      {/* Bottom Left: Live Audience / Active User Status Pill */}
       <div
-        className="pointer-events-auto flex items-center space-x-2 bg-[#141416]/90 border border-neutral-800/80 px-3.5 py-2 rounded-full shadow-lg backdrop-blur-md"
+        className="pointer-events-auto flex items-center space-x-2.5 bg-[#141416]/95 border border-neutral-800/80 px-4 py-2 rounded-full shadow-2xl backdrop-blur-md hover:border-[#00E85D]/40 transition-colors"
         data-purpose="live-status-pill"
       >
         {/* Neon pulsing dot / eye icon */}
-        <div className="w-5 h-5 rounded-full bg-[#00E85D]/20 flex items-center justify-center border border-[#00E85D]/50">
-          <span className="w-2 h-2 rounded-full bg-[#00E85D] animate-pulse" />
+        <div className="w-5 h-5 rounded-full bg-[#00E85D]/20 flex items-center justify-center border border-[#00E85D]/50 shadow-[0_0_10px_rgba(0,232,93,0.3)]">
+          <span className="w-2 h-2 rounded-full bg-[#00E85D] animate-ping" />
         </div>
-        <span className="text-xs text-neutral-300 font-medium">Just you watching right now</span>
-        <span className="text-neutral-500 hover:text-neutral-300 cursor-pointer text-xs ml-0.5" title="Stealth Active">
+        <span className="text-xs text-neutral-200 font-medium tracking-tight">Just you watching right now</span>
+        <span
+          className="text-neutral-500 hover:text-neutral-300 cursor-pointer text-xs ml-0.5"
+          title="Stealth Guard Active • Zero Process Footprint"
+        >
           ⓘ
         </span>
       </div>
 
-      {/* Bottom Center: Player / Countdown Floating Dock (Exact from code.html) */}
+      {/* Bottom Center: Player / Countdown Floating Dock */}
       <div
-        className="pointer-events-auto absolute left-1/2 -translate-x-1/2 flex items-center bg-[#141416]/90 border border-neutral-800/90 px-3 py-1.5 rounded-full shadow-2xl backdrop-blur-md space-x-4"
+        className="pointer-events-auto absolute left-1/2 -translate-x-1/2 flex items-center bg-[#141416]/95 border border-neutral-800/90 px-3.5 py-1.5 rounded-full shadow-[0_10px_35px_rgba(0,0,0,0.9),0_0_20px_rgba(0,232,93,0.15)] backdrop-blur-xl space-x-4 hover:border-[#00E85D]/50 transition-all duration-300 group"
         data-purpose="timeline-dock"
       >
-        {/* Date Indicator Circle */}
-        <div className="relative flex flex-col items-center justify-center w-8 h-8 rounded-full border border-[#00E85D] text-[9px] font-bold leading-tight text-white bg-black/40">
-          <span>09</span>
-          <span className="text-[7px] text-neutral-400 font-medium tracking-tighter uppercase -mt-0.5">
-            Nov
+        {/* Date Indicator Circle (Fixed geometry: no vertical collision) */}
+        <div className="relative flex flex-col items-center justify-center w-9 h-9 rounded-full border border-[#00E85D] bg-black/80 shadow-[0_0_12px_rgba(0,232,93,0.4)] shrink-0 py-0.5">
+          <span className="text-[11px] font-black leading-tight text-white tracking-tight">09</span>
+          <span className="text-[7px] text-[#00E85D] font-extrabold tracking-widest uppercase leading-none mt-0.5">
+            NOV
           </span>
         </div>
 
         {/* Dynamic Countdown Label */}
-        <div className="flex items-center space-x-1.5 text-xs text-neutral-300 font-medium">
+        <div className="flex items-center space-x-2 text-xs text-neutral-300 font-medium">
           <span className="text-neutral-400 hidden sm:inline">New quotes in</span>
-          <span className="text-white font-bold tracking-wider font-mono">
-            {hours} · {minutes} · {seconds}
+          <span className="text-[#00E85D] font-mono font-bold tracking-wider drop-shadow-[0_0_8px_rgba(0,232,93,0.6)]">
+            {hours} <span className="animate-pulse">·</span> {minutes} <span className="animate-pulse">·</span> {seconds}
           </span>
         </div>
 
         <div className="h-4 w-[1px] bg-neutral-800" />
 
         {/* Controls: Prev, Pause/Play, Next */}
-        <div className="flex items-center space-x-2 text-neutral-300">
+        <div className="flex items-center space-x-1.5 text-neutral-300">
           {/* Previous */}
           <button
             onClick={onPrev}
-            className="hover:text-white p-1 rounded-full transition hover:bg-neutral-800/50"
-            title="Previous Quote"
+            className="hover:text-white p-1 rounded-full transition hover:bg-neutral-800/60 cursor-pointer active:scale-95"
+            title="Previous Feature Mode"
           >
             <svg
               className="w-4 h-4"
@@ -102,15 +105,15 @@ export function BottomFloatingDock({
               setIsPlaying(!isPlaying);
               onTogglePlay?.();
             }}
-            className="w-7 h-7 rounded-md bg-neutral-800/80 hover:bg-neutral-700 flex items-center justify-center text-white transition"
-            title={isPlaying ? 'Pause' : 'Play'}
+            className="w-7 h-7 rounded-md bg-neutral-800/90 hover:bg-[#00E85D] hover:text-black flex items-center justify-center text-white transition-all cursor-pointer shadow-sm active:scale-90"
+            title={isPlaying ? 'Pause Timer' : 'Resume Timer'}
           >
             {isPlaying ? (
-              <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
                 <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
               </svg>
             ) : (
-              <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z" />
               </svg>
             )}
@@ -119,8 +122,8 @@ export function BottomFloatingDock({
           {/* Next */}
           <button
             onClick={onNext}
-            className="hover:text-white p-1 rounded-full transition hover:bg-neutral-800/50"
-            title="Next Quote"
+            className="hover:text-white p-1 rounded-full transition hover:bg-neutral-800/60 cursor-pointer active:scale-95"
+            title="Next Feature Mode"
           >
             <svg
               className="w-4 h-4"
@@ -141,7 +144,7 @@ export function BottomFloatingDock({
           {/* Fullscreen / Focus Mode */}
           <button
             onClick={toggleFullscreen}
-            className="hover:text-white p-1 transition"
+            className="hover:text-[#00E85D] p-1.5 transition cursor-pointer"
             title="Toggle Fullscreen"
           >
             <svg
@@ -159,11 +162,11 @@ export function BottomFloatingDock({
             </svg>
           </button>
 
-          {/* More Options */}
+          {/* More Options / Feedback */}
           <button
             onClick={onOpenOptions}
-            className="hover:text-white p-1 transition"
-            title="Options / Information"
+            className="hover:text-[#00E85D] p-1.5 transition cursor-pointer"
+            title="Open Direct Feedback"
           >
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
               <circle cx="12" cy="5" r="1.5" />
@@ -179,4 +182,3 @@ export function BottomFloatingDock({
     </footer>
   );
 }
-
