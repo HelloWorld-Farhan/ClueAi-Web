@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CREATOR } from '../config/version';
 import { FeatureKey } from './FeatureModal';
 
@@ -9,8 +11,41 @@ interface FooterProps {
 }
 
 export function Footer({ onOpenFeedback, onSelectFeature, onOpenLegal }: FooterProps) {
+  const footerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!footerRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Bidirectional GSAP Scrub (Top-to-Bottom & Bottom-to-Top)
+      gsap.fromTo(
+        footerRef.current,
+        {
+          y: 35,
+          opacity: 0.3,
+          filter: 'blur(8px)',
+        },
+        {
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: 'top 96%',
+            end: 'top 78%',
+            scrub: 1,
+          },
+          y: 0,
+          opacity: 1,
+          filter: 'blur(0px)',
+          ease: 'power2.out',
+        }
+      );
+    }, footerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <footer
+      ref={footerRef}
       className="relative z-20 pb-20 pt-10 flex flex-col items-center gap-4 text-center px-4 border-t border-neutral-900/60 mt-12 bg-black"
       data-purpose="page-footer"
     >

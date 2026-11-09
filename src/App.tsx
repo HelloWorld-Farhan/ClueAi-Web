@@ -9,8 +9,12 @@ import { Footer } from './components/Footer';
 import { FeedbackModal } from './components/FeedbackModal';
 import { FeatureModal, FeatureKey } from './components/FeatureModal';
 import { LegalModal, LegalTab } from './components/LegalModal';
+import { useSmoothScroll } from './hooks/useSmoothScroll';
 
 export function App() {
+  // Initialize Lenis + GSAP ScrollTrigger synchronized smooth scroll engine
+  useSmoothScroll();
+
   // Pure black focus entrance: Navbar & Dock smoothly bloom after headline reveals
   const [isEntranceComplete, setIsEntranceComplete] = useState(false);
   // Starts with Clue AI Ambient as front view by default

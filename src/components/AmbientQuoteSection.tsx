@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { APP_VERSION_TAG } from '../config/version';
 
 interface AmbientQuoteSectionProps {
@@ -203,7 +205,50 @@ const LINE_3 = ['Technical', 'Interviews'];
 export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: AmbientQuoteSectionProps) {
   const [isBloomed, setIsBloomed] = useState(false);
 
-  // Modern Scroll Blur & Parallax Exit Depth Engine
+  const sectionRef = useRef<HTMLElement>(null);
+  const heroContainerRef = useRef<HTMLDivElement>(null);
+  const bgUniverseRef = useRef<HTMLDivElement>(null);
+
+  // Modern Scroll Blur & Parallax Exit Depth Engine (Bidirectional GSAP + Lenis Sync)
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      if (heroContainerRef.current) {
+        gsap.to(heroContainerRef.current, {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top top',
+            end: 'bottom 40%',
+            scrub: 1.2,
+          },
+          y: -70,
+          scale: 0.93,
+          opacity: 0.12,
+          filter: 'blur(16px)',
+          ease: 'power2.out',
+        });
+      }
+
+      if (bgUniverseRef.current) {
+        gsap.to(bgUniverseRef.current, {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top top',
+            end: 'bottom 25%',
+            scrub: 1.4,
+          },
+          y: -90,
+          opacity: 0.15,
+          filter: 'blur(18px)',
+          ease: 'power1.out',
+        });
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   const { scrollY } = useScroll();
   const heroScrollBlur = useTransform(scrollY, [0, 420], ['blur(0px)', 'blur(16px)']);
   const heroScrollOpacity = useTransform(scrollY, [0, 420], [1, 0.12]);
@@ -232,11 +277,13 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
 
   return (
     <section
+      ref={sectionRef}
       className="relative w-full min-h-screen overflow-hidden flex items-center justify-center py-20 cursor-default select-none"
       onClick={handleFastForward}
     >
       {/* Background Quotes Universe with Cinematic Framer Motion Blur-Bloom Transition (Responsive on ALL Devices) */}
       <motion.div
+        ref={bgUniverseRef}
         initial={{ opacity: 0, filter: 'blur(35px)', scale: 1.08 }}
         animate={
           isBloomed
@@ -291,6 +338,7 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
 
       {/* BEGIN: Hero Focus Quote - Pure Black Origin with Seamless Center Lock & Modern Scroll Blur */}
       <motion.div
+        ref={heroContainerRef}
         style={{
           filter: heroScrollBlur,
           opacity: heroScrollOpacity,

@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Copy, Check, Terminal, ShieldCheck, Cpu, Download } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { APP_VERSION, APP_VERSION_TAG, DOWNLOAD_LINKS } from '../config/version';
 
 type SupportedOS = 'windows' | 'mac' | 'linux';
@@ -10,6 +12,38 @@ const TARGET_TITLE = 'Clue AI';
 export function DownloadHub() {
   const [activeOS, setActiveOS] = useState<SupportedOS>('windows');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+
+  const containerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Bidirectional GSAP Scrub (Top-to-Bottom & Bottom-to-Top)
+      gsap.fromTo(
+        containerRef.current,
+        {
+          y: 55,
+          opacity: 0.25,
+          filter: 'blur(14px)',
+        },
+        {
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 88%',
+            end: 'top 45%',
+            scrub: 1.2,
+          },
+          y: 0,
+          opacity: 1,
+          filter: 'blur(0px)',
+          ease: 'power2.out',
+        }
+      );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   // Looping Typewriter Effect for "Clue AI"
   const [typedTitle, setTypedTitle] = useState('');
@@ -55,6 +89,7 @@ export function DownloadHub() {
 
   return (
     <section
+      ref={containerRef}
       id="downloads"
       className="relative z-20 w-full max-w-4xl mx-auto px-4 sm:px-6 py-10 md:py-16 text-left"
     >

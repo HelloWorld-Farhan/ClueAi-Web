@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { APP_VERSION_TAG } from '../config/version';
 import { AwardModal, AwardType } from './AwardModal';
 
@@ -10,8 +12,94 @@ interface ArcHorizonShowcaseProps {
 export function ArcHorizonShowcase({ onGoToDownload, onOpenFeedback }: ArcHorizonShowcaseProps) {
   const [selectedAward, setSelectedAward] = useState<AwardType | null>(null);
 
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const cardsRingRef = useRef<HTMLDivElement>(null);
+  const heroContentRef = useRef<HTMLDivElement>(null);
+  const awardsSectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // 1. Cards Ring Bidirectional Scrub (Top to Bottom & Bottom to Top)
+      if (cardsRingRef.current) {
+        gsap.fromTo(
+          cardsRingRef.current.children,
+          {
+            y: 40,
+            opacity: 0.35,
+            scale: 0.9,
+          },
+          {
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 85%',
+              end: 'top 25%',
+              scrub: 1.2,
+            },
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            stagger: 0.03,
+            ease: 'power2.out',
+          }
+        );
+      }
+
+      // 2. "Say it big" Headline & CTA Bidirectional Reveal
+      if (heroContentRef.current) {
+        gsap.fromTo(
+          heroContentRef.current,
+          {
+            y: 50,
+            opacity: 0,
+            filter: 'blur(14px)',
+          },
+          {
+            scrollTrigger: {
+              trigger: heroContentRef.current,
+              start: 'top 88%',
+              end: 'top 52%',
+              scrub: 1,
+            },
+            y: 0,
+            opacity: 1,
+            filter: 'blur(0px)',
+            ease: 'power2.out',
+          }
+        );
+      }
+
+      // 3. Awards Section Bidirectional Reveal
+      if (awardsSectionRef.current) {
+        gsap.fromTo(
+          awardsSectionRef.current,
+          {
+            y: 40,
+            opacity: 0,
+            filter: 'blur(10px)',
+          },
+          {
+            scrollTrigger: {
+              trigger: awardsSectionRef.current,
+              start: 'top 92%',
+              end: 'top 65%',
+              scrub: 1,
+            },
+            y: 0,
+            opacity: 1,
+            filter: 'blur(0px)',
+            ease: 'power2.out',
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <div className="w-full flex flex-col items-center">
+    <div ref={sectionRef} className="w-full flex flex-col items-center">
       {/* BEGIN: Hero Showcase & Arc Stage (Exact from code7.html with Mobile Scaling) */}
       <section className="relative w-full overflow-hidden pt-8 md:pt-16 min-h-[520px] sm:min-h-[640px] flex flex-col items-center">
         {/* Top Gallery Curved Radial Display */}
@@ -27,6 +115,7 @@ export function ArcHorizonShowcase({ onGoToDownload, onOpenFeedback }: ArcHorizo
 
           {/* Arc Display Cards Array (Exact 9 Cards from code7.html) */}
           <div
+            ref={cardsRingRef}
             className="absolute inset-0 w-full h-full flex justify-center items-center pointer-events-auto"
             data-purpose="cards-ring"
           >
@@ -325,8 +414,9 @@ export function ArcHorizonShowcase({ onGoToDownload, onOpenFeedback }: ArcHorizo
           </div>
         </div>
 
-        {/* Central Hero Headline & CTA (Exact from code7.html) */}
+        {/* Central Hero Headline & CTA (Exact from code7.html with Bidirectional GSAP Scrub) */}
         <div
+          ref={heroContentRef}
           className="relative z-20 text-center max-w-xl mx-auto px-4 mt-6 md:mt-10"
           data-purpose="hero-content"
         >
@@ -355,8 +445,11 @@ export function ArcHorizonShowcase({ onGoToDownload, onOpenFeedback }: ArcHorizo
       </section>
       {/* END: Hero Showcase & Arc Stage */}
 
-      {/* BEGIN: Main Section (Awards - Interactive with AwardModal) */}
-      <section className="relative z-20 w-full max-w-4xl mx-auto px-4 sm:px-6 py-6 md:py-10">
+      {/* BEGIN: Main Section (Awards - Interactive with AwardModal & Bidirectional GSAP Scrub) */}
+      <section
+        ref={awardsSectionRef}
+        className="relative z-20 w-full max-w-4xl mx-auto px-4 sm:px-6 py-6 md:py-10"
+      >
         <div
           aria-label="Recognition & Awards"
           className="border-t border-b border-neutral-800/80 py-5 sm:py-6 px-2 sm:px-3 flex flex-col md:flex-row items-center justify-between gap-5 sm:gap-6"
