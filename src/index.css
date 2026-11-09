@@ -4,78 +4,134 @@
 
 @layer base {
   body {
-    background-color: #030712;
+    background-color: #000000;
     color: #ffffff;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow-x: hidden;
+    selection-background-color: #262626;
+    selection-color: #ffffff;
   }
 }
 
-/* Arched Cosmic Horizon Curve (from code7.html) */
+/* ==========================================================================
+   EXACT STYLES FROM code7.html
+   ========================================================================== */
+
+/* Arched Horizon Curve */
 .arc-horizon {
   position: absolute;
-  top: 130px;
+  top: 140px;
   left: 50%;
   transform: translateX(-50%);
   width: 140vw;
   min-width: 1500px;
   height: 900px;
   border-radius: 50% / 100% 100% 0 0;
-  background: radial-gradient(ellipse at 50% 0%, #082f49 0%, #031525 30%, #030712 70%);
-  box-shadow: inset 0 2px 30px rgba(56, 189, 248, 0.25), 0 -1px 35px rgba(56, 189, 248, 0.15);
-  z-index: 5;
+  background: radial-gradient(ellipse at 50% 0%, #03140b 0%, #010603 35%, #000000 70%);
+  box-shadow: inset 0 2px 25px rgba(52, 211, 153, 0.15), 0 -1px 30px rgba(52, 211, 153, 0.08);
+  z-index: 10;
   pointer-events: none;
 }
 
+/* Subtle top edge atmospheric glow */
 .arc-horizon::before {
   content: '';
   position: absolute;
   top: 0;
-  left: 15%;
-  right: 15%;
-  height: 1.5px;
-  background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.7) 50%, transparent 100%);
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(52, 211, 153, 0.4) 50%, transparent 100%);
   filter: blur(1px);
 }
 
-/* Neon Glows (from code.html) */
+/* Gallery Display Cards Positioning along radial arc */
+.arc-card {
+  position: absolute;
+  transform-origin: center bottom;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0d0d0d;
+  user-select: none;
+}
+
+.arc-card:hover {
+  filter: brightness(1.25);
+  box-shadow: 0 24px 50px rgba(0, 232, 93, 0.2), 0 0 0 1px rgba(0, 232, 93, 0.4);
+  z-index: 20 !important;
+}
+
+/* Subtle badge styling for CSS awards */
+.award-badge {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+  transition: all 0.3s ease;
+}
+
+.award-badge:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: scale(1.08);
+}
+
+/* Custom pill tags */
+.pill-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background-color: rgba(18, 18, 18, 0.6);
+  color: #a1a1aa;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.pill-link:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(30, 30, 30, 0.8);
+}
+
+/* ==========================================================================
+   EXACT STYLES FROM code.html
+   ========================================================================== */
+
+/* Subtle neon green text and button glows */
 .neon-glow-btn {
-  box-shadow: 0 0 25px rgba(56, 189, 248, 0.45), 0 0 6px rgba(56, 189, 248, 0.8);
+  box-shadow: 0 0 24px rgba(0, 232, 93, 0.5), 0 0 6px rgba(0, 232, 93, 0.8);
   transition: all 0.25s ease-in-out;
 }
 
 .neon-glow-btn:hover {
-  box-shadow: 0 0 38px rgba(56, 189, 248, 0.7), 0 0 10px rgba(56, 189, 248, 1);
+  box-shadow: 0 0 35px rgba(0, 232, 93, 0.7), 0 0 10px rgba(0, 232, 93, 1);
   transform: translateY(-1px) scale(1.02);
 }
 
 .neon-glow-text {
-  text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+  text-shadow: 0 0 16px rgba(0, 232, 93, 0.5);
 }
 
-/* Glassmorphism pill styling */
-.glass-pill {
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+/* Ambient quote field layout styling */
+.quote-ambient {
+  user-select: none;
+  pointer-events: none;
+  line-height: 1.15;
 }
 
-/* Custom Minimal Scrollbar */
+/* Custom subtle scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  display: none;
 }
-
-::-webkit-scrollbar-track {
-  background: #030712;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 9999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #38bdf8;
-}
-

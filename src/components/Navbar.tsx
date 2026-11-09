@@ -1,118 +1,107 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Download, MessageSquarePlus, Sparkles, Shield, Github, Menu, X, ExternalLink } from 'lucide-react';
+import React from 'react';
 
 interface NavbarProps {
+  activeView: 'arc' | 'ambient' | 'download';
+  setActiveView: (view: 'arc' | 'ambient' | 'download') => void;
   onOpenFeedback: () => void;
-  onScrollToDownload: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenFeedback, onScrollToDownload }) => {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
+export function Navbar({ activeView, setActiveView, onOpenFeedback }: NavbarProps) {
   return (
-    <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-      scrolled 
-        ? 'bg-[#030712]/85 backdrop-blur-xl border-b border-white/10 py-3 shadow-2xl shadow-black/80' 
-        : 'bg-transparent py-5'
-    }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        {/* Brand identity */}
-        <a href="#" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 p-0.5 shadow-lg shadow-cyan-500/25 group-hover:shadow-cyan-500/50 transition-all duration-300">
-            <div className="w-full h-full bg-[#030712] rounded-[10px] flex items-center justify-center">
-              <svg viewBox="0 0 24 24" className="w-5 h-5 text-cyan-400 group-hover:rotate-180 transition-transform duration-700" fill="none" stroke="currentColor" strokeWidth="2.2">
-                <circle cx="12" cy="12" r="3" fill="#38bdf8" />
-                <ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(30 12 12)" />
-                <ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(-30 12 12)" />
-                <ellipse cx="12" cy="12" rx="9" ry="3.8" transform="rotate(90 12 12)" />
-              </svg>
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-lg tracking-tight text-white group-hover:text-cyan-300 transition-colors">Clue AI</span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-950/80 text-cyan-400 border border-cyan-500/30 font-semibold">v5.9.9</span>
-            </div>
-            <span className="text-[11px] text-slate-400 hidden sm:inline-block">Interview Intelligence Copilot</span>
-          </div>
-        </a>
+    <header className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-4 bg-gradient-to-b from-black/95 via-black/70 to-transparent backdrop-blur-[4px] border-b border-white/[0.04]">
+      {/* Left: Brand Identity (exact from code.html) */}
+      <div
+        className="flex items-center space-x-3 cursor-pointer group"
+        data-purpose="brand-identity"
+        onClick={() => setActiveView('arc')}
+      >
+        <div className="w-8 h-8 rounded-full border border-[#00E85D]/70 flex items-center justify-center bg-black/60 shadow-[0_0_12px_rgba(0,232,93,0.35)] group-hover:shadow-[0_0_18px_rgba(0,232,93,0.6)] transition-all">
+          <span className="text-[#00E85D] font-black text-base leading-none tracking-tight">C</span>
+        </div>
+        <div className="flex items-baseline space-x-2">
+          <span className="text-white font-bold text-lg tracking-tight group-hover:text-emerald-300 transition-colors">
+            Clue AI
+          </span>
+          <span className="text-neutral-400 text-sm font-normal hidden sm:inline">
+            · The Undetected Copilot
+          </span>
+        </div>
+      </div>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1 glass-pill px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 shadow-inner">
-          <a href="#features" className="px-3 py-1.5 rounded-full hover:text-white hover:bg-white/5 transition-colors">Features</a>
-          <a href="#preview" className="px-3 py-1.5 rounded-full hover:text-white hover:bg-white/5 transition-colors">Live Dock Demo</a>
-          <a href="#downloads" className="px-3 py-1.5 rounded-full hover:text-white hover:bg-white/5 transition-colors">Downloads</a>
-          <a href="https://github.com/HelloWorld-Farhan/ClueAi" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-full hover:text-white hover:bg-white/5 transition-colors flex items-center gap-1.5">
-            <Github size={13} /> GitHub
-          </a>
-        </nav>
+      {/* Center: Section Indicator (exact from code.html) */}
+      <div className="hidden md:flex items-center" data-purpose="center-category">
+        <span
+          onClick={() => setActiveView('ambient')}
+          className="text-[#00E85D] font-semibold text-sm tracking-wide neon-glow-text cursor-pointer hover:opacity-90 transition-opacity"
+        >
+          {activeView === 'arc' ? 'Celestial Horizon & Gallery' : activeView === 'ambient' ? 'All quotes about AI & Code' : 'Cross-Platform Installer'}
+        </span>
+      </div>
 
-        {/* Action Controls */}
-        <div className="hidden sm:flex items-center gap-3">
+      {/* Right: Navigation Pills & Controls (exact from code.html) */}
+      <nav className="flex items-center space-x-2 sm:space-x-3" data-purpose="top-navigation">
+        {/* Filter segmented pill */}
+        <div className="bg-neutral-900/90 border border-neutral-800 rounded-full p-1 flex items-center text-xs backdrop-blur-md">
           <button
-            onClick={onOpenFeedback}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-cyan-400/50 transition-all duration-200"
+            onClick={() => setActiveView('arc')}
+            className={`px-3 py-1.5 rounded-full transition-all font-semibold ${
+              activeView === 'arc'
+                ? 'bg-white text-black shadow-sm'
+                : 'text-neutral-300 hover:text-white'
+            }`}
           >
-            <MessageSquarePlus size={14} className="text-cyan-400" />
-            <span>Feedback</span>
+            Say It Big
           </button>
-
           <button
-            onClick={onScrollToDownload}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 neon-glow-btn transition-all duration-200"
+            onClick={() => setActiveView('ambient')}
+            className={`relative px-3 py-1.5 rounded-full font-medium transition-all flex items-center ${
+              activeView === 'ambient'
+                ? 'bg-white text-black shadow-sm'
+                : 'text-neutral-300 hover:text-white'
+            }`}
           >
-            <Download size={14} />
-            <span>Download App</span>
+            <span>Zeitgeist</span>
+            {/* Notification Pill */}
+            <span className="ml-1.5 bg-[#00E85D] text-black font-extrabold text-[10px] px-1.5 py-0.2 rounded-full flex items-center justify-center">
+              v5.9.9
+            </span>
+          </button>
+          <button
+            onClick={() => setActiveView('download')}
+            className={`px-3 py-1.5 rounded-full font-medium transition-all flex items-center space-x-1 ${
+              activeView === 'download'
+                ? 'bg-white text-black shadow-sm'
+                : 'text-neutral-300 hover:text-white'
+            }`}
+          >
+            <span>Downloads</span>
+            <span className="text-xs">⚡</span>
           </button>
         </div>
 
-        {/* Mobile menu toggle */}
+        {/* Feedback Button */}
         <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-white"
+          onClick={onOpenFeedback}
+          className="flex items-center space-x-1.5 bg-neutral-900/90 border border-neutral-800 hover:border-neutral-700 text-neutral-200 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition hover:text-white"
+          title="Send Feedback"
         >
-          {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          <span className="w-1.5 h-1.5 rounded-full bg-[#00E85D] animate-ping" />
+          <span>Feedback</span>
         </button>
-      </div>
 
-      {/* Mobile Drawer */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-[#030712]/95 border-b border-white/10 px-6 py-4 flex flex-col gap-3 text-sm font-medium"
-          >
-            <a href="#features" onClick={() => setMobileMenuOpen(false)} className="text-slate-300 hover:text-white py-1">Features</a>
-            <a href="#preview" onClick={() => setMobileMenuOpen(false)} className="text-slate-300 hover:text-white py-1">Live Dock Demo</a>
-            <a href="#downloads" onClick={() => setMobileMenuOpen(false)} className="text-slate-300 hover:text-white py-1">Downloads</a>
-            <button
-              onClick={() => { setMobileMenuOpen(false); onOpenFeedback(); }}
-              className="flex items-center gap-2 text-cyan-400 py-1 text-left"
-            >
-              <MessageSquarePlus size={16} /> Send Feedback & Suggestions
-            </button>
-            <button
-              onClick={() => { setMobileMenuOpen(false); onScrollToDownload(); }}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold"
-            >
-              <Download size={16} /> Download Clue AI v5.9.9
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        {/* GitHub / External Icon */}
+        <a
+          href="https://github.com/HelloWorld-Farhan/ClueAi-Web"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-9 h-9 rounded-full bg-neutral-900/90 border border-neutral-800 hover:border-neutral-700 flex items-center justify-center text-neutral-300 hover:text-white transition"
+          title="View GitHub Repository"
+        >
+          <svg className="w-4 h-4 fill-currentColor" viewBox="0 0 24 24">
+            <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+          </svg>
+        </a>
+      </nav>
     </header>
   );
-};
-
+}

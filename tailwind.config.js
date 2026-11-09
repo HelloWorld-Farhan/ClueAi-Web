@@ -9,25 +9,27 @@ export default {
     extend: {
       colors: {
         brand: {
+          green: '#00E85D',
+          darkGreen: '#007A33',
+          glow: 'rgba(0, 232, 93, 0.45)',
+          pillBg: '#18181b',
+          dockBg: 'rgba(20, 20, 22, 0.85)',
           cyan: '#38bdf8',
           blue: '#2563eb',
-          neon: '#00e85d',
-          glow: 'rgba(56, 189, 248, 0.45)',
-          dark: '#030712',
-          surface: '#080c18',
-          border: 'rgba(255, 255, 255, 0.1)',
-        }
+        },
+        brandDark: '#000000',
+        brandSurface: '#080808',
+        brandBorder: '#1c1c1e',
+        brandMuted: '#86868b',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
         mono: ['JetBrains Mono', 'SF Mono', 'Consolas', 'monospace'],
       },
       animation: {
-        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'spin-slow': 'spin 12s linear infinite',
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       }
     },
   },
   plugins: [],
 }
-
