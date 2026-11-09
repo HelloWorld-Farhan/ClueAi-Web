@@ -182,14 +182,6 @@ export function App() {
         onOpenOptions={() => setFeedbackOpen(true)}
         onGoToDownload={handleScrollToDownload}
       />
-        }}
-        onNext={() => {
-          setIsEntranceComplete(true);
-          setActiveView((prev) => (prev === 'arc' ? 'ambient' : prev === 'ambient' ? 'download' : 'arc'));
-        }}
-        onOpenOptions={() => setFeedbackOpen(true)}
-        onGoToDownload={handleScrollToDownload}
-      />
 
       {/* Page Footer */}
       <Footer
