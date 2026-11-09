@@ -199,34 +199,37 @@ export function BottomFloatingDock({
         </AnimatePresence>
       </div>
 
-      {/* Bottom Center: Flying Floating Dock with Weightless Levitation Physics */}
-      <motion.aside
-        initial={{ opacity: 0, y: 30 }}
-        animate={{
-          opacity: 1,
-          y: [0, -6, 0],
-          boxShadow: [
-            '0 12px 35px rgba(0,0,0,0.95), 0 0 20px rgba(0,232,93,0.2)',
-            '0 20px 48px rgba(0,0,0,0.9), 0 0 32px rgba(0,232,93,0.45)',
-            '0 12px 35px rgba(0,0,0,0.95), 0 0 20px rgba(0,232,93,0.2)',
-          ],
-        }}
-        transition={{
-          y: { duration: 3.8, repeat: Infinity, ease: 'easeInOut' },
-          boxShadow: { duration: 3.8, repeat: Infinity, ease: 'easeInOut' },
-          opacity: { duration: 0.5, ease: 'easeOut' },
-        }}
-        whileHover={{
-          scale: 1.03,
-          y: -9,
-          transition: { duration: 0.2 },
-        }}
-        className="fixed bottom-7 sm:bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 z-50 pointer-events-auto flex items-center bg-[#141416]/95 border border-neutral-800/90 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-xl space-x-2 sm:space-x-4 hover:border-[#00E85D]/60 transition-colors select-none max-w-[calc(100vw-24px)] shrink-0"
-        data-purpose="timeline-dock"
+      {/* Bottom Center: Floating Dock Outer Flexbox Anchor (Guarantees 100% horizontal centering on all viewports) */}
+      <div
+        className="fixed bottom-6 sm:bottom-8 md:bottom-10 inset-x-0 w-full z-50 flex justify-center pointer-events-none px-2 select-none"
         style={{
-          marginBottom: 'env(safe-area-inset-bottom, 0px)',
+          paddingBottom: 'env(safe-area-inset-bottom, 0px)',
         }}
       >
+        <motion.aside
+          initial={{ opacity: 0, y: 30 }}
+          animate={{
+            opacity: 1,
+            y: [0, -6, 0],
+            boxShadow: [
+              '0 12px 35px rgba(0,0,0,0.95), 0 0 20px rgba(0,232,93,0.2)',
+              '0 20px 48px rgba(0,0,0,0.9), 0 0 32px rgba(0,232,93,0.45)',
+              '0 12px 35px rgba(0,0,0,0.95), 0 0 20px rgba(0,232,93,0.2)',
+            ],
+          }}
+          transition={{
+            y: { duration: 3.8, repeat: Infinity, ease: 'easeInOut' },
+            boxShadow: { duration: 3.8, repeat: Infinity, ease: 'easeInOut' },
+            opacity: { duration: 0.5, ease: 'easeOut' },
+          }}
+          whileHover={{
+            scale: 1.03,
+            y: -9,
+            transition: { duration: 0.2 },
+          }}
+          className="pointer-events-auto flex items-center bg-[#141416]/95 border border-neutral-800/90 px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-full backdrop-blur-xl space-x-1.5 sm:space-x-3 hover:border-[#00E85D]/60 transition-colors select-none max-w-[calc(100vw-16px)] shrink-0"
+          data-purpose="timeline-dock"
+        >
         {/* Date Indicator Circle */}
         <div className="relative flex flex-col items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[#00E85D] bg-black/80 shadow-[0_0_12px_rgba(0,232,93,0.4)] shrink-0 py-0.5">
           <span className="text-[10px] sm:text-[11px] font-black leading-tight text-white tracking-tight">{day}</span>
@@ -474,6 +477,7 @@ export function BottomFloatingDock({
           </AnimatePresence>
         </div>
       </motion.aside>
+      </div>
     </>
   );
 }

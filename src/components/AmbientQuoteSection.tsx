@@ -281,10 +281,10 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
         ))}
       </motion.div>
 
-      {/* Atmospheric Ambient Glow & Center Dimmer behind Hero (Prevents collision without buggy maskImage) */}
+      {/* High-Contrast Radial Black Spotlight & Emerald Atmosphere behind Hero (Guarantees zero text collision) */}
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden z-10">
-        <div className="w-80 sm:w-[540px] h-80 sm:h-[460px] rounded-full bg-black/80 blur-3xl pointer-events-none" />
-        <div className="w-80 sm:w-[480px] h-80 sm:h-[480px] rounded-full bg-[#00E85D]/10 blur-[120px] pointer-events-none absolute" />
+        <div className="w-[96vw] sm:w-[680px] h-[360px] sm:h-[480px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.98)_0%,rgba(0,0,0,0.90)_52%,rgba(0,0,0,0)_82%)] pointer-events-none" />
+        <div className="w-72 sm:w-[480px] h-72 sm:h-[480px] rounded-full bg-[#00E85D]/10 blur-[130px] pointer-events-none absolute" />
       </div>
 
       {/* BEGIN: Hero Focus Quote - Pure Black Origin with Seamless Center Lock */}
