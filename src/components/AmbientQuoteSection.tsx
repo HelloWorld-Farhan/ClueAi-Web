@@ -196,9 +196,9 @@ const CLUE_FEATURES: ClueFeatureQuote[] = [
   },
 ];
 
-const LINE_1 = ['The', 'undetected'];
-const LINE_2 = ['copilot', 'for'];
-const LINE_3 = ['technical', 'interviews'];
+const LINE_1 = ['The', 'Undetected'];
+const LINE_2 = ['Copilot', 'For'];
+const LINE_3 = ['Technical', 'Interviews'];
 
 export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: AmbientQuoteSectionProps) {
   const [isBloomed, setIsBloomed] = useState(false);
@@ -273,66 +273,55 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
         className="relative z-20 flex flex-col items-center justify-center text-center px-4 max-w-5xl mx-auto pointer-events-auto"
         data-purpose="hero-quote-container"
       >
-        {/* Dominant Clue AI Headline with Modern Per-Word Blur In */}
-        <h1 className="text-white text-5xl sm:text-7xl md:text-8xl lg:text-[100px] font-black tracking-[-0.04em] leading-[0.93] select-text drop-shadow-[0_10px_35px_rgba(0,0,0,0.95)]">
-          {LINE_1.map((w, i) => (
-            <motion.span
-              key={`line1-${w}`}
-              initial={{ opacity: 0, filter: 'blur(22px)', y: 26, scale: 0.94 }}
-              animate={{ opacity: 1, filter: 'blur(0px)', y: 0, scale: 1 }}
-              transition={{ duration: 0.55, delay: 0.1 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-block mr-3 md:mr-5"
-            >
-              {w}
-            </motion.span>
-          ))}
-          <br />
-          {LINE_2.map((w, i) => (
-            <motion.span
-              key={`line2-${w}`}
-              initial={{ opacity: 0, filter: 'blur(22px)', y: 26, scale: 0.94 }}
-              animate={{ opacity: 1, filter: 'blur(0px)', y: 0, scale: 1 }}
-              transition={{ duration: 0.55, delay: 0.38 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-block mr-3 md:mr-5 last:mr-0"
-            >
-              {w}
-            </motion.span>
-          ))}
-          <br />
-          {LINE_3.map((w, i) => (
-            <motion.span
-              key={`line3-${w}`}
-              initial={{ opacity: 0, filter: 'blur(22px)', y: 26, scale: 0.94 }}
-              animate={{ opacity: 1, filter: 'blur(0px)', y: 0, scale: 1 }}
-              transition={{ duration: 0.55, delay: 0.62 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-block mr-3 md:mr-5 last:mr-0"
-            >
-              {w}
-            </motion.span>
-          ))}
+        {/* Dominant Clue AI Headline with Modern Per-Word Blur In & Justified Flex Alignment */}
+        <h1 className="flex flex-col items-center justify-center text-center font-black tracking-[-0.035em] leading-[0.95] text-white text-5xl sm:text-7xl md:text-8xl lg:text-[102px] select-text drop-shadow-[0_10px_35px_rgba(0,0,0,0.95)]">
+          <div className="flex items-center justify-center gap-3 sm:gap-5 md:gap-6">
+            {LINE_1.map((w, i) => (
+              <motion.span
+                key={`line1-${w}`}
+                initial={{ opacity: 0, filter: 'blur(22px)', y: 26, scale: 0.94 }}
+                animate={{ opacity: 1, filter: 'blur(0px)', y: 0, scale: 1 }}
+                transition={{ duration: 0.55, delay: 0.1 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-block"
+              >
+                {w}
+              </motion.span>
+            ))}
+          </div>
+          <div className="flex items-center justify-center gap-3 sm:gap-5 md:gap-6">
+            {LINE_2.map((w, i) => (
+              <motion.span
+                key={`line2-${w}`}
+                initial={{ opacity: 0, filter: 'blur(22px)', y: 26, scale: 0.94 }}
+                animate={{ opacity: 1, filter: 'blur(0px)', y: 0, scale: 1 }}
+                transition={{ duration: 0.55, delay: 0.38 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-block"
+              >
+                {w}
+              </motion.span>
+            ))}
+          </div>
+          <div className="flex items-center justify-center gap-3 sm:gap-5 md:gap-6">
+            {LINE_3.map((w, i) => (
+              <motion.span
+                key={`line3-${w}`}
+                initial={{ opacity: 0, filter: 'blur(22px)', y: 26, scale: 0.94 }}
+                animate={{ opacity: 1, filter: 'blur(0px)', y: 0, scale: 1 }}
+                transition={{ duration: 0.55, delay: 0.62 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-block"
+              >
+                {w}
+              </motion.span>
+            ))}
+          </div>
         </h1>
-
-        {/* Clue AI Technical Interview Copilot Core Message */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={isBloomed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-          transition={{ duration: 0.7, delay: 0.1, ease: 'easeOut' }}
-          className="mt-6 md:mt-8 max-w-2xl mx-auto space-y-1.5 px-4"
-        >
-          <p className="text-base sm:text-lg md:text-xl font-bold tracking-tight text-white drop-shadow-[0_0_15px_rgba(0,232,93,0.35)]">
-            The Undetected AI Copilot for Technical Interviews
-          </p>
-          <p className="text-xs sm:text-sm text-neutral-400 font-mono tracking-wide">
-            Zero Screen Share Detection <span className="text-[#00E85D]">·</span> Real-Time Whisper STT <span className="text-[#00E85D]">·</span> Multi-LLM LeetCode Solver
-          </p>
-        </motion.div>
 
         {/* Neon Green Action CTA Button with Spring Entrance */}
         <motion.div
           initial={{ opacity: 0, y: 20, scale: 0.92 }}
           animate={isBloomed ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.92 }}
           transition={{ duration: 0.6, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-8 sm:mt-10"
+          className="mt-8 sm:mt-12"
         >
           <button
             onClick={onActionClick}
