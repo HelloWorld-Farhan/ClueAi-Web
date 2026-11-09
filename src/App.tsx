@@ -8,7 +8,8 @@ import { Footer } from './components/Footer';
 import { FeedbackModal } from './components/FeedbackModal';
 
 export function App() {
-  const [activeView, setActiveView] = useState<'arc' | 'ambient' | 'download'>('arc');
+  // Starts with Zeitgeist ("This is no substitute for hard code") as front view by default
+  const [activeView, setActiveView] = useState<'arc' | 'ambient' | 'download'>('ambient');
   const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   const handleScrollToDownload = () => {

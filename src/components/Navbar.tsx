@@ -7,29 +7,30 @@ interface NavbarProps {
 }
 
 export function Navbar({ activeView, setActiveView, onOpenFeedback }: NavbarProps) {
-  const [totalSeconds, setTotalSeconds] = useState(2 * 3600 + 11 * 60 + 57);
+  // Real-time live 24-hour clock and dynamic calendar date
+  const [now, setNow] = useState(new Date());
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTotalSeconds((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
+    const interval = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
 
-  const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
-  const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
-  const seconds = String(totalSeconds % 60).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = now.toLocaleString('en-US', { month: 'short' }).toUpperCase();
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 py-3.5 bg-gradient-to-b from-black/95 via-black/80 to-transparent backdrop-blur-[6px] border-b border-white/[0.04] select-none">
-      {/* Left: Brand Identity (exact from code.html) */}
+      {/* Left: Brand Identity with Official Clue AI Logo Icon */}
       <div
         className="flex items-center space-x-3 cursor-pointer group"
         data-purpose="brand-identity"
-        onClick={() => setActiveView('arc')}
+        onClick={() => setActiveView('ambient')}
       >
-        <div className="w-8 h-8 rounded-full border border-[#00E85D]/70 flex items-center justify-center bg-black/60 shadow-[0_0_12px_rgba(0,232,93,0.35)] group-hover:shadow-[0_0_18px_rgba(0,232,93,0.6)] transition-all">
-          <span className="text-[#00E85D] font-black text-base leading-none tracking-tight">C</span>
+        <div className="w-8 h-8 rounded-full border border-[#00E85D]/70 flex items-center justify-center bg-black/80 shadow-[0_0_12px_rgba(0,232,93,0.35)] overflow-hidden p-0.5 group-hover:shadow-[0_0_18px_rgba(0,232,93,0.6)] transition-all">
+          <img src="/logo.png" alt="Clue AI" className="w-full h-full object-contain rounded-full" />
         </div>
         <div className="flex items-baseline space-x-2">
           <span className="text-white font-bold text-lg tracking-tight group-hover:text-emerald-300 transition-colors">
@@ -41,15 +42,15 @@ export function Navbar({ activeView, setActiveView, onOpenFeedback }: NavbarProp
         </div>
       </div>
 
-      {/* Center: Live Date & Time Indicator Pill in Top Bar */}
+      {/* Center: Live Real-Time 24-Hour Clock & Dynamic Date Pill */}
       <div className="hidden lg:flex items-center space-x-3 bg-neutral-950/80 border border-neutral-800/80 px-4 py-1.5 rounded-full shadow-[0_0_15px_rgba(0,232,93,0.1)] hover:border-[#00E85D]/50 transition-colors">
-        {/* Date circle badge */}
+        {/* Dynamic Day and Month */}
         <div className="flex items-center space-x-1.5">
           <span className="w-2 h-2 rounded-full bg-[#00E85D] animate-ping" />
-          <span className="text-[11px] font-mono font-bold text-white tracking-wider">09 NOV</span>
+          <span className="text-[11px] font-mono font-bold text-white tracking-wider">{day} {month}</span>
         </div>
         <span className="text-neutral-600">|</span>
-        {/* Live ticking countdown timer */}
+        {/* Live real-time 24-hour clock */}
         <div className="text-xs font-mono font-bold text-[#00E85D] tracking-wider drop-shadow-[0_0_8px_rgba(0,232,93,0.5)]">
           {hours} <span className="animate-pulse">·</span> {minutes} <span className="animate-pulse">·</span> {seconds}
         </div>
@@ -57,10 +58,24 @@ export function Navbar({ activeView, setActiveView, onOpenFeedback }: NavbarProp
         <span className="text-[11px] text-neutral-400 hidden xl:inline">AI Engine Active</span>
       </div>
 
-      {/* Right: Navigation Pills & Controls (exact from code.html) */}
+      {/* Right: Navigation Pills & Controls */}
       <nav className="flex items-center space-x-2 sm:space-x-3" data-purpose="top-navigation">
         {/* Filter segmented pill */}
         <div className="bg-neutral-900/90 border border-neutral-800 rounded-full p-1 flex items-center text-xs backdrop-blur-md">
+          <button
+            onClick={() => setActiveView('ambient')}
+            className={`relative px-3 py-1.5 rounded-full font-medium transition-all flex items-center cursor-pointer ${
+              activeView === 'ambient'
+                ? 'bg-white text-black shadow-sm font-semibold'
+                : 'text-neutral-300 hover:text-white'
+            }`}
+          >
+            <span>Zeitgeist</span>
+            {/* Version Badge */}
+            <span className="ml-1.5 bg-[#00E85D] text-black font-extrabold text-[10px] px-1.5 py-0.5 rounded-full flex items-center justify-center">
+              v5.9.9
+            </span>
+          </button>
           <button
             onClick={() => setActiveView('arc')}
             className={`px-3 py-1.5 rounded-full transition-all font-semibold cursor-pointer ${
@@ -72,24 +87,10 @@ export function Navbar({ activeView, setActiveView, onOpenFeedback }: NavbarProp
             Say It Big
           </button>
           <button
-            onClick={() => setActiveView('ambient')}
-            className={`relative px-3 py-1.5 rounded-full font-medium transition-all flex items-center cursor-pointer ${
-              activeView === 'ambient'
-                ? 'bg-white text-black shadow-sm'
-                : 'text-neutral-300 hover:text-white'
-            }`}
-          >
-            <span>Zeitgeist</span>
-            {/* Notification Pill */}
-            <span className="ml-1.5 bg-[#00E85D] text-black font-extrabold text-[10px] px-1.5 py-0.2 rounded-full flex items-center justify-center">
-              v5.9.9
-            </span>
-          </button>
-          <button
             onClick={() => setActiveView('download')}
             className={`px-3 py-1.5 rounded-full font-medium transition-all flex items-center space-x-1 cursor-pointer ${
               activeView === 'download'
-                ? 'bg-white text-black shadow-sm'
+                ? 'bg-white text-black shadow-sm font-semibold'
                 : 'text-neutral-300 hover:text-white'
             }`}
           >
@@ -98,7 +99,7 @@ export function Navbar({ activeView, setActiveView, onOpenFeedback }: NavbarProp
           </button>
         </div>
 
-        {/* Feedback Button with glowing indicator */}
+        {/* Feedback Button */}
         <button
           onClick={onOpenFeedback}
           className="flex items-center space-x-1.5 bg-neutral-900/90 border border-neutral-800 hover:border-[#00E85D]/60 text-neutral-200 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all hover:text-white hover:shadow-[0_0_12px_rgba(0,232,93,0.3)] cursor-pointer"
@@ -108,7 +109,7 @@ export function Navbar({ activeView, setActiveView, onOpenFeedback }: NavbarProp
           <span>Feedback</span>
         </button>
 
-        {/* GitHub repository icon */}
+        {/* GitHub Repository Link */}
         <a
           href="https://github.com/HelloWorld-Farhan/ClueAi-Web"
           target="_blank"

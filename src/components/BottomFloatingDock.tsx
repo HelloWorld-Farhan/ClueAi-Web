@@ -14,20 +14,19 @@ export function BottomFloatingDock({
   onOpenOptions,
 }: BottomFloatingDockProps) {
   const [isPlaying, setIsPlaying] = useState(true);
-  const [totalSeconds, setTotalSeconds] = useState(2 * 3600 + 11 * 60 + 57);
+  // Real-time live 24-hour clock and dynamic calendar date
+  const [now, setNow] = useState(new Date());
 
-  // Active ticking countdown simulator with Framer pulses
   useEffect(() => {
-    if (!isPlaying) return;
-    const interval = setInterval(() => {
-      setTotalSeconds((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
+    const interval = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(interval);
-  }, [isPlaying]);
+  }, []);
 
-  const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
-  const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
-  const seconds = String(totalSeconds % 60).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = now.toLocaleString('en-US', { month: 'short' }).toUpperCase();
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -62,17 +61,17 @@ export function BottomFloatingDock({
         className="pointer-events-auto absolute left-1/2 -translate-x-1/2 flex items-center bg-[#141416]/95 border border-neutral-800/90 px-3.5 py-1.5 rounded-full shadow-[0_10px_35px_rgba(0,0,0,0.9),0_0_20px_rgba(0,232,93,0.15)] backdrop-blur-xl space-x-4 hover:border-[#00E85D]/50 transition-all duration-300 group"
         data-purpose="timeline-dock"
       >
-        {/* Date Indicator Circle (Fixed geometry: no vertical collision) */}
+        {/* Date Indicator Circle (Dynamic calendar date) */}
         <div className="relative flex flex-col items-center justify-center w-9 h-9 rounded-full border border-[#00E85D] bg-black/80 shadow-[0_0_12px_rgba(0,232,93,0.4)] shrink-0 py-0.5">
-          <span className="text-[11px] font-black leading-tight text-white tracking-tight">09</span>
+          <span className="text-[11px] font-black leading-tight text-white tracking-tight">{day}</span>
           <span className="text-[7px] text-[#00E85D] font-extrabold tracking-widest uppercase leading-none mt-0.5">
-            NOV
+            {month}
           </span>
         </div>
 
-        {/* Dynamic Countdown Label */}
+        {/* Real-Time 24-Hour Clock */}
         <div className="flex items-center space-x-2 text-xs text-neutral-300 font-medium">
-          <span className="text-neutral-400 hidden sm:inline">New quotes in</span>
+          <span className="text-neutral-400 hidden sm:inline">Live 24H</span>
           <span className="text-[#00E85D] font-mono font-bold tracking-wider drop-shadow-[0_0_8px_rgba(0,232,93,0.6)]">
             {hours} <span className="animate-pulse">·</span> {minutes} <span className="animate-pulse">·</span> {seconds}
           </span>
