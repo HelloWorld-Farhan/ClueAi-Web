@@ -72,11 +72,12 @@ export function App() {
         )}
       </main>
 
-      {/* Fixed Bottom Timeline Dock & Live Pulse Pill (Exact from code.html) */}
+      {/* Fixed Bottom Timeline Dock & Live Pulse Pill */}
       <BottomFloatingDock
         onPrev={() => setActiveView((prev) => (prev === 'arc' ? 'download' : prev === 'ambient' ? 'arc' : 'ambient'))}
         onNext={() => setActiveView((prev) => (prev === 'arc' ? 'ambient' : prev === 'ambient' ? 'download' : 'arc'))}
         onOpenOptions={() => setFeedbackOpen(true)}
+        onGoToDownload={handleScrollToDownload}
       />
 
       {/* Page Footer */}
