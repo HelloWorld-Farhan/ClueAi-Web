@@ -149,3 +149,4 @@ export function AmbientQuoteSection({ onActionClick }: AmbientQuoteSectionProps)
     </section>
   );
 }
+

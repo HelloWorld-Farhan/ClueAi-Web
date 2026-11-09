@@ -344,3 +344,4 @@ export function ArcHorizonShowcase({ onGoToDownload, onOpenFeedback }: ArcHorizo
     </div>
   );
 }
+
