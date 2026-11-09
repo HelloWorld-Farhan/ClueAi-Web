@@ -320,11 +320,10 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose })
                           onMouseEnter={() => setHoverRating(star)}
                           onMouseLeave={() => setHoverRating(0)}
                           onClick={() => setRating(star)}
-                          className={`p-1.5 rounded-lg transition-all cursor-pointer ${
-                            isHighlighted
-                              ? 'text-[#00E85D] scale-110 drop-shadow-[0_0_10px_rgba(0,232,93,0.7)]'
-                              : 'text-neutral-700 hover:text-neutral-500'
-                          }`}
+                          className={`p-1.5 rounded-lg transition-all cursor-pointer ${isHighlighted
+                            ? 'text-[#00E85D] scale-110 drop-shadow-[0_0_10px_rgba(0,232,93,0.7)]'
+                            : 'text-neutral-700 hover:text-neutral-500'
+                            }`}
                           title={`${star} Star${star > 1 ? 's' : ''}`}
                         >
                           <Star size={24} fill={isHighlighted ? '#00E85D' : 'none'} />
@@ -345,11 +344,10 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose })
                         key={cat}
                         type="button"
                         onClick={() => setCategory(cat)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
-                          category === cat
-                            ? 'bg-[#00E85D] text-black font-bold shadow-md shadow-[#00E85D]/20'
-                            : 'bg-neutral-900 text-neutral-300 hover:bg-neutral-800 border border-neutral-800'
-                        }`}
+                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${category === cat
+                          ? 'bg-[#00E85D] text-black font-bold shadow-md shadow-[#00E85D]/20'
+                          : 'bg-neutral-900 text-neutral-300 hover:bg-neutral-800 border border-neutral-800'
+                          }`}
                       >
                         {cat}
                       </button>
@@ -383,11 +381,10 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose })
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="user@example.com"
-                      className={`w-full px-3.5 py-2.5 rounded-xl bg-black border text-white placeholder-neutral-600 text-xs focus:outline-none transition-colors ${
-                        isEmailVerified
-                          ? 'border-emerald-500/80 bg-emerald-950/20 text-emerald-300 cursor-not-allowed'
-                          : 'border-neutral-800 focus:border-[#00E85D]'
-                      }`}
+                      className={`w-full px-3.5 py-2.5 rounded-xl bg-black border text-white placeholder-neutral-600 text-xs focus:outline-none transition-colors ${isEmailVerified
+                        ? 'border-emerald-500/80 bg-emerald-950/20 text-emerald-300 cursor-not-allowed'
+                        : 'border-neutral-800 focus:border-[#00E85D]'
+                        }`}
                     />
                   </div>
                 </div>

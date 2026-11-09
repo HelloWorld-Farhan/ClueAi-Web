@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useSpring } from 'framer-motion';
 import { Navbar } from './components/Navbar';
 import { ArcHorizonShowcase } from './components/ArcHorizonShowcase';
 import { AmbientQuoteSection } from './components/AmbientQuoteSection';
@@ -19,6 +19,14 @@ export function App() {
   const [selectedFeature, setSelectedFeature] = useState<FeatureKey | null>(null);
   const [legalModalOpen, setLegalModalOpen] = useState(false);
   const [legalTab, setLegalTab] = useState<LegalTab>('license');
+
+  // Modern Scroll Progress Engine
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
 
   // Handle URL hash changes for #license, #privacy, and #downloads
   useEffect(() => {
@@ -53,6 +61,12 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col justify-between selection:bg-neutral-800 selection:text-white font-sans overflow-x-hidden relative">
+      {/* Modern High-End Top Scroll Indicator Line */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#00E85D] via-emerald-400 to-[#00E85D] origin-left z-[100] pointer-events-none shadow-[0_0_8px_#00E85D]"
+        style={{ scaleX }}
+      />
+
       {/* Top Fixed Header with Smooth Cinematic Entrance */}
       <motion.div
         initial={{ opacity: 0, y: -25 }}
@@ -89,12 +103,12 @@ export function App() {
               onEntranceComplete={() => setIsEntranceComplete(true)}
             />
 
-            {/* Seamless Flow on Scroll: Arc Horizon Feature Showcase */}
+            {/* Seamless Flow on Scroll: Arc Horizon Feature Showcase with Modern Scroll Blur */}
             <motion.div
-              initial={{ opacity: 0, y: 35 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
+              initial={{ opacity: 0, y: 45, filter: 'blur(16px)' }}
+              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              viewport={{ once: true, amount: 0.12 }}
+              transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
               className="border-t border-neutral-900/60 mt-6"
             >
               <ArcHorizonShowcase
@@ -103,12 +117,12 @@ export function App() {
               />
             </motion.div>
 
-            {/* Seamless Flow on Scroll: Antigravity-Style Download Hub */}
+            {/* Seamless Flow on Scroll: Antigravity-Style Download Hub with Modern Scroll Blur */}
             <motion.div
-              initial={{ opacity: 0, y: 35 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
+              initial={{ opacity: 0, y: 45, filter: 'blur(16px)' }}
+              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              viewport={{ once: true, amount: 0.12 }}
+              transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
               className="border-t border-neutral-900/80 mt-12"
             >
               <DownloadHub />

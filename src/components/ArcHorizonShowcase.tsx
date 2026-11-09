@@ -16,11 +16,14 @@ export function ArcHorizonShowcase({ onGoToDownload, onOpenFeedback }: ArcHorizo
       <section className="relative w-full overflow-hidden pt-8 md:pt-16 min-h-[520px] sm:min-h-[640px] flex flex-col items-center">
         {/* Top Gallery Curved Radial Display */}
         <div
-          className="relative w-full max-w-[1700px] h-[260px] xs:h-[300px] sm:h-[340px] flex justify-center pointer-events-none scale-[0.58] xs:scale-[0.72] sm:scale-100 origin-top overflow-hidden"
+          className="relative w-full max-w-[1700px] h-[280px] xs:h-[320px] sm:h-[360px] md:h-[400px] flex justify-center pointer-events-none scale-[0.62] xs:scale-[0.75] sm:scale-[0.88] md:scale-100 origin-top overflow-hidden"
           data-purpose="curved-gallery-viewport"
         >
           {/* Arched Planet/Dome Horizon (Exact from code7.html) */}
           <div className="arc-horizon" />
+
+          {/* Smooth Bottom Horizon Blend to prevent harsh cutoff */}
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none z-10" />
 
           {/* Arc Display Cards Array (Exact 9 Cards from code7.html) */}
           <div

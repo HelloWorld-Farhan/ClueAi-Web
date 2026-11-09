@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { APP_VERSION_TAG } from '../config/version';
 
 interface AmbientQuoteSectionProps {
@@ -18,180 +18,180 @@ interface ClueFeatureQuote {
 const CLUE_FEATURES: ClueFeatureQuote[] = [
   // Top Row
   {
-    col: 'col-start-1 col-span-1',
-    row: 'row-start-1',
-    sizeClass: 'text-xs md:text-sm font-medium tracking-tight text-neutral-500/50',
+    col: 'md:col-start-1 md:col-span-1',
+    row: 'md:row-start-1',
+    sizeClass: 'text-[10px] xs:text-xs sm:text-sm font-medium tracking-tight text-neutral-400/60',
     text: 'Stealth Invisibility · OBS & Zoom screen share bypass',
     pill: 'STEALTH',
   },
   {
-    col: 'col-start-2 col-span-1',
-    row: 'row-start-1',
-    sizeClass: 'text-sm md:text-base font-semibold text-neutral-400/50',
+    col: 'md:col-start-2 md:col-span-1',
+    row: 'md:row-start-1',
+    sizeClass: 'text-[11px] xs:text-xs sm:text-base font-semibold text-neutral-300/60',
     text: 'Whisper STT · <50ms dual-channel audio stream',
   },
   {
-    col: 'col-start-3 col-span-1',
-    row: 'row-start-1',
-    sizeClass: 'text-base md:text-xl font-bold text-neutral-400/50 leading-snug',
+    col: 'md:col-start-3 md:col-span-1',
+    row: 'md:row-start-1',
+    sizeClass: 'text-xs xs:text-sm sm:text-lg md:text-xl font-bold text-neutral-200/60 leading-snug',
     text: 'Multi-LLM Matrix · Gemini 2.0, Claude 3.5 Sonnet, GPT-4o',
   },
   {
-    col: 'col-start-4 col-span-1',
-    row: 'row-start-1',
-    sizeClass: 'text-sm md:text-lg font-medium text-neutral-400/40',
+    col: 'md:col-start-4 md:col-span-1',
+    row: 'md:row-start-1',
+    sizeClass: 'text-[10px] xs:text-xs sm:text-base md:text-lg font-medium text-neutral-400/50',
     text: 'DeepSeek-R1 · Real-time Chain-of-Thought reasoning',
   },
   {
-    col: 'col-start-5 col-span-1',
-    row: 'row-start-1',
-    sizeClass: 'text-xs md:text-sm text-neutral-500/50',
+    col: 'md:col-start-5 md:col-span-1',
+    row: 'md:row-start-1',
+    sizeClass: 'text-[10px] xs:text-xs sm:text-sm text-neutral-400/60',
     text: 'Zero Telemetry · 100% Client-Side SQLite encryption',
   },
   {
-    col: 'col-start-6 col-span-1',
-    row: 'row-start-1',
-    sizeClass: 'text-2xl md:text-4xl font-extrabold text-neutral-500/35 uppercase tracking-tighter',
+    col: 'md:col-start-6 md:col-span-1',
+    row: 'md:row-start-1',
+    sizeClass: 'text-sm xs:text-base sm:text-2xl md:text-4xl font-extrabold text-neutral-400/40 uppercase tracking-tighter',
     text: 'UNDETECTED',
   },
 
   // Upper Middle Row
   {
-    col: 'col-start-1 col-span-1',
-    row: 'row-start-2',
-    sizeClass: 'text-sm md:text-base font-semibold text-neutral-400/50 leading-snug max-w-xs',
+    col: 'md:col-start-1 md:col-span-1',
+    row: 'md:row-start-2',
+    sizeClass: 'text-[11px] xs:text-xs sm:text-base font-semibold text-neutral-300/60 leading-snug max-w-xs',
     text: 'Voice-Activated Teleprompter · Hands-free speech-gated scrolling',
   },
   {
-    col: 'col-start-2 col-span-1',
-    row: 'row-start-2',
-    sizeClass: 'text-xl md:text-3xl font-extrabold text-neutral-400/45 tracking-tight',
+    col: 'md:col-start-2 md:col-span-1',
+    row: 'md:row-start-2',
+    sizeClass: 'text-xs xs:text-sm sm:text-xl md:text-3xl font-extrabold text-neutral-300/55 tracking-tight',
     text: 'LeetCode Hard in 12s',
   },
   {
-    col: 'col-start-3 col-span-1',
-    row: 'row-start-2',
-    sizeClass: 'text-base md:text-xl font-bold text-neutral-300/50',
+    col: 'md:col-start-3 md:col-span-1',
+    row: 'md:row-start-2',
+    sizeClass: 'text-xs xs:text-sm sm:text-base md:text-xl font-bold text-neutral-200/60',
     text: 'In-App Code Sandbox · Python 3 & TypeScript test-runner',
   },
   {
-    col: 'col-start-4 col-span-1',
-    row: 'row-start-2',
-    sizeClass: 'text-sm md:text-base text-neutral-400/45',
+    col: 'md:col-start-4 md:col-span-1',
+    row: 'md:row-start-2',
+    sizeClass: 'text-[10px] xs:text-xs sm:text-sm md:text-base text-neutral-400/55',
     text: 'Dual-Resume Priority Engine · Matches job specs',
   },
   {
-    col: 'col-start-5 col-span-1',
-    row: 'row-start-2',
-    sizeClass: 'text-xs md:text-sm font-medium text-neutral-400/45',
+    col: 'md:col-start-5 md:col-span-1',
+    row: 'md:row-start-2',
+    sizeClass: 'text-[10px] xs:text-xs sm:text-sm font-medium text-neutral-400/55',
     text: 'Global Hotkey Ctrl + \\ · Instant 1ms stealth toggle',
   },
   {
-    col: 'col-start-6 col-span-1',
-    row: 'row-start-2',
-    sizeClass: 'text-sm md:text-base font-medium text-neutral-400/50 leading-tight',
+    col: 'md:col-start-6 md:col-span-1',
+    row: 'md:row-start-2',
+    sizeClass: 'text-[11px] xs:text-xs sm:text-sm md:text-base font-medium text-neutral-300/60 leading-tight',
     text: 'Vision OCR Snipper · Instant diagram & IDE problem capture',
   },
 
   // Mid Row (Sides of Hero)
   {
-    col: 'col-start-1 col-span-1',
-    row: 'row-start-3',
-    sizeClass: 'text-2xl md:text-3xl font-black text-neutral-300/50 leading-none',
+    col: 'md:col-start-1 md:col-span-1',
+    row: 'md:row-start-3',
+    sizeClass: 'text-xs xs:text-sm sm:text-2xl md:text-3xl font-black text-neutral-200/60 leading-none',
     text: '42px Compact Dimension',
   },
   {
-    col: 'col-start-2 col-span-1',
-    row: 'row-start-3',
-    sizeClass: 'text-xs md:text-sm font-semibold text-neutral-400/50',
+    col: 'md:col-start-2 md:col-span-1',
+    row: 'md:row-start-3',
+    sizeClass: 'text-[10px] xs:text-xs sm:text-sm font-semibold text-neutral-300/60',
     text: 'Multi-Inbox Cloud Sync · Automated Google Apps Script alerts',
   },
   {
-    col: 'col-start-5 col-span-1',
-    row: 'row-start-3',
-    sizeClass: 'text-xs md:text-sm font-medium text-neutral-400/45',
+    col: 'md:col-start-5 md:col-span-1',
+    row: 'md:row-start-3',
+    sizeClass: 'text-[10px] xs:text-xs sm:text-sm font-medium text-neutral-400/55',
     text: 'Silent Dual Updater · Zero terminal flash on relaunch',
   },
   {
-    col: 'col-start-6 col-span-1',
-    row: 'row-start-3',
-    sizeClass: 'text-lg md:text-2xl font-black text-neutral-300/55 leading-tight',
+    col: 'md:col-start-6 md:col-span-1',
+    row: 'md:row-start-3',
+    sizeClass: 'text-xs xs:text-sm sm:text-lg md:text-2xl font-black text-neutral-200/65 leading-tight',
     text: 'Ace Every Interview Undetected',
   },
 
   // Lower Mid Row
   {
-    col: 'col-start-1 col-span-1',
-    row: 'row-start-4',
-    sizeClass: 'text-sm md:text-base font-semibold text-neutral-400/50',
+    col: 'md:col-start-1 md:col-span-1',
+    row: 'md:row-start-4',
+    sizeClass: 'text-[11px] xs:text-xs sm:text-base font-semibold text-neutral-300/60',
     text: 'Transparent Borderless HUD · Floats over all IDEs',
   },
   {
-    col: 'col-start-2 col-span-1',
-    row: 'row-start-4',
-    sizeClass: 'text-lg md:text-xl font-bold text-neutral-400/45',
+    col: 'md:col-start-2 md:col-span-1',
+    row: 'md:row-start-4',
+    sizeClass: 'text-xs xs:text-sm sm:text-lg md:text-xl font-bold text-neutral-300/55',
     text: 'Session History & PDF Export',
   },
   {
-    col: 'col-start-3 col-span-1',
-    row: 'row-start-4',
-    sizeClass: 'text-xs md:text-sm text-neutral-500/50',
+    col: 'md:col-start-3 md:col-span-1',
+    row: 'md:row-start-4',
+    sizeClass: 'text-[10px] xs:text-xs sm:text-sm text-neutral-400/60',
     text: 'Anti-Collision Mutex · Single instance launch guard',
   },
   {
-    col: 'col-start-4 col-span-1',
-    row: 'row-start-4',
-    sizeClass: 'text-base md:text-lg font-bold text-neutral-400/40',
+    col: 'md:col-start-4 md:col-span-1',
+    row: 'md:row-start-4',
+    sizeClass: 'text-xs xs:text-sm sm:text-base md:text-lg font-bold text-neutral-300/50',
     text: 'Offline Voice VAD Filter',
   },
   {
-    col: 'col-start-5 col-span-1',
-    row: 'row-start-4',
-    sizeClass: 'text-xs md:text-sm text-neutral-500/50',
+    col: 'md:col-start-5 md:col-span-1',
+    row: 'md:row-start-4',
+    sizeClass: 'text-[10px] xs:text-xs sm:text-sm text-neutral-400/60',
     text: 'Cross-Platform Windows, macOS Universal & Linux',
   },
   {
-    col: 'col-start-6 col-span-1',
-    row: 'row-start-4',
-    sizeClass: 'text-xl md:text-3xl font-black text-neutral-400/50',
+    col: 'md:col-start-6 md:col-span-1',
+    row: 'md:row-start-4',
+    sizeClass: 'text-xs xs:text-sm sm:text-xl md:text-3xl font-black text-neutral-300/60',
     text: 'The AI is my secret pair programmer',
   },
 
   // Bottom Row
   {
-    col: 'col-start-1 col-span-1',
-    row: 'row-start-5',
-    sizeClass: 'text-xs text-neutral-500/60 leading-tight',
+    col: 'md:col-start-1 md:col-span-1',
+    row: 'md:row-start-5',
+    sizeClass: 'text-[10px] xs:text-xs text-neutral-400/70 leading-tight',
     text: 'Real-time Waveform Audio Visualizer with live decibel response',
   },
   {
-    col: 'col-start-2 col-span-1',
-    row: 'row-start-5',
-    sizeClass: 'text-sm md:text-base font-bold text-neutral-500/50',
+    col: 'md:col-start-2 md:col-span-1',
+    row: 'md:row-start-5',
+    sizeClass: 'text-[11px] xs:text-xs sm:text-base font-bold text-neutral-300/60',
     text: 'Zero Lag Relaunch Architecture',
   },
   {
-    col: 'col-start-3 col-span-1',
-    row: 'row-start-5',
-    sizeClass: 'text-xs md:text-sm text-neutral-500/45',
+    col: 'md:col-start-3 md:col-span-1',
+    row: 'md:row-start-5',
+    sizeClass: 'text-[10px] xs:text-xs sm:text-sm text-neutral-400/55',
     text: 'Human-Like Voice Cadence & Conversational Answers',
   },
   {
-    col: 'col-start-4 col-span-1',
-    row: 'row-start-5',
-    sizeClass: 'text-xs md:text-sm text-neutral-500/50',
+    col: 'md:col-start-4 md:col-span-1',
+    row: 'md:row-start-5',
+    sizeClass: 'text-[10px] xs:text-xs sm:text-sm text-neutral-400/60',
     text: 'High-Priority Resume Context Matching',
   },
   {
-    col: 'col-start-5 col-span-1',
-    row: 'row-start-5',
-    sizeClass: 'text-xs text-neutral-500/50',
+    col: 'md:col-start-5 md:col-span-1',
+    row: 'md:row-start-5',
+    sizeClass: 'text-[9px] xs:text-[10px] sm:text-xs text-neutral-400/60',
     text: 'Instant Diagnostic Logs & Telemetry-Free Privacy',
   },
   {
-    col: 'col-start-6 col-span-1',
-    row: 'row-start-5',
-    sizeClass: 'text-2xl md:text-4xl font-extrabold text-neutral-400/40',
+    col: 'md:col-start-6 md:col-span-1',
+    row: 'md:row-start-5',
+    sizeClass: 'text-xs xs:text-sm sm:text-2xl md:text-4xl font-extrabold text-neutral-300/45',
     text: `${APP_VERSION_TAG.toUpperCase()} ACTIVE`,
   },
 ];
@@ -202,6 +202,16 @@ const LINE_3 = ['Technical', 'Interviews'];
 
 export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: AmbientQuoteSectionProps) {
   const [isBloomed, setIsBloomed] = useState(false);
+
+  // Modern Scroll Blur & Parallax Exit Depth Engine
+  const { scrollY } = useScroll();
+  const heroScrollBlur = useTransform(scrollY, [0, 420], ['blur(0px)', 'blur(16px)']);
+  const heroScrollOpacity = useTransform(scrollY, [0, 420], [1, 0.12]);
+  const heroScrollScale = useTransform(scrollY, [0, 420], [1, 0.94]);
+  const heroScrollY = useTransform(scrollY, [0, 420], [0, 60]);
+
+  const bgScrollBlur = useTransform(scrollY, [0, 500], ['blur(0px)', 'blur(18px)']);
+  const bgScrollOpacity = useTransform(scrollY, [0, 500], [1, 0.15]);
 
   useEffect(() => {
     // Pure black focus for 1.4s, then smoothly unblur the background universe
@@ -225,7 +235,7 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
       className="relative w-full min-h-screen overflow-hidden flex items-center justify-center py-20 cursor-default select-none"
       onClick={handleFastForward}
     >
-      {/* Background Quotes Universe with Cinematic Framer Motion Blur-Bloom Transition (Responsive on Desktop/Tablet) */}
+      {/* Background Quotes Universe with Cinematic Framer Motion Blur-Bloom Transition (Responsive on ALL Devices) */}
       <motion.div
         initial={{ opacity: 0, filter: 'blur(35px)', scale: 1.08 }}
         animate={
@@ -234,7 +244,13 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
             : { opacity: 0, filter: 'blur(35px)', scale: 1.08 }
         }
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute inset-0 pointer-events-none hidden md:grid md:grid-cols-6 md:grid-rows-5 gap-3 p-8 overflow-hidden"
+        style={{
+          filter: bgScrollBlur,
+          opacity: bgScrollOpacity,
+          maskImage: 'radial-gradient(circle at center, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.98) 90%)',
+          WebkitMaskImage: 'radial-gradient(circle at center, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.98) 90%)',
+        }}
+        className="absolute inset-0 pointer-events-none grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-6 md:grid-rows-5 gap-2 sm:gap-3 p-3 sm:p-6 md:p-8 overflow-hidden select-none"
         data-purpose="ambient-quote-cloud"
       >
         {CLUE_FEATURES.map((item, idx) => (
@@ -268,13 +284,19 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
         ))}
       </motion.div>
 
-      {/* Atmospheric Mobile Background Glow (Subtle and clean, zero text collisions) */}
-      <div className="absolute inset-0 pointer-events-none md:hidden flex items-center justify-center overflow-hidden">
-        <div className="w-72 h-72 rounded-full bg-[#00E85D]/10 blur-[100px] pointer-events-none" />
+      {/* Atmospheric Ambient Glow behind Hero (Subtle and clean on all screens) */}
+      <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden">
+        <div className="w-80 sm:w-[480px] h-80 sm:h-[480px] rounded-full bg-[#00E85D]/10 blur-[120px] pointer-events-none" />
       </div>
 
-      {/* BEGIN: Hero Focus Quote - Pure Black Origin with Seamless Center Lock */}
-      <div
+      {/* BEGIN: Hero Focus Quote - Pure Black Origin with Seamless Center Lock & Modern Scroll Blur */}
+      <motion.div
+        style={{
+          filter: heroScrollBlur,
+          opacity: heroScrollOpacity,
+          scale: heroScrollScale,
+          y: heroScrollY,
+        }}
         className="relative z-20 flex flex-col items-center justify-center text-center px-3 sm:px-4 max-w-[94vw] sm:max-w-4xl mx-auto pointer-events-auto"
         data-purpose="hero-quote-container"
       >
@@ -352,7 +374,7 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
             <span className="whitespace-nowrap">Get Clue AI · Undetected Copilot</span>
           </button>
         </motion.div>
-      </div>
+      </motion.div>
       {/* END: Hero Focus Quote */}
     </section>
   );
