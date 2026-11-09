@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { APP_VERSION_TAG } from '../config/version';
 
 interface AmbientQuoteSectionProps {
@@ -205,58 +203,15 @@ const LINE_3 = ['Technical', 'Interviews'];
 export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: AmbientQuoteSectionProps) {
   const [isBloomed, setIsBloomed] = useState(false);
 
-  const sectionRef = useRef<HTMLElement>(null);
-  const heroContainerRef = useRef<HTMLDivElement>(null);
-  const bgUniverseRef = useRef<HTMLDivElement>(null);
-
-  // Modern Scroll Blur & Parallax Exit Depth Engine (Bidirectional GSAP + Lenis Sync)
-  useEffect(() => {
-    if (!sectionRef.current) return;
-
-    const ctx = gsap.context(() => {
-      if (heroContainerRef.current) {
-        gsap.to(heroContainerRef.current, {
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top top',
-            end: 'bottom 40%',
-            scrub: 1.2,
-          },
-          y: -70,
-          scale: 0.93,
-          opacity: 0.12,
-          filter: 'blur(16px)',
-          ease: 'power2.out',
-        });
-      }
-
-      if (bgUniverseRef.current) {
-        gsap.to(bgUniverseRef.current, {
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top top',
-            end: 'bottom 25%',
-            scrub: 1.4,
-          },
-          y: -90,
-          opacity: 0.15,
-          filter: 'blur(18px)',
-          ease: 'power1.out',
-        });
-      }
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
   const { scrollY } = useScroll();
-  const heroScrollBlur = useTransform(scrollY, [0, 420], ['blur(0px)', 'blur(16px)']);
-  const heroScrollOpacity = useTransform(scrollY, [0, 420], [1, 0.12]);
-  const heroScrollScale = useTransform(scrollY, [0, 420], [1, 0.94]);
-  const heroScrollY = useTransform(scrollY, [0, 420], [0, 60]);
+  // Hero headline gently blurs, scales down, and floats as you scroll down
+  const heroScrollBlur = useTransform(scrollY, [0, 450], ['blur(0px)', 'blur(12px)']);
+  const heroScrollOpacity = useTransform(scrollY, [0, 450], [1, 0.2]);
+  const heroScrollScale = useTransform(scrollY, [0, 450], [1, 0.95]);
+  const heroScrollY = useTransform(scrollY, [0, 450], [0, 40]);
 
-  const bgScrollBlur = useTransform(scrollY, [0, 500], ['blur(0px)', 'blur(18px)']);
-  const bgScrollOpacity = useTransform(scrollY, [0, 500], [1, 0.15]);
+  // Background quotes subtle parallax drift (ALWAYS persistent, never culled or blank on scroll up)
+  const bgParallaxY = useTransform(scrollY, [0, 600], [0, -60]);
 
   useEffect(() => {
     // Pure black focus for 1.4s, then smoothly unblur the background universe
@@ -277,36 +232,31 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
 
   return (
     <section
-      ref={sectionRef}
       className="relative w-full min-h-screen overflow-hidden flex items-center justify-center py-20 cursor-default select-none"
       onClick={handleFastForward}
     >
-      {/* Background Quotes Universe with Cinematic Framer Motion Blur-Bloom Transition (Responsive on ALL Devices) */}
+      {/* Background Quotes Universe (Always persistent, zero compositor culling, never disappears on scroll up) */}
       <motion.div
-        ref={bgUniverseRef}
-        initial={{ opacity: 0, filter: 'blur(35px)', scale: 1.08 }}
+        initial={{ opacity: 0, filter: 'blur(30px)', scale: 1.05 }}
         animate={
           isBloomed
             ? { opacity: 1, filter: 'blur(0px)', scale: 1 }
-            : { opacity: 0, filter: 'blur(35px)', scale: 1.08 }
+            : { opacity: 0, filter: 'blur(30px)', scale: 1.05 }
         }
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         style={{
-          filter: bgScrollBlur,
-          opacity: bgScrollOpacity,
-          maskImage: 'radial-gradient(circle at center, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.98) 90%)',
-          WebkitMaskImage: 'radial-gradient(circle at center, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.98) 90%)',
+          y: bgParallaxY,
         }}
-        className="absolute inset-0 pointer-events-none grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-6 md:grid-rows-5 gap-2 sm:gap-3 p-3 sm:p-6 md:p-8 overflow-hidden select-none"
+        className="absolute inset-0 pointer-events-none grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-6 md:grid-rows-5 gap-2 sm:gap-3 p-3 sm:p-6 md:p-8 overflow-hidden select-none z-0"
         data-purpose="ambient-quote-cloud"
       >
         {CLUE_FEATURES.map((item, idx) => (
           <motion.div
             key={idx}
-            initial={{ opacity: 0.6 }}
+            initial={{ opacity: 0.65 }}
             animate={{
               y: [0, idx % 2 === 0 ? -4 : 4, 0],
-              opacity: [0.55, 0.75, 0.55],
+              opacity: [0.6, 0.8, 0.6],
             }}
             transition={{
               duration: 5 + (idx % 5),
@@ -331,14 +281,14 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
         ))}
       </motion.div>
 
-      {/* Atmospheric Ambient Glow behind Hero (Subtle and clean on all screens) */}
-      <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden">
-        <div className="w-80 sm:w-[480px] h-80 sm:h-[480px] rounded-full bg-[#00E85D]/10 blur-[120px] pointer-events-none" />
+      {/* Atmospheric Ambient Glow & Center Dimmer behind Hero (Prevents collision without buggy maskImage) */}
+      <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden z-10">
+        <div className="w-80 sm:w-[540px] h-80 sm:h-[460px] rounded-full bg-black/80 blur-3xl pointer-events-none" />
+        <div className="w-80 sm:w-[480px] h-80 sm:h-[480px] rounded-full bg-[#00E85D]/10 blur-[120px] pointer-events-none absolute" />
       </div>
 
-      {/* BEGIN: Hero Focus Quote - Pure Black Origin with Seamless Center Lock & Modern Scroll Blur */}
+      {/* BEGIN: Hero Focus Quote - Pure Black Origin with Seamless Center Lock */}
       <motion.div
-        ref={heroContainerRef}
         style={{
           filter: heroScrollBlur,
           opacity: heroScrollOpacity,

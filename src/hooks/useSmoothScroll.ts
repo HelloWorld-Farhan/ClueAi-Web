@@ -54,3 +54,4 @@ export function useSmoothScroll() {
 
   return lenisRef;
 }
+
