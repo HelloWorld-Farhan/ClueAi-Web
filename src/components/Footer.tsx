@@ -5,9 +5,10 @@ import { FeatureKey } from './FeatureModal';
 interface FooterProps {
   onOpenFeedback: () => void;
   onSelectFeature?: (key: FeatureKey) => void;
+  onOpenLegal?: (tab: 'license' | 'privacy') => void;
 }
 
-export function Footer({ onOpenFeedback, onSelectFeature }: FooterProps) {
+export function Footer({ onOpenFeedback, onSelectFeature, onOpenLegal }: FooterProps) {
   return (
     <footer
       className="relative z-20 pb-20 pt-10 flex flex-col items-center gap-4 text-center px-4 border-t border-neutral-900/60 mt-12 bg-black"
@@ -128,9 +129,25 @@ export function Footer({ onOpenFeedback, onSelectFeature }: FooterProps) {
           Contact &amp; Feedback
         </button>
         <span className="text-neutral-700">·</span>
-        <span className="text-neutral-500">MIT License</span>
+        <button
+          onClick={() => {
+            onOpenLegal?.('license');
+            window.history.replaceState(null, '', '#license');
+          }}
+          className="hover:text-emerald-400 hover:underline transition-colors cursor-pointer text-neutral-400"
+        >
+          MIT License
+        </button>
         <span className="text-neutral-700">·</span>
-        <span className="text-neutral-500">Privacy &amp; Zero-Telemetry</span>
+        <button
+          onClick={() => {
+            onOpenLegal?.('privacy');
+            window.history.replaceState(null, '', '#privacy');
+          }}
+          className="hover:text-emerald-400 hover:underline transition-colors cursor-pointer text-neutral-400"
+        >
+          Privacy &amp; Zero-Telemetry
+        </button>
       </div>
     </footer>
   );

@@ -270,16 +270,17 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
 
       {/* BEGIN: Hero Focus Quote - Pure Black Origin with Seamless Center Lock */}
       <div
-        className="relative z-20 flex flex-col items-center justify-center text-center px-4 max-w-5xl mx-auto pointer-events-auto"
+        className="relative z-20 flex flex-col items-center justify-center text-center px-4 max-w-3xl sm:max-w-4xl mx-auto pointer-events-auto"
         data-purpose="hero-quote-container"
       >
-        {/* Dominant Clue AI Headline with Modern Per-Word Blur In & Justified Flex Alignment */}
-        <h1 className="flex flex-col items-center justify-center text-center font-black tracking-[-0.035em] leading-[0.95] text-white text-5xl sm:text-7xl md:text-8xl lg:text-[102px] select-text drop-shadow-[0_10px_35px_rgba(0,0,0,0.95)]">
-          <div className="flex items-center justify-center gap-3 sm:gap-5 md:gap-6">
+        {/* Dominant Clue AI Headline with Flush Optical Alignment & Per-Word Blur In */}
+        <h1 className="flex flex-col items-center justify-center text-center font-black select-text drop-shadow-[0_10px_35px_rgba(0,0,0,0.95)] w-full space-y-1 sm:space-y-2">
+          {/* Line 1: The Undetected */}
+          <div className="flex items-center justify-center gap-2.5 sm:gap-4 text-3xl sm:text-5xl md:text-6xl lg:text-[60px] tracking-tight text-white leading-[1.08] font-black">
             {LINE_1.map((w, i) => (
               <motion.span
                 key={`line1-${w}`}
-                initial={{ opacity: 0, filter: 'blur(22px)', y: 26, scale: 0.94 }}
+                initial={{ opacity: 0, filter: 'blur(22px)', y: 22, scale: 0.94 }}
                 animate={{ opacity: 1, filter: 'blur(0px)', y: 0, scale: 1 }}
                 transition={{ duration: 0.55, delay: 0.1 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
                 className="inline-block"
@@ -288,11 +289,13 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
               </motion.span>
             ))}
           </div>
-          <div className="flex items-center justify-center gap-3 sm:gap-5 md:gap-6">
+
+          {/* Line 2: Copilot For */}
+          <div className="flex items-center justify-center gap-3 sm:gap-5 text-4xl sm:text-6xl md:text-7xl lg:text-[78px] tracking-tight text-white leading-[1.05] font-black">
             {LINE_2.map((w, i) => (
               <motion.span
                 key={`line2-${w}`}
-                initial={{ opacity: 0, filter: 'blur(22px)', y: 26, scale: 0.94 }}
+                initial={{ opacity: 0, filter: 'blur(22px)', y: 22, scale: 0.94 }}
                 animate={{ opacity: 1, filter: 'blur(0px)', y: 0, scale: 1 }}
                 transition={{ duration: 0.55, delay: 0.38 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
                 className="inline-block"
@@ -301,11 +304,13 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
               </motion.span>
             ))}
           </div>
-          <div className="flex items-center justify-center gap-3 sm:gap-5 md:gap-6">
+
+          {/* Line 3: Technical Interviews */}
+          <div className="flex items-center justify-center gap-2.5 sm:gap-4 text-2xl sm:text-4xl md:text-5xl lg:text-[44px] tracking-normal text-white leading-[1.12] font-black">
             {LINE_3.map((w, i) => (
               <motion.span
                 key={`line3-${w}`}
-                initial={{ opacity: 0, filter: 'blur(22px)', y: 26, scale: 0.94 }}
+                initial={{ opacity: 0, filter: 'blur(22px)', y: 22, scale: 0.94 }}
                 animate={{ opacity: 1, filter: 'blur(0px)', y: 0, scale: 1 }}
                 transition={{ duration: 0.55, delay: 0.62 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
                 className="inline-block"
@@ -321,7 +326,7 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
           initial={{ opacity: 0, y: 20, scale: 0.92 }}
           animate={isBloomed ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.92 }}
           transition={{ duration: 0.6, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-8 sm:mt-12"
+          className="mt-6 sm:mt-10"
         >
           <button
             onClick={onActionClick}

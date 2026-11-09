@@ -11,7 +11,7 @@ export const CREATOR = {
   github: 'https://github.com/HelloWorld-Farhan',
   repo: 'https://github.com/HelloWorld-Farhan/ClueAi-Web',
   desktopRepo: 'https://github.com/HelloWorld-Farhan/ClueAi',
-  website: 'https://github.com/HelloWorld-Farhan',
+  website: 'https://farhan-khalid-portfolio.vercel.app/',
   supportEmail: 'farhankhalid17968@gmail.com',
 };
 
