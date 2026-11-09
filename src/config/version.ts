@@ -16,19 +16,19 @@ export const CREATOR = {
 };
 
 export const DOWNLOAD_LINKS = {
-  // Windows
-  windowsExeDirect: `https://tinyurl.com/2a2lfo9a`,
-  windowsGitHubExe: `https://github.com/HelloWorld-Farhan/ClueAI/releases/latest/download/ClueAI-v${APP_VERSION}.exe`,
+  // Windows Direct Binary Downloads (Bypasses TinyURL Interstitials)
+  windowsExeDirect: `https://github.com/HelloWorld-Farhan/ClueAi/releases/latest/download/ClueAI.exe`,
+  windowsGitHubExe: `https://github.com/HelloWorld-Farhan/ClueAi/releases/download/v${APP_VERSION}/ClueAI.exe`,
   windowsPsScript: `irm https://raw.githubusercontent.com/HelloWorld-Farhan/ClueAi-Web/main/install.ps1 | iex`,
-  windowsCmdScript: `curl -fsSL https://github.com/HelloWorld-Farhan/ClueAI/releases/latest/download/ClueAI-v${APP_VERSION}.exe -o ClueAI.exe && start ClueAI.exe`,
+  windowsCmdScript: `curl -fsSL https://github.com/HelloWorld-Farhan/ClueAi/releases/latest/download/ClueAI.exe -o ClueAI.exe && start ClueAI.exe`,
 
-  // macOS
-  macDmgDirect: `https://tinyurl.com/2yynsmoo`,
-  macGitHubDmg: `https://github.com/HelloWorld-Farhan/ClueAI/releases/latest/download/ClueAI-${APP_VERSION}-mac.dmg`,
-  macCurlScript: `curl -fsSL https://github.com/HelloWorld-Farhan/ClueAI/releases/latest/download/ClueAI-${APP_VERSION}-mac.dmg -o ClueAI.dmg && hdiutil attach ClueAI.dmg`,
+  // macOS Direct Binary Downloads
+  macDmgDirect: `https://github.com/HelloWorld-Farhan/ClueAi/releases/latest/download/ClueAI-mac.dmg`,
+  macGitHubDmg: `https://github.com/HelloWorld-Farhan/ClueAi/releases/download/v${APP_VERSION}/ClueAI-mac.dmg`,
+  macCurlScript: `curl -fsSL https://github.com/HelloWorld-Farhan/ClueAi/releases/latest/download/ClueAI-mac.dmg -o ClueAI.dmg && hdiutil attach ClueAI.dmg`,
 
-  // Linux
-  linuxAppImageDirect: `https://github.com/HelloWorld-Farhan/ClueAI/releases/latest/download/ClueAI-${APP_VERSION}-linux.AppImage`,
-  linuxScript: `curl -fsSL https://github.com/HelloWorld-Farhan/ClueAI/releases/latest/download/ClueAI-${APP_VERSION}-linux.AppImage -o ClueAI.AppImage && chmod +x ClueAI.AppImage && ./ClueAI.AppImage`,
+  // Linux Direct Binary Downloads
+  linuxAppImageDirect: `https://github.com/HelloWorld-Farhan/ClueAi/releases/latest/download/ClueAI-linux.AppImage`,
+  linuxScript: `curl -fsSL https://github.com/HelloWorld-Farhan/ClueAi/releases/latest/download/ClueAI-linux.AppImage -o ClueAI.AppImage && chmod +x ClueAI.AppImage && ./ClueAI.AppImage`,
 };
 

@@ -1,12 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Copy, Check, Terminal, ShieldCheck, Cpu, Download } from 'lucide-react';
 import { APP_VERSION, APP_VERSION_TAG, DOWNLOAD_LINKS } from '../config/version';
 
 type SupportedOS = 'windows' | 'mac' | 'linux';
 
+const TARGET_TITLE = 'Clue AI';
+
 export function DownloadHub() {
   const [activeOS, setActiveOS] = useState<SupportedOS>('windows');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+
+  // Looping Typewriter Effect for "Clue AI"
+  const [typedTitle, setTypedTitle] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if (!isDeleting && typedTitle === TARGET_TITLE) {
+      // Hold complete title for 2.4s so user can read it clearly
+      timer = setTimeout(() => {
+        setIsDeleting(true);
+      }, 2400);
+    } else if (isDeleting && typedTitle === '') {
+      // Pause briefly when empty before re-typing
+      timer = setTimeout(() => {
+        setIsDeleting(false);
+      }, 600);
+    } else {
+      // Typing (150ms) or deleting (80ms)
+      const speed = isDeleting ? 80 : 150;
+      timer = setTimeout(() => {
+        const next = isDeleting
+          ? TARGET_TITLE.substring(0, typedTitle.length - 1)
+          : TARGET_TITLE.substring(0, typedTitle.length + 1);
+        setTypedTitle(next);
+      }, speed);
+    }
+
+    return () => clearTimeout(timer);
+  }, [typedTitle, isDeleting]);
 
   const copyToClipboard = (key: string, text: string) => {
     navigator.clipboard.writeText(text);
@@ -36,11 +70,16 @@ export function DownloadHub() {
         </div>
       </div>
 
-      {/* Main Title */}
-      <div className="mb-8">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white flex items-center gap-3">
-          <span>Clue AI</span>
-          <span className="w-1.5 h-10 md:h-12 bg-gradient-to-b from-[#00E85D] via-emerald-400 to-sky-400 rounded-full animate-pulse opacity-80" />
+      {/* Main Title with Continuous Framer Motion Typewriter Animation */}
+      <div className="mb-8 min-h-[52px] sm:min-h-[64px] flex items-center">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white flex items-center">
+          <span className="inline-block tracking-tight">{typedTitle}</span>
+          {/* Framer Motion Pulsing Gradient Vertical Cursor */}
+          <motion.span
+            animate={{ opacity: [1, 0, 1] }}
+            transition={{ duration: 0.85, repeat: Infinity, ease: 'easeInOut' }}
+            className="w-1.5 h-9 sm:h-11 md:h-12 bg-gradient-to-b from-[#00E85D] via-emerald-400 to-sky-400 rounded-full inline-block ml-2 shadow-[0_0_14px_rgba(0,232,93,0.85)]"
+          />
         </h1>
       </div>
 
@@ -111,9 +150,7 @@ export function DownloadHub() {
               {/* Primary Direct .exe Download */}
               <a
                 href={DOWNLOAD_LINKS.windowsExeDirect}
-                download={`ClueAI-v${APP_VERSION}.exe`}
-                target="_blank"
-                rel="noopener noreferrer"
+                download="ClueAI.exe"
                 className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white hover:bg-neutral-200 text-black font-bold text-xs sm:text-sm transition-all shadow-[0_2px_15px_rgba(255,255,255,0.15)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer group"
               >
                 <Download className="w-4 h-4 transition-transform group-hover:translate-y-0.5 text-black" />
@@ -124,8 +161,6 @@ export function DownloadHub() {
               <a
                 href={DOWNLOAD_LINKS.windowsGitHubExe}
                 download={`ClueAI-v${APP_VERSION}.exe`}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 hover:border-neutral-700 text-neutral-200 font-semibold text-xs sm:text-sm transition-all cursor-pointer group"
               >
                 <Cpu className="w-4 h-4 text-neutral-400 group-hover:text-neutral-200" />
@@ -147,9 +182,7 @@ export function DownloadHub() {
               {/* Primary Apple Silicon .dmg Direct Download */}
               <a
                 href={DOWNLOAD_LINKS.macDmgDirect}
-                download={`ClueAI-${APP_VERSION}-mac.dmg`}
-                target="_blank"
-                rel="noopener noreferrer"
+                download="ClueAI-mac.dmg"
                 className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white hover:bg-neutral-200 text-black font-bold text-xs sm:text-sm transition-all shadow-[0_2px_15px_rgba(255,255,255,0.15)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer group"
               >
                 <Download className="w-4 h-4 transition-transform group-hover:translate-y-0.5 text-black" />
@@ -160,8 +193,6 @@ export function DownloadHub() {
               <a
                 href={DOWNLOAD_LINKS.macGitHubDmg}
                 download={`ClueAI-${APP_VERSION}-mac.dmg`}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 hover:border-neutral-700 text-neutral-200 font-semibold text-xs sm:text-sm transition-all cursor-pointer group"
               >
                 <Cpu className="w-4 h-4 text-neutral-400 group-hover:text-neutral-200" />
@@ -183,9 +214,7 @@ export function DownloadHub() {
               {/* Primary Linux AppImage Direct Download */}
               <a
                 href={DOWNLOAD_LINKS.linuxAppImageDirect}
-                download={`ClueAI-${APP_VERSION}-linux.AppImage`}
-                target="_blank"
-                rel="noopener noreferrer"
+                download="ClueAI-linux.AppImage"
                 className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white hover:bg-neutral-200 text-black font-bold text-xs sm:text-sm transition-all shadow-[0_2px_15px_rgba(255,255,255,0.15)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer group"
               >
                 <Download className="w-4 h-4 transition-transform group-hover:translate-y-0.5 text-black" />
@@ -196,8 +225,6 @@ export function DownloadHub() {
               <a
                 href={DOWNLOAD_LINKS.linuxAppImageDirect}
                 download={`ClueAI-${APP_VERSION}-linux.AppImage`}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 hover:border-neutral-700 text-neutral-200 font-semibold text-xs sm:text-sm transition-all cursor-pointer group"
               >
                 <Cpu className="w-4 h-4 text-neutral-400 group-hover:text-neutral-200" />
