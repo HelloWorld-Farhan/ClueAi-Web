@@ -120,7 +120,15 @@ export function BottomFloatingDock({
   };
 
   return (
-    <footer className="fixed bottom-3 sm:bottom-6 left-0 w-full z-40 px-3 sm:px-6 flex items-center justify-between pointer-events-none select-none">
+    <motion.footer
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className="fixed bottom-5 sm:bottom-7 md:bottom-8 left-0 w-full z-40 px-3 sm:px-6 flex items-center justify-between pointer-events-none select-none"
+      style={{
+        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+      }}
+    >
       {/* Bottom Left: Live Audience / Active User Status Pill (Visible on md+) */}
       <div className="relative pointer-events-auto hidden md:block" ref={infoPopoverRef}>
         <div
@@ -449,6 +457,6 @@ export function BottomFloatingDock({
 
       {/* Empty right placeholder */}
       <div className="w-40 hidden sm:block" />
-    </footer>
+    </motion.footer>
   );
 }

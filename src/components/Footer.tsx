@@ -46,7 +46,7 @@ export function Footer({ onOpenFeedback, onSelectFeature, onOpenLegal }: FooterP
   return (
     <footer
       ref={footerRef}
-      className="relative z-20 pb-20 pt-10 flex flex-col items-center gap-4 text-center px-4 border-t border-neutral-900/60 mt-12 bg-black"
+      className="relative z-20 pb-36 sm:pb-44 pt-10 flex flex-col items-center gap-4 text-center px-4 border-t border-neutral-900/60 mt-12 bg-black"
       data-purpose="page-footer"
     >
       {/* Status / AI Zeitgeist Indicator (Exact from code7.html lines 300-306) */}

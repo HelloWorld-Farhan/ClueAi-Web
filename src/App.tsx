@@ -148,26 +148,19 @@ export function App() {
         )}
       </main>
 
-      {/* Fixed Bottom Timeline Dock & Live Pulse Pill with Smooth Entrance */}
-      <motion.div
-        initial={{ opacity: 0, y: 25 }}
-        animate={isEntranceComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: 25 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
-        className="relative z-40"
-      >
-        <BottomFloatingDock
-          onPrev={() => {
-            setIsEntranceComplete(true);
-            setActiveView((prev) => (prev === 'arc' ? 'download' : prev === 'ambient' ? 'arc' : 'ambient'));
-          }}
-          onNext={() => {
-            setIsEntranceComplete(true);
-            setActiveView((prev) => (prev === 'arc' ? 'ambient' : prev === 'ambient' ? 'download' : 'arc'));
-          }}
-          onOpenOptions={() => setFeedbackOpen(true)}
-          onGoToDownload={handleScrollToDownload}
-        />
-      </motion.div>
+      {/* Fixed Bottom Timeline Dock & Live Pulse Pill */}
+      <BottomFloatingDock
+        onPrev={() => {
+          setIsEntranceComplete(true);
+          setActiveView((prev) => (prev === 'arc' ? 'download' : prev === 'ambient' ? 'arc' : 'ambient'));
+        }}
+        onNext={() => {
+          setIsEntranceComplete(true);
+          setActiveView((prev) => (prev === 'arc' ? 'ambient' : prev === 'ambient' ? 'download' : 'arc'));
+        }}
+        onOpenOptions={() => setFeedbackOpen(true)}
+        onGoToDownload={handleScrollToDownload}
+      />
 
       {/* Page Footer */}
       <Footer

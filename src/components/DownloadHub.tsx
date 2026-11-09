@@ -91,7 +91,7 @@ export function DownloadHub() {
     <section
       ref={containerRef}
       id="downloads"
-      className="relative z-20 w-full max-w-4xl mx-auto px-4 sm:px-6 py-10 md:py-16 text-left"
+      className="relative z-20 w-full max-w-4xl mx-auto px-4 sm:px-6 pt-10 md:pt-16 pb-28 sm:pb-36 text-left"
     >
       {/* Top Announcement Banner Pill */}
       <div className="mb-6 sm:mb-8 flex items-center justify-start">
