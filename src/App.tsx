@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useSpring } from 'framer-motion';
+import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Navbar } from './components/Navbar';
 import { ArcHorizonShowcase } from './components/ArcHorizonShowcase';
 import { AmbientQuoteSection } from './components/AmbientQuoteSection';
@@ -13,7 +14,7 @@ import { useSmoothScroll } from './hooks/useSmoothScroll';
 
 export function App() {
   // Initialize Lenis + GSAP ScrollTrigger synchronized smooth scroll engine
-  useSmoothScroll();
+  const lenisRef = useSmoothScroll();
 
   // Pure black focus entrance: Navbar & Dock smoothly bloom after headline reveals
   const [isEntranceComplete, setIsEntranceComplete] = useState(false);
@@ -32,6 +33,23 @@ export function App() {
     restDelta: 0.001,
   });
 
+  // Switch view with instant top scroll reset and synchronized entrance animation
+  const handleViewChange = (view: 'arc' | 'ambient' | 'download') => {
+    setIsEntranceComplete(true);
+    setActiveView(view);
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true });
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 60);
+  };
+
+  const handleScrollToDownload = () => {
+    handleViewChange('download');
+  };
+
   // Handle URL hash changes for #license, #privacy, and #downloads
   useEffect(() => {
     const handleHash = () => {
@@ -43,7 +61,7 @@ export function App() {
         setLegalTab('privacy');
         setLegalModalOpen(true);
       } else if (hash === '#downloads' || hash === '#download') {
-        setActiveView('download');
+        handleViewChange('download');
       }
     };
 
@@ -51,17 +69,6 @@ export function App() {
     window.addEventListener('hashchange', handleHash);
     return () => window.removeEventListener('hashchange', handleHash);
   }, []);
-
-  const handleScrollToDownload = () => {
-    setIsEntranceComplete(true);
-    setActiveView('download');
-    setTimeout(() => {
-      const el = document.getElementById('downloads');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 50);
-  };
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col justify-between selection:bg-neutral-800 selection:text-white font-sans overflow-x-hidden relative">
@@ -80,79 +87,101 @@ export function App() {
       >
         <Navbar
           activeView={activeView}
-          setActiveView={(view) => {
-            setIsEntranceComplete(true);
-            setActiveView(view);
-          }}
+          setActiveView={handleViewChange}
           onOpenFeedback={() => setFeedbackOpen(true)}
         />
       </motion.div>
 
       {/* Main Content Area */}
       <main className="flex-1 w-full pt-16">
-        {activeView === 'arc' && (
-          <div className="animate-fadeIn">
-            <ArcHorizonShowcase
-              onGoToDownload={handleScrollToDownload}
-              onOpenFeedback={() => setFeedbackOpen(true)}
-            />
-          </div>
-        )}
-
-        {activeView === 'ambient' && (
-          <div className="animate-fadeIn">
-            {/* Top Hero with Pure Black Origin & Unblur Entrance */}
-            <AmbientQuoteSection
-              onActionClick={handleScrollToDownload}
-              onEntranceComplete={() => setIsEntranceComplete(true)}
-            />
-
-            {/* Seamless Flow on Scroll: Arc Horizon Feature Showcase */}
+        <AnimatePresence mode="wait">
+          {activeView === 'arc' && (
             <motion.div
-              initial={{ opacity: 0, y: 35 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.12 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="border-t border-neutral-900/60 mt-6"
+              key="arc-view"
+              initial={{ opacity: 0, y: -24 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             >
               <ArcHorizonShowcase
                 onGoToDownload={handleScrollToDownload}
                 onOpenFeedback={() => setFeedbackOpen(true)}
               />
+              <div className="border-t border-neutral-900/80 mt-10">
+                <DownloadHub />
+              </div>
             </motion.div>
+          )}
 
-            {/* Seamless Flow on Scroll: Antigravity-Style Download Hub */}
+          {activeView === 'ambient' && (
             <motion.div
-              initial={{ opacity: 0, y: 35 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.12 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="border-t border-neutral-900/80 mt-12"
+              key="ambient-view"
+              initial={{ opacity: 0, y: -24 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            >
+              {/* Top Hero with Pure Black Origin & Unblur Entrance */}
+              <AmbientQuoteSection
+                onActionClick={handleScrollToDownload}
+                onEntranceComplete={() => setIsEntranceComplete(true)}
+              />
+
+              {/* Seamless Flow on Scroll: Arc Horizon Feature Showcase */}
+              <motion.div
+                initial={{ opacity: 0, y: 35 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.12 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="border-t border-neutral-900/60 mt-6"
+              >
+                <ArcHorizonShowcase
+                  onGoToDownload={handleScrollToDownload}
+                  onOpenFeedback={() => setFeedbackOpen(true)}
+                />
+              </motion.div>
+
+              {/* Seamless Flow on Scroll: Antigravity-Style Download Hub */}
+              <motion.div
+                initial={{ opacity: 0, y: 35 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.12 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="border-t border-neutral-900/80 mt-12"
+              >
+                <DownloadHub />
+              </motion.div>
+            </motion.div>
+          )}
+
+          {activeView === 'download' && (
+            <motion.div
+              key="download-view"
+              initial={{ opacity: 0, y: -24 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              className="pt-2 sm:pt-4"
             >
               <DownloadHub />
             </motion.div>
-          </div>
-        )}
-
-        {activeView === 'download' && (
-          <div className="animate-fadeIn pt-6">
-            <DownloadHub />
-          </div>
-        )}
-
-        {/* When in Arc mode, also show the Download Hub underneath */}
-        {activeView === 'arc' && (
-          <div className="border-t border-neutral-900/80 mt-10">
-            <DownloadHub />
-          </div>
-        )}
+          )}
+        </AnimatePresence>
       </main>
 
       {/* Fixed Bottom Timeline Dock & Live Pulse Pill */}
       <BottomFloatingDock
         onPrev={() => {
-          setIsEntranceComplete(true);
-          setActiveView((prev) => (prev === 'arc' ? 'download' : prev === 'ambient' ? 'arc' : 'ambient'));
+          const next = activeView === 'arc' ? 'download' : activeView === 'ambient' ? 'arc' : 'ambient';
+          handleViewChange(next);
+        }}
+        onNext={() => {
+          const next = activeView === 'arc' ? 'ambient' : activeView === 'ambient' ? 'download' : 'arc';
+          handleViewChange(next);
+        }}
+        onOpenOptions={() => setFeedbackOpen(true)}
+        onGoToDownload={handleScrollToDownload}
+      />
         }}
         onNext={() => {
           setIsEntranceComplete(true);

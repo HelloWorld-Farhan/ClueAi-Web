@@ -256,225 +256,257 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose })
     onClose();
   };
 
-  if (!isOpen) return null;
-
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 overflow-y-auto select-none">
-        {/* Backdrop */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
-          className="fixed inset-0 bg-black/85 backdrop-blur-md"
-        />
-
-        {/* Modal Container */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative w-full max-w-lg bg-[#0d0d0d] border border-neutral-800 rounded-2xl p-4 sm:p-8 shadow-[0_25px_80px_rgba(0,0,0,0.9),0_0_50px_rgba(0,232,93,0.15)] text-white overflow-hidden z-10 max-h-[92vh] overflow-y-auto my-auto"
-        >
-          {/* Close button */}
-          <button
+      {isOpen && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 md:p-8 overflow-y-auto select-none">
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
             onClick={onClose}
-            className="absolute top-5 right-5 p-2 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-neutral-400 hover:text-white transition-colors cursor-pointer"
+            className="fixed inset-0 bg-black/85 backdrop-blur-md"
+          />
+
+          {/* Modal Container: Modern Horizontal Studio Layout */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.94, y: 24 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.94, y: 20 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-full max-w-4xl lg:max-w-5xl bg-[#0d0d0d] border border-neutral-800 rounded-2xl md:rounded-3xl p-5 sm:p-7 md:p-8 shadow-[0_25px_80px_rgba(0,0,0,0.95),0_0_50px_rgba(0,232,93,0.15)] text-white z-10 max-h-[92vh] overflow-y-auto my-auto"
           >
-            <X size={18} />
-          </button>
+          {/* Header Row */}
+          <div className="flex items-center justify-between pb-4 mb-5 border-b border-neutral-800/80">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-black border border-[#00E85D]/60 flex items-center justify-center text-[#00E85D] shadow-[0_0_15px_rgba(0,232,93,0.35)] shrink-0">
+                <MessageSquarePlus size={20} />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">Direct Clue AI Feedback</h3>
+                  <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-mono font-bold text-[#00E85D] bg-[#00E85D]/10 px-2 py-0.5 rounded-full border border-[#00E85D]/30">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00E85D] animate-ping" />
+                    v{APP_VERSION} Active
+                  </span>
+                </div>
+                <p className="text-xs text-neutral-400 font-mono">
+                  Verified Google Apps Script Cloud Webhook & Direct Engineering Delivery
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={onClose}
+              className="p-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-neutral-400 hover:text-white transition-colors cursor-pointer border border-neutral-800"
+              aria-label="Close Feedback Modal"
+            >
+              <X size={18} />
+            </button>
+          </div>
 
           {!submitted ? (
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-full bg-black border border-[#00E85D]/60 flex items-center justify-center text-[#00E85D] shadow-[0_0_12px_rgba(0,232,93,0.3)]">
-                  <MessageSquarePlus size={20} />
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-7">
+              {/* LEFT COLUMN: Experience Rating, Category Chips & Security Details (md:col-span-5) */}
+              <div className="md:col-span-5 flex flex-col justify-between space-y-4">
+                <div className="space-y-4">
+                  {/* 1. Rating Selection (Starts at 0 by default) */}
+                  <div className="bg-neutral-950/80 border border-neutral-800/80 rounded-2xl p-4 shadow-inner">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold text-neutral-300">
+                        Rate Your Experience <span className="text-[#00E85D]">*</span>
+                      </label>
+                      <span className="text-xs font-mono font-bold text-[#00E85D]">
+                        {rating === 0 ? '0 / 5 (Required)' : `${rating} / 5 Stars`}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 pt-1">
+                      {[1, 2, 3, 4, 5].map((star) => {
+                        const isHighlighted = (hoverRating || rating) >= star;
+                        return (
+                          <button
+                            key={star}
+                            type="button"
+                            onMouseEnter={() => setHoverRating(star)}
+                            onMouseLeave={() => setHoverRating(0)}
+                            onClick={() => setRating(star)}
+                            className={`p-1.5 rounded-lg transition-all cursor-pointer ${
+                              isHighlighted
+                                ? 'text-[#00E85D] scale-115 drop-shadow-[0_0_12px_rgba(0,232,93,0.8)]'
+                                : 'text-neutral-700 hover:text-neutral-500'
+                            }`}
+                            title={`${star} Star${star > 1 ? 's' : ''}`}
+                          >
+                            <Star size={24} fill={isHighlighted ? '#00E85D' : 'none'} />
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* 2. Category Selection */}
+                  <div className="bg-neutral-950/80 border border-neutral-800/80 rounded-2xl p-4">
+                    <label className="block text-xs font-semibold text-neutral-300 mb-2">
+                      Category <span className="text-[#00E85D]">*</span>
+                    </label>
+                    <div className="flex flex-wrap gap-1.5">
+                      {categories.map((cat) => (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => setCategory(cat)}
+                          className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
+                            category === cat
+                              ? 'bg-[#00E85D] text-black font-bold shadow-md shadow-[#00E85D]/20'
+                              : 'bg-neutral-900 text-neutral-300 hover:bg-neutral-800 border border-neutral-800'
+                          }`}
+                        >
+                          {cat}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white tracking-tight">Direct Clue AI Feedback</h3>
-                  <p className="text-xs text-neutral-400 font-mono">
-                    Verified Google Apps Script Cloud Webhook
+
+                {/* Confidentiality & Direct Dispatch Badge */}
+                <div className="p-3.5 rounded-2xl bg-black/40 border border-neutral-800/60 text-[11px] text-neutral-400 space-y-1">
+                  <div className="flex items-center gap-1.5 font-semibold text-white">
+                    <ShieldCheck size={14} className="text-[#00E85D]" />
+                    <span>Confidential & Direct Delivery</span>
+                  </div>
+                  <p className="text-[10px] leading-relaxed text-neutral-500">
+                    Submissions are routed directly into private Google Sheets webhooks with instant notifications. Zero telemetry, tracking, or ad beacons.
                   </p>
                 </div>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-4 mt-5">
-                {/* 1. Rating Selection (Starts at 0 by default) */}
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-semibold text-neutral-300">
-                      Rate Your Experience <span className="text-[#00E85D]">*</span>
-                    </label>
-                    <span className="text-xs font-mono font-bold text-[#00E85D]">
-                      {rating === 0 ? '0 / 5 (Required)' : `${rating} / 5 Stars`}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {[1, 2, 3, 4, 5].map((star) => {
-                      const isHighlighted = (hoverRating || rating) >= star;
-                      return (
-                        <button
-                          key={star}
-                          type="button"
-                          onMouseEnter={() => setHoverRating(star)}
-                          onMouseLeave={() => setHoverRating(0)}
-                          onClick={() => setRating(star)}
-                          className={`p-1.5 rounded-lg transition-all cursor-pointer ${isHighlighted
-                            ? 'text-[#00E85D] scale-110 drop-shadow-[0_0_10px_rgba(0,232,93,0.7)]'
-                            : 'text-neutral-700 hover:text-neutral-500'
-                            }`}
-                          title={`${star} Star${star > 1 ? 's' : ''}`}
-                        >
-                          <Star size={24} fill={isHighlighted ? '#00E85D' : 'none'} />
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* 2. Category Selection */}
-                <div>
-                  <label className="block text-xs font-semibold text-neutral-300 mb-1.5">
-                    Category <span className="text-[#00E85D]">*</span>
-                  </label>
-                  <div className="flex flex-wrap gap-1.5">
-                    {categories.map((cat) => (
-                      <button
-                        key={cat}
-                        type="button"
-                        onClick={() => setCategory(cat)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${category === cat
-                          ? 'bg-[#00E85D] text-black font-bold shadow-md shadow-[#00E85D]/20'
-                          : 'bg-neutral-900 text-neutral-300 hover:bg-neutral-800 border border-neutral-800'
-                          }`}
-                      >
-                        {cat}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* 3. Name & Email (Mandatory) */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-semibold text-neutral-300 mb-1">
-                      Your Name <span className="text-[#00E85D]">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="Farhan Khalid"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-black border border-neutral-800 text-white placeholder-neutral-600 text-xs focus:outline-none focus:border-[#00E85D] transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-neutral-300 mb-1">
-                      Your Email <span className="text-[#00E85D]">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      disabled={isEmailVerified}
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="user@example.com"
-                      className={`w-full px-3.5 py-2.5 rounded-xl bg-black border text-white placeholder-neutral-600 text-xs focus:outline-none transition-colors ${isEmailVerified
-                        ? 'border-emerald-500/80 bg-emerald-950/20 text-emerald-300 cursor-not-allowed'
-                        : 'border-neutral-800 focus:border-[#00E85D]'
+              {/* RIGHT COLUMN: Identity, Verification, Message Textarea & Submit (md:col-span-7) */}
+              <div className="md:col-span-7 space-y-3.5 flex flex-col justify-between">
+                <div className="space-y-3">
+                  {/* Name & Email Fields */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-semibold text-neutral-300 mb-1">
+                        Your Name <span className="text-[#00E85D]">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Farhan Khalid"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-black border border-neutral-800 text-white placeholder-neutral-600 text-xs focus:outline-none focus:border-[#00E85D] transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-neutral-300 mb-1">
+                        Your Email <span className="text-[#00E85D]">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        disabled={isEmailVerified}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="user@example.com"
+                        className={`w-full px-3.5 py-2.5 rounded-xl bg-black border text-white placeholder-neutral-600 text-xs focus:outline-none transition-colors ${
+                          isEmailVerified
+                            ? 'border-emerald-500/80 bg-emerald-950/20 text-emerald-300 cursor-not-allowed'
+                            : 'border-neutral-800 focus:border-[#00E85D]'
                         }`}
-                    />
+                      />
+                    </div>
                   </div>
-                </div>
 
-                {/* 4. Interactive Email OTP Verification Box */}
-                <div className="p-3.5 rounded-xl bg-black/60 border border-neutral-800/80 space-y-2.5">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 text-xs font-medium text-neutral-300">
-                      <KeyRound size={14} className="text-[#00E85D]" />
-                      <span>Email Verification Required</span>
+                  {/* Interactive Email OTP Verification Box */}
+                  <div className="p-3 rounded-xl bg-black/60 border border-neutral-800/80 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 text-xs font-medium text-neutral-300">
+                        <KeyRound size={13} className="text-[#00E85D]" />
+                        <span>Email Verification Required</span>
+                      </div>
+
+                      {isEmailVerified ? (
+                        <span className="flex items-center gap-1 text-[11px] font-bold text-[#00E85D] bg-[#00E85D]/10 px-2.5 py-0.5 rounded-full border border-[#00E85D]/40 shadow-[0_0_8px_rgba(0,232,93,0.3)]">
+                          <ShieldCheck size={12} />
+                          <span>✓ Verified</span>
+                        </span>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={handleSendOtp}
+                          disabled={otpLoading || otpTimer > 0}
+                          className="text-[11px] font-bold text-[#00E85D] hover:underline disabled:opacity-50 cursor-pointer flex items-center gap-1"
+                        >
+                          {otpLoading ? (
+                            <Loader2 size={12} className="animate-spin" />
+                          ) : otpTimer > 0 ? (
+                            `Resend in ${otpTimer}s`
+                          ) : isOtpSent ? (
+                            'Resend Code'
+                          ) : (
+                            'Send 6-Digit Code'
+                          )}
+                        </button>
+                      )}
                     </div>
 
-                    {isEmailVerified ? (
-                      <span className="flex items-center gap-1 text-[11px] font-bold text-[#00E85D] bg-[#00E85D]/10 px-2.5 py-1 rounded-full border border-[#00E85D]/40 shadow-[0_0_8px_rgba(0,232,93,0.3)]">
-                        <ShieldCheck size={13} />
-                        <span>✓ Email Verified</span>
-                      </span>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={handleSendOtp}
-                        disabled={otpLoading || otpTimer > 0}
-                        className="text-[11px] font-bold text-[#00E85D] hover:underline disabled:opacity-50 cursor-pointer flex items-center gap-1"
+                    {/* OTP Input Row */}
+                    {!isEmailVerified && isOtpSent && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        className="flex items-center gap-2 pt-1"
                       >
-                        {otpLoading ? (
-                          <Loader2 size={12} className="animate-spin" />
-                        ) : otpTimer > 0 ? (
-                          `Resend in ${otpTimer}s`
-                        ) : isOtpSent ? (
-                          'Resend Code'
-                        ) : (
-                          'Send Verification Code'
-                        )}
-                      </button>
+                        <input
+                          type="text"
+                          maxLength={6}
+                          value={otpCode}
+                          onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
+                          placeholder="6-Digit OTP"
+                          className="flex-1 px-3 py-2 rounded-lg bg-neutral-900 border border-neutral-700 text-white font-mono text-center tracking-widest text-sm focus:outline-none focus:border-[#00E85D]"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleVerifyOtp}
+                          disabled={otpLoading || otpCode.length < 4}
+                          className="px-4 py-2 rounded-lg bg-[#00E85D] hover:bg-[#05f566] text-black font-extrabold text-xs transition cursor-pointer disabled:opacity-50 shadow-md"
+                        >
+                          {otpLoading ? <Loader2 size={13} className="animate-spin" /> : 'Verify'}
+                        </button>
+                      </motion.div>
+                    )}
+
+                    {otpStatusMsg && (
+                      <div className="text-[11px] text-emerald-400 font-mono flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#00E85D] animate-ping" />
+                        <span>{otpStatusMsg}</span>
+                      </div>
                     )}
                   </div>
 
-                  {/* OTP Input Row */}
-                  {!isEmailVerified && isOtpSent && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      className="flex items-center gap-2 pt-1"
-                    >
-                      <input
-                        type="text"
-                        maxLength={6}
-                        value={otpCode}
-                        onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
-                        placeholder="6-Digit OTP"
-                        className="flex-1 px-3 py-2 rounded-lg bg-neutral-900 border border-neutral-700 text-white font-mono text-center tracking-widest text-sm focus:outline-none focus:border-[#00E85D]"
-                      />
-                      <button
-                        type="button"
-                        onClick={handleVerifyOtp}
-                        disabled={otpLoading || otpCode.length < 4}
-                        className="px-4 py-2 rounded-lg bg-[#00E85D] hover:bg-[#05f566] text-black font-extrabold text-xs transition cursor-pointer disabled:opacity-50 shadow-md"
-                      >
-                        {otpLoading ? <Loader2 size={13} className="animate-spin" /> : 'Verify OTP'}
-                      </button>
-                    </motion.div>
-                  )}
-
-                  {otpStatusMsg && (
-                    <div className="text-[11px] text-emerald-400 font-mono flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#00E85D] animate-ping" />
-                      <span>{otpStatusMsg}</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* 5. Feedback Comment */}
-                <div>
-                  <label className="block text-xs font-semibold text-neutral-300 mb-1">
-                    Your Feedback, Feature Request or Bug Report <span className="text-[#00E85D]">*</span>
-                  </label>
-                  <textarea
-                    rows={4}
-                    required
-                    value={comments}
-                    onChange={(e) => setComments(e.target.value)}
-                    placeholder="Tell us what you'd like improved, any bugs encountered, or features you want next..."
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-black border border-neutral-800 text-white placeholder-neutral-600 text-xs focus:outline-none focus:border-[#00E85D] transition-colors resize-none"
-                  />
+                  {/* Feedback Comment */}
+                  <div>
+                    <label className="block text-xs font-semibold text-neutral-300 mb-1">
+                      Your Feedback, Feature Request or Bug Report <span className="text-[#00E85D]">*</span>
+                    </label>
+                    <textarea
+                      rows={3}
+                      required
+                      value={comments}
+                      onChange={(e) => setComments(e.target.value)}
+                      placeholder="Tell us what you'd like improved, any bugs encountered, or features you want next..."
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-black border border-neutral-800 text-white placeholder-neutral-600 text-xs focus:outline-none focus:border-[#00E85D] transition-colors resize-none"
+                    />
+                  </div>
                 </div>
 
                 {/* Error Banner */}
                 {errorMsg && (
-                  <div className="p-3 rounded-xl bg-rose-950/60 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
-                    <AlertCircle size={15} />
+                  <div className="p-2.5 rounded-xl bg-rose-950/60 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
+                    <AlertCircle size={15} className="shrink-0" />
                     <span>{errorMsg}</span>
                   </div>
                 )}
@@ -483,7 +515,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose })
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 rounded-full bg-[#00E85D] hover:bg-[#05f566] text-black font-extrabold text-xs sm:text-sm neon-glow-btn flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 transition-all cursor-pointer"
+                  className="w-full py-3 rounded-full bg-[#00E85D] hover:bg-[#05f566] text-black font-extrabold text-xs sm:text-sm neon-glow-btn flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 transition-all cursor-pointer mt-1"
                 >
                   {loading ? (
                     <>
@@ -497,22 +529,22 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose })
                     </>
                   )}
                 </button>
-              </form>
-            </div>
+              </div>
+            </form>
           ) : (
-            <div className="text-center py-8">
-              <div className="w-16 h-16 rounded-full bg-[#00E85D]/20 border border-[#00E85D]/60 text-[#00E85D] flex items-center justify-center mx-auto mb-4 shadow-[0_0_30px_rgba(0,232,93,0.3)] animate-pulse">
+            <div className="text-center py-10 px-4 max-w-lg mx-auto">
+              <div className="w-16 h-16 rounded-full bg-[#00E85D]/20 border border-[#00E85D]/60 text-[#00E85D] flex items-center justify-center mx-auto mb-4 shadow-[0_0_30px_rgba(0,232,93,0.35)] animate-pulse">
                 <CheckCircle2 size={36} />
               </div>
               <h3 className="text-2xl font-bold text-white mb-2">Delivered to Engineering</h3>
-              <p className="text-neutral-400 text-xs sm:text-sm max-w-sm mx-auto mb-6 leading-relaxed">
+              <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed mb-6">
                 Thank you, <span className="text-white font-semibold">{name}</span>! A confirmation email has been dispatched to{' '}
                 <span className="text-[#00E85D] font-mono">{email}</span>, and the full report has been forwarded directly to{' '}
                 <span className="text-white font-mono">farhankhalid17968@gmail.com</span>.
               </p>
               <button
                 onClick={handleReset}
-                className="px-6 py-2.5 rounded-full bg-white text-black text-xs font-bold hover:bg-neutral-200 transition-all cursor-pointer shadow-md active:scale-95"
+                className="px-8 py-2.5 rounded-full bg-white text-black text-xs font-bold hover:bg-neutral-200 transition-all cursor-pointer shadow-md active:scale-95"
               >
                 Done
               </button>
@@ -520,6 +552,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose })
           )}
         </motion.div>
       </div>
-    </AnimatePresence>
-  );
+    )}
+  </AnimatePresence>
+);
 };
