@@ -1,4 +1,5 @@
 import React from 'react';
+import { APP_VERSION_TAG } from '../config/version';
 
 interface ArcHorizonShowcaseProps {
   onGoToDownload: () => void;
@@ -136,7 +137,7 @@ export function ArcHorizonShowcase({ onGoToDownload, onOpenFeedback }: ArcHorizo
                   <span className="text-[8px] uppercase tracking-wider text-[#00E85D] font-mono font-bold">
                     Floating Pill Dock
                   </span>
-                  <div className="text-sm font-bold text-white leading-tight">Clue AI v5.9.9 Active</div>
+                  <div className="text-sm font-bold text-white leading-tight">Clue AI {APP_VERSION_TAG} Active</div>
                 </div>
                 <div className="h-24 bg-neutral-950 border border-emerald-500/20 rounded flex flex-col items-center justify-center text-center p-2">
                   <span className="text-[10px] text-emerald-400 font-mono">Ctrl + \ Toggle</span>

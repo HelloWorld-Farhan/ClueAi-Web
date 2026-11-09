@@ -6,8 +6,11 @@ import { DownloadHub } from './components/DownloadHub';
 import { BottomFloatingDock } from './components/BottomFloatingDock';
 import { Footer } from './components/Footer';
 import { FeedbackModal } from './components/FeedbackModal';
+import { IntroPreloader } from './components/IntroPreloader';
 
 export function App() {
+  // Cinematic word-by-word blur preloader on whole black background
+  const [showPreloader, setShowPreloader] = useState(true);
   // Starts with Zeitgeist ("This is no substitute for hard code") as front view by default
   const [activeView, setActiveView] = useState<'arc' | 'ambient' | 'download'>('ambient');
   const [feedbackOpen, setFeedbackOpen] = useState(false);
@@ -24,6 +27,11 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col justify-between selection:bg-neutral-800 selection:text-white font-sans overflow-x-hidden relative">
+      {/* Cinematic Blur-Per-Word Intro Preloader on Pitch Black Background */}
+      {showPreloader && (
+        <IntroPreloader onComplete={() => setShowPreloader(false)} />
+      )}
+
       {/* Top Fixed Header (From code.html) */}
       <Navbar
         activeView={activeView}

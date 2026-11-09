@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { APP_VERSION_TAG } from '../config/version';
 
 interface NavbarProps {
   activeView: 'arc' | 'ambient' | 'download';
@@ -73,7 +74,7 @@ export function Navbar({ activeView, setActiveView, onOpenFeedback }: NavbarProp
             <span>Zeitgeist</span>
             {/* Version Badge */}
             <span className="ml-1.5 bg-[#00E85D] text-black font-extrabold text-[10px] px-1.5 py-0.5 rounded-full flex items-center justify-center">
-              v5.9.9
+              {APP_VERSION_TAG}
             </span>
           </button>
           <button

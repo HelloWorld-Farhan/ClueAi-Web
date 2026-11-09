@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { APP_VERSION_TAG } from '../config/version';
 
 interface AmbientQuoteSectionProps {
   onActionClick: () => void;
@@ -190,7 +191,7 @@ const CLUE_FEATURES: ClueFeatureQuote[] = [
     col: 'col-start-6 col-span-1',
     row: 'row-start-5',
     sizeClass: 'text-2xl md:text-4xl font-extrabold text-neutral-400/40',
-    text: 'V5.9.9 ACTIVE',
+    text: `${APP_VERSION_TAG.toUpperCase()} ACTIVE`,
   },
 ];
 
@@ -238,13 +239,40 @@ export function AmbientQuoteSection({ onActionClick }: AmbientQuoteSectionProps)
         className="relative z-20 flex flex-col items-center justify-center text-center px-4 max-w-5xl mx-auto pointer-events-auto"
         data-purpose="hero-quote-container"
       >
-        {/* Dominant Foreground Quote */}
+        {/* Dominant Foreground Quote with Per-Word Blur Animation */}
         <h1 className="text-white text-5xl sm:text-7xl md:text-8xl lg:text-[104px] font-black tracking-[-0.04em] leading-[0.93] select-text drop-shadow-[0_10px_25px_rgba(0,0,0,0.9)]">
-          This is no
+          {['This', 'is', 'no'].map((w, i) => (
+            <motion.span
+              key={`top-${w}`}
+              initial={{ opacity: 0, filter: 'blur(14px)', y: 15 }}
+              animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+              transition={{ duration: 0.55, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="inline-block mr-3 md:mr-5"
+            >
+              {w}
+            </motion.span>
+          ))}
           <br />
-          substitute
+          <motion.span
+            initial={{ opacity: 0, filter: 'blur(14px)', y: 15 }}
+            animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+            transition={{ duration: 0.55, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-block"
+          >
+            substitute
+          </motion.span>
           <br />
-          for hard code
+          {['for', 'hard', 'code'].map((w, i) => (
+            <motion.span
+              key={`bot-${w}`}
+              initial={{ opacity: 0, filter: 'blur(14px)', y: 15 }}
+              animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+              transition={{ duration: 0.55, delay: 0.5 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="inline-block mr-3 md:mr-5 last:mr-0"
+            >
+              {w}
+            </motion.span>
+          ))}
         </h1>
 
         {/* Neon Green Action CTA Button (Exact from code.html) */}

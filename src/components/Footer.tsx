@@ -1,4 +1,5 @@
 import React from 'react';
+import { CREATOR } from '../config/version';
 
 interface FooterProps {
   onOpenFeedback: () => void;
@@ -22,10 +23,13 @@ export function Footer({ onOpenFeedback }: FooterProps) {
         <span>Clue AI · The Undetected Realtime Copilot for Developers</span>
       </div>
 
-      {/* Row 1: Follow Pills (Exact from code7.html lines 308-316) */}
+      {/* Row 1: Follow Pills */}
       <nav aria-label="Social Links" className="flex flex-wrap items-center justify-center gap-1.5 max-w-xl">
         <span className="text-[11px] text-neutral-500 mr-1 font-medium">Follow</span>
-        <a className="pill-link" href="https://github.com/HelloWorld-Farhan/ClueAi-Web" target="_blank" rel="noopener noreferrer">
+        <a className="pill-link" href={CREATOR.website} target="_blank" rel="noopener noreferrer">
+          Website
+        </a>
+        <a className="pill-link" href={CREATOR.github} target="_blank" rel="noopener noreferrer">
           GitHub
         </a>
         <a className="pill-link" href="https://x.com" target="_blank" rel="noopener noreferrer">
@@ -70,19 +74,28 @@ export function Footer({ onOpenFeedback }: FooterProps) {
         </a>
       </nav>
 
-      {/* Row 3: Bottom Credits & Legal Links (Exact from code7.html lines 328-337) */}
+      {/* Row 3: Bottom Credits & Legal Links */}
       <div
         className="flex flex-wrap items-center justify-center gap-2 text-[10px] text-neutral-500 mt-2 font-light"
         data-purpose="site-credits"
       >
         <span>Engineered with passion by</span>
         <a
-          className="hover:text-neutral-300 underline underline-offset-2 transition-colors font-medium text-neutral-400"
-          href="https://github.com/HelloWorld-Farhan"
+          className="hover:text-emerald-400 underline underline-offset-2 transition-colors font-medium text-neutral-300"
+          href={CREATOR.website}
           target="_blank"
           rel="noopener noreferrer"
         >
-          Farhan Khalid
+          {CREATOR.name}
+        </a>
+        <span className="text-neutral-700">·</span>
+        <a
+          className="hover:text-neutral-300 transition-colors font-light text-neutral-500"
+          href={CREATOR.github}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Developer Profile
         </a>
         <span className="text-neutral-700">·</span>
         <button

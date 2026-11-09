@@ -13,6 +13,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { APP_VERSION } from '../config/version';
 
 interface FeedbackModalProps {
   isOpen: boolean;
@@ -92,7 +93,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose })
         type: 'send_otp',
         email: email.trim().toLowerCase(),
         name: name.trim(),
-        app_version: '5.9.9',
+        app_version: APP_VERSION,
       };
 
       await fetch(GOOGLE_SCRIPT_URL, {
