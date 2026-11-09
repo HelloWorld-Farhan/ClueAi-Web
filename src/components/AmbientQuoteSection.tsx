@@ -275,6 +275,21 @@ export function AmbientQuoteSection({ onActionClick }: AmbientQuoteSectionProps)
           ))}
         </h1>
 
+        {/* Clue AI Technical Interview Copilot Core Message */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.5, ease: 'easeOut' }}
+          className="mt-6 md:mt-8 max-w-2xl mx-auto space-y-1.5 px-4"
+        >
+          <p className="text-base sm:text-lg md:text-xl font-bold tracking-tight text-white drop-shadow-[0_0_15px_rgba(0,232,93,0.35)]">
+            The Undetected AI Copilot for Technical Interviews
+          </p>
+          <p className="text-xs sm:text-sm text-neutral-400 font-mono tracking-wide">
+            Zero Screen Share Detection <span className="text-[#00E85D]">·</span> Real-Time Whisper STT <span className="text-[#00E85D]">·</span> Multi-LLM LeetCode Solver
+          </p>
+        </motion.div>
+
         {/* Neon Green Action CTA Button (Exact from code.html) */}
         <div className="mt-8 sm:mt-10">
           <button
