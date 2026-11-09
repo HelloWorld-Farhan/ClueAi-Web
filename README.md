@@ -81,12 +81,26 @@ Generates production-optimized static assets in `dist/`.
 
 ---
 
-## ☁️ Deploy to Cloudflare Pages
+## ☁️ Deploy to Cloudflare Workers & Pages
 
-1. In your Cloudflare Dashboard, go to **Workers & Pages > Create application > Pages > Connect to Git**.
-2. Select `HelloWorld-Farhan/ClueAi-Web`.
-3. Set:
-   - **Framework Preset**: `Vite`
+### 1. Automatic Deployment on Git Push
+1. In your Cloudflare Dashboard, open **Workers & Pages > clueai-web**.
+2. Click the **Settings** tab &rarr; **Builds**.
+3. Confirm that **"Automatic deployments"** is toggled **ON** for the **`main`** branch.
+4. Ensure:
    - **Build command**: `npm run build`
-   - **Build output directory**: `dist`
-4. Deploy!
+   - **Deploy command**: `npx wrangler deploy`
+   - **Root directory**: `/`
+
+### 2. Ensuring 100% Traffic is Routed to the Latest Version
+If a newly built version shows `Traffic %: 0%` under **Deployments**:
+1. Go to **Deployments** &rarr; find the top version row under **View rollout history**.
+2. Click the three dots (`...`) on the right side of the row.
+3. Select **"Promote to 100% traffic"** (or adjust the rollout slider to **100%** &rarr; click **Save**).
+4. All incoming visitors on `clueai-web.clue-ai.workers.dev` will instantly receive the latest updates.
+
+### 3. GitHub Actions CI/CD (Automated Backup)
+This repository includes `.github/workflows/deploy.yml` which automatically builds and tests on every push to `main`. To allow GitHub Actions to deploy directly:
+- Add a repository secret in GitHub (**Settings > Secrets and variables > Actions**):
+  - `CLOUDFLARE_API_TOKEN`: Your Cloudflare API token with Workers:Edit permissions.
+
