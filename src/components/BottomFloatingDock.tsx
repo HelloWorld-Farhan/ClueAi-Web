@@ -120,17 +120,12 @@ export function BottomFloatingDock({
   };
 
   return (
-    <motion.footer
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed bottom-5 sm:bottom-7 md:bottom-8 left-0 w-full z-40 px-3 sm:px-6 flex items-center justify-between pointer-events-none select-none"
-      style={{
-        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-      }}
-    >
-      {/* Bottom Left: Live Audience / Active User Status Pill (Visible on md+) */}
-      <div className="relative pointer-events-auto hidden md:block" ref={infoPopoverRef}>
+    <>
+      {/* Bottom Left: Live Audience / Active User Status Pill (Directly Fixed on md+) */}
+      <div
+        className="fixed bottom-7 sm:bottom-8 md:bottom-10 left-4 sm:left-6 z-40 hidden md:block pointer-events-auto select-none"
+        ref={infoPopoverRef}
+      >
         <div
           className="flex items-center space-x-2.5 bg-[#141416]/95 border border-neutral-800/80 px-4 py-2 rounded-full shadow-2xl backdrop-blur-md hover:border-[#00E85D]/50 transition-all cursor-pointer"
           data-purpose="live-status-pill"
@@ -140,7 +135,9 @@ export function BottomFloatingDock({
           <div className="w-5 h-5 rounded-full bg-[#00E85D]/20 flex items-center justify-center border border-[#00E85D]/50 shadow-[0_0_10px_rgba(0,232,93,0.3)]">
             <span className="w-2 h-2 rounded-full bg-[#00E85D] animate-ping" />
           </div>
-          <span className="text-xs text-neutral-200 font-medium tracking-tight whitespace-nowrap">Just you watching right now</span>
+          <span className="text-xs text-neutral-200 font-medium tracking-tight whitespace-nowrap">
+            Just you watching right now
+          </span>
           <span
             className="text-neutral-400 hover:text-[#00E85D] transition-colors text-xs ml-0.5"
             title="Click for Stealth Status Info"
@@ -202,10 +199,33 @@ export function BottomFloatingDock({
         </AnimatePresence>
       </div>
 
-      {/* Bottom Center: Player / Real-Time Floating Dock */}
-      <div
-        className="pointer-events-auto absolute left-1/2 -translate-x-1/2 flex items-center bg-[#141416]/95 border border-neutral-800/90 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full shadow-[0_10px_35px_rgba(0,0,0,0.9),0_0_20px_rgba(0,232,93,0.15)] backdrop-blur-xl space-x-2 sm:space-x-4 hover:border-[#00E85D]/50 transition-all duration-300 group max-w-[calc(100vw-20px)] shrink-0"
+      {/* Bottom Center: Flying Floating Dock with Weightless Levitation Physics */}
+      <motion.aside
+        initial={{ opacity: 0, y: 30 }}
+        animate={{
+          opacity: 1,
+          y: [0, -6, 0],
+          boxShadow: [
+            '0 12px 35px rgba(0,0,0,0.95), 0 0 20px rgba(0,232,93,0.2)',
+            '0 20px 48px rgba(0,0,0,0.9), 0 0 32px rgba(0,232,93,0.45)',
+            '0 12px 35px rgba(0,0,0,0.95), 0 0 20px rgba(0,232,93,0.2)',
+          ],
+        }}
+        transition={{
+          y: { duration: 3.8, repeat: Infinity, ease: 'easeInOut' },
+          boxShadow: { duration: 3.8, repeat: Infinity, ease: 'easeInOut' },
+          opacity: { duration: 0.5, ease: 'easeOut' },
+        }}
+        whileHover={{
+          scale: 1.03,
+          y: -9,
+          transition: { duration: 0.2 },
+        }}
+        className="fixed bottom-7 sm:bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 z-50 pointer-events-auto flex items-center bg-[#141416]/95 border border-neutral-800/90 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-xl space-x-2 sm:space-x-4 hover:border-[#00E85D]/60 transition-colors select-none max-w-[calc(100vw-24px)] shrink-0"
         data-purpose="timeline-dock"
+        style={{
+          marginBottom: 'env(safe-area-inset-bottom, 0px)',
+        }}
       >
         {/* Date Indicator Circle */}
         <div className="relative flex flex-col items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[#00E85D] bg-black/80 shadow-[0_0_12px_rgba(0,232,93,0.4)] shrink-0 py-0.5">
@@ -453,10 +473,7 @@ export function BottomFloatingDock({
             )}
           </AnimatePresence>
         </div>
-      </div>
-
-      {/* Empty right placeholder */}
-      <div className="w-40 hidden sm:block" />
-    </motion.footer>
+      </motion.aside>
+    </>
   );
 }
