@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Copy, Check } from 'lucide-react';
 import { APP_VERSION, APP_VERSION_TAG, DOWNLOAD_LINKS } from '../config/version';
 
 export function DownloadHub() {
@@ -7,7 +8,7 @@ export function DownloadHub() {
   const copyToClipboard = (key: string, text: string) => {
     navigator.clipboard.writeText(text);
     setCopiedKey(key);
-    setTimeout(() => setCopiedKey(null), 2200);
+    setTimeout(() => setCopiedKey(null), 2000);
   };
 
   const winPsCommand = DOWNLOAD_LINKS.windowsPsScript;
@@ -66,18 +67,44 @@ export function DownloadHub() {
               <span>Download ClueAI-v{APP_VERSION}.exe</span>
             </a>
 
-            {/* Terminal Command Snippet */}
-            <div className="bg-black/80 rounded-lg p-3 border border-neutral-900 font-mono text-[11px] text-neutral-300 break-all relative group">
+            {/* Terminal Command Snippet with Micro-Animated Corner Copy Icon */}
+            <div className="bg-black/90 rounded-lg p-3.5 pr-11 border border-neutral-900 font-mono text-[11px] text-neutral-300 break-all relative group hover:border-neutral-800 transition-colors">
               <code>{winPsCommand}</code>
+              <button
+                onClick={() => copyToClipboard('winps', winPsCommand)}
+                className="absolute top-2.5 right-2.5 p-1.5 rounded-md bg-neutral-800/90 hover:bg-neutral-700 text-neutral-300 hover:text-white transition-all cursor-pointer shadow-sm group/btn"
+                title="Copy to Clipboard"
+              >
+                {copiedKey === 'winps' ? (
+                  <div className="relative flex items-center justify-center">
+                    <Check className="w-3.5 h-3.5 text-[#00E85D] animate-in zoom-in-75 duration-200" />
+                    <span className="absolute -top-7 right-0 bg-[#00E85D] text-black text-[9px] font-mono font-bold px-1.5 py-0.5 rounded shadow-lg whitespace-nowrap">
+                      Copied!
+                    </span>
+                  </div>
+                ) : (
+                  <Copy className="w-3.5 h-3.5 group-hover/btn:scale-110 transition-transform" />
+                )}
+              </button>
             </div>
           </div>
 
           <div className="flex items-center justify-between mt-4 pt-3 border-t border-neutral-900">
             <button
               onClick={() => copyToClipboard('winps', winPsCommand)}
-              className="text-xs text-[#00E85D] font-mono hover:underline flex items-center gap-1 cursor-pointer"
+              className="text-xs text-[#00E85D] font-mono hover:underline flex items-center gap-1.5 cursor-pointer"
             >
-              {copiedKey === 'winps' ? '✓ Copied to PowerShell' : 'Copy PowerShell Command'}
+              {copiedKey === 'winps' ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-[#00E85D]" />
+                  <span>Copied to Clipboard</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3.5 h-3.5 text-neutral-400" />
+                  <span>Copy PowerShell Command</span>
+                </>
+              )}
             </button>
             <a
               href={DOWNLOAD_LINKS.windowsGitHubExe}
@@ -124,18 +151,44 @@ export function DownloadHub() {
               <span>Download ClueAI-{APP_VERSION}.dmg</span>
             </a>
 
-            {/* Terminal Command Snippet */}
-            <div className="bg-black/80 rounded-lg p-3 border border-neutral-900 font-mono text-[11px] text-neutral-300 break-all relative group">
+            {/* Terminal Command Snippet with Micro-Animated Corner Copy Icon */}
+            <div className="bg-black/90 rounded-lg p-3.5 pr-11 border border-neutral-900 font-mono text-[11px] text-neutral-300 break-all relative group hover:border-neutral-800 transition-colors">
               <code>{macCurlCommand}</code>
+              <button
+                onClick={() => copyToClipboard('mac', macCurlCommand)}
+                className="absolute top-2.5 right-2.5 p-1.5 rounded-md bg-neutral-800/90 hover:bg-neutral-700 text-neutral-300 hover:text-white transition-all cursor-pointer shadow-sm group/btn"
+                title="Copy to Clipboard"
+              >
+                {copiedKey === 'mac' ? (
+                  <div className="relative flex items-center justify-center">
+                    <Check className="w-3.5 h-3.5 text-[#00E85D] animate-in zoom-in-75 duration-200" />
+                    <span className="absolute -top-7 right-0 bg-[#00E85D] text-black text-[9px] font-mono font-bold px-1.5 py-0.5 rounded shadow-lg whitespace-nowrap">
+                      Copied!
+                    </span>
+                  </div>
+                ) : (
+                  <Copy className="w-3.5 h-3.5 group-hover/btn:scale-110 transition-transform" />
+                )}
+              </button>
             </div>
           </div>
 
           <div className="flex items-center justify-between mt-4 pt-3 border-t border-neutral-900">
             <button
               onClick={() => copyToClipboard('mac', macCurlCommand)}
-              className="text-xs text-[#00E85D] font-mono hover:underline flex items-center gap-1 cursor-pointer"
+              className="text-xs text-[#00E85D] font-mono hover:underline flex items-center gap-1.5 cursor-pointer"
             >
-              {copiedKey === 'mac' ? '✓ Copied to Terminal' : 'Copy macOS Command'}
+              {copiedKey === 'mac' ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-[#00E85D]" />
+                  <span>Copied to Clipboard</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3.5 h-3.5 text-neutral-400" />
+                  <span>Copy macOS Command</span>
+                </>
+              )}
             </button>
             <a
               href={DOWNLOAD_LINKS.macGitHubDmg}
@@ -162,17 +215,43 @@ export function DownloadHub() {
               <span className="pill-link">Stand-alone</span>
             </div>
 
-            <div className="bg-black/80 rounded-lg p-3 border border-neutral-900 font-mono text-[11px] text-neutral-300 break-all relative group">
+            <div className="bg-black/90 rounded-lg p-3.5 pr-11 border border-neutral-900 font-mono text-[11px] text-neutral-300 break-all relative group hover:border-neutral-800 transition-colors">
               <code>{winCmdCommand}</code>
+              <button
+                onClick={() => copyToClipboard('wincmd', winCmdCommand)}
+                className="absolute top-2.5 right-2.5 p-1.5 rounded-md bg-neutral-800/90 hover:bg-neutral-700 text-neutral-300 hover:text-white transition-all cursor-pointer shadow-sm group/btn"
+                title="Copy to Clipboard"
+              >
+                {copiedKey === 'wincmd' ? (
+                  <div className="relative flex items-center justify-center">
+                    <Check className="w-3.5 h-3.5 text-[#00E85D] animate-in zoom-in-75 duration-200" />
+                    <span className="absolute -top-7 right-0 bg-[#00E85D] text-black text-[9px] font-mono font-bold px-1.5 py-0.5 rounded shadow-lg whitespace-nowrap">
+                      Copied!
+                    </span>
+                  </div>
+                ) : (
+                  <Copy className="w-3.5 h-3.5 group-hover/btn:scale-110 transition-transform" />
+                )}
+              </button>
             </div>
           </div>
 
           <div className="flex items-center justify-between mt-4 pt-3 border-t border-neutral-900">
             <button
               onClick={() => copyToClipboard('wincmd', winCmdCommand)}
-              className="text-xs text-[#00E85D] font-mono hover:underline flex items-center gap-1 cursor-pointer"
+              className="text-xs text-[#00E85D] font-mono hover:underline flex items-center gap-1.5 cursor-pointer"
             >
-              {copiedKey === 'wincmd' ? '✓ Copied to CMD' : 'Copy CMD Command'}
+              {copiedKey === 'wincmd' ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-[#00E85D]" />
+                  <span>Copied to Clipboard</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3.5 h-3.5 text-neutral-400" />
+                  <span>Copy CMD Command</span>
+                </>
+              )}
             </button>
             <span className="text-[10px] text-neutral-500 font-mono">Auto Closes Terminal</span>
           </div>
@@ -206,17 +285,43 @@ export function DownloadHub() {
               <span>Download ClueAI-{APP_VERSION}.AppImage</span>
             </a>
 
-            <div className="bg-black/80 rounded-lg p-3 border border-neutral-900 font-mono text-[11px] text-neutral-300 break-all relative group">
+            <div className="bg-black/90 rounded-lg p-3.5 pr-11 border border-neutral-900 font-mono text-[11px] text-neutral-300 break-all relative group hover:border-neutral-800 transition-colors">
               <code>{linuxCommand}</code>
+              <button
+                onClick={() => copyToClipboard('linux', linuxCommand)}
+                className="absolute top-2.5 right-2.5 p-1.5 rounded-md bg-neutral-800/90 hover:bg-neutral-700 text-neutral-300 hover:text-white transition-all cursor-pointer shadow-sm group/btn"
+                title="Copy to Clipboard"
+              >
+                {copiedKey === 'linux' ? (
+                  <div className="relative flex items-center justify-center">
+                    <Check className="w-3.5 h-3.5 text-[#00E85D] animate-in zoom-in-75 duration-200" />
+                    <span className="absolute -top-7 right-0 bg-[#00E85D] text-black text-[9px] font-mono font-bold px-1.5 py-0.5 rounded shadow-lg whitespace-nowrap">
+                      Copied!
+                    </span>
+                  </div>
+                ) : (
+                  <Copy className="w-3.5 h-3.5 group-hover/btn:scale-110 transition-transform" />
+                )}
+              </button>
             </div>
           </div>
 
           <div className="flex items-center justify-between mt-4 pt-3 border-t border-neutral-900">
             <button
               onClick={() => copyToClipboard('linux', linuxCommand)}
-              className="text-xs text-[#00E85D] font-mono hover:underline flex items-center gap-1 cursor-pointer"
+              className="text-xs text-[#00E85D] font-mono hover:underline flex items-center gap-1.5 cursor-pointer"
             >
-              {copiedKey === 'linux' ? '✓ Copied to Terminal' : 'Copy Linux Command'}
+              {copiedKey === 'linux' ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-[#00E85D]" />
+                  <span>Copied to Clipboard</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3.5 h-3.5 text-neutral-400" />
+                  <span>Copy Linux Command</span>
+                </>
+              )}
             </button>
             <span className="text-[10px] text-neutral-500 font-mono">No Root Required</span>
           </div>
