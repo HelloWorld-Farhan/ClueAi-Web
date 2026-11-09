@@ -51,9 +51,8 @@ export function ArcHorizonShowcase({ onGoToDownload, onOpenFeedback }: ArcHorizo
         gsap.fromTo(
           heroContentRef.current,
           {
-            y: 50,
-            opacity: 0,
-            filter: 'blur(14px)',
+            y: 40,
+            opacity: 0.2,
           },
           {
             scrollTrigger: {
@@ -64,7 +63,6 @@ export function ArcHorizonShowcase({ onGoToDownload, onOpenFeedback }: ArcHorizo
             },
             y: 0,
             opacity: 1,
-            filter: 'blur(0px)',
             ease: 'power2.out',
           }
         );
@@ -75,9 +73,8 @@ export function ArcHorizonShowcase({ onGoToDownload, onOpenFeedback }: ArcHorizo
         gsap.fromTo(
           awardsSectionRef.current,
           {
-            y: 40,
-            opacity: 0,
-            filter: 'blur(10px)',
+            y: 35,
+            opacity: 0.2,
           },
           {
             scrollTrigger: {
@@ -88,7 +85,6 @@ export function ArcHorizonShowcase({ onGoToDownload, onOpenFeedback }: ArcHorizo
             },
             y: 0,
             opacity: 1,
-            filter: 'blur(0px)',
             ease: 'power2.out',
           }
         );

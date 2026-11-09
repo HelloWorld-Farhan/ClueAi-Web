@@ -107,12 +107,12 @@ export function App() {
               onEntranceComplete={() => setIsEntranceComplete(true)}
             />
 
-            {/* Seamless Flow on Scroll: Arc Horizon Feature Showcase with Modern Scroll Blur */}
+            {/* Seamless Flow on Scroll: Arc Horizon Feature Showcase */}
             <motion.div
-              initial={{ opacity: 0, y: 45, filter: 'blur(16px)' }}
-              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.12 }}
-              transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="border-t border-neutral-900/60 mt-6"
             >
               <ArcHorizonShowcase
@@ -121,12 +121,12 @@ export function App() {
               />
             </motion.div>
 
-            {/* Seamless Flow on Scroll: Antigravity-Style Download Hub with Modern Scroll Blur */}
+            {/* Seamless Flow on Scroll: Antigravity-Style Download Hub */}
             <motion.div
-              initial={{ opacity: 0, y: 45, filter: 'blur(16px)' }}
-              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.12 }}
-              transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="border-t border-neutral-900/80 mt-12"
             >
               <DownloadHub />
