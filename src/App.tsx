@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Navbar } from './components/Navbar';
 import { ArcHorizonShowcase } from './components/ArcHorizonShowcase';
 import { AmbientQuoteSection } from './components/AmbientQuoteSection';
@@ -6,18 +7,18 @@ import { DownloadHub } from './components/DownloadHub';
 import { BottomFloatingDock } from './components/BottomFloatingDock';
 import { Footer } from './components/Footer';
 import { FeedbackModal } from './components/FeedbackModal';
-import { IntroPreloader } from './components/IntroPreloader';
 import { FeatureModal, FeatureKey } from './components/FeatureModal';
 
 export function App() {
-  // Cinematic word-by-word blur preloader on whole black background
-  const [showPreloader, setShowPreloader] = useState(true);
-  // Starts with Clue AI Ambient ("This is no substitute for hard code") as front view by default
+  // Pure black focus entrance: Navbar & Dock smoothly bloom after headline reveals
+  const [isEntranceComplete, setIsEntranceComplete] = useState(false);
+  // Starts with Clue AI Ambient ("The undetected copilot for technical interviews") as front view by default
   const [activeView, setActiveView] = useState<'arc' | 'ambient' | 'download'>('ambient');
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState<FeatureKey | null>(null);
 
   const handleScrollToDownload = () => {
+    setIsEntranceComplete(true);
     setActiveView('download');
     setTimeout(() => {
       const el = document.getElementById('downloads');
@@ -29,17 +30,22 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col justify-between selection:bg-neutral-800 selection:text-white font-sans overflow-x-hidden relative">
-      {/* Cinematic Blur-Per-Word Intro Preloader on Pitch Black Background */}
-      {showPreloader && (
-        <IntroPreloader onComplete={() => setShowPreloader(false)} />
-      )}
-
-      {/* Top Fixed Header (From code.html) */}
-      <Navbar
-        activeView={activeView}
-        setActiveView={setActiveView}
-        onOpenFeedback={() => setFeedbackOpen(true)}
-      />
+      {/* Top Fixed Header with Smooth Cinematic Entrance */}
+      <motion.div
+        initial={{ opacity: 0, y: -25 }}
+        animate={isEntranceComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: -25 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        className="w-full relative z-50"
+      >
+        <Navbar
+          activeView={activeView}
+          setActiveView={(view) => {
+            setIsEntranceComplete(true);
+            setActiveView(view);
+          }}
+          onOpenFeedback={() => setFeedbackOpen(true)}
+        />
+      </motion.div>
 
       {/* Main Content Area */}
       <main className="flex-1 w-full pt-16">
@@ -54,7 +60,10 @@ export function App() {
 
         {activeView === 'ambient' && (
           <div className="animate-fadeIn">
-            <AmbientQuoteSection onActionClick={handleScrollToDownload} />
+            <AmbientQuoteSection
+              onActionClick={handleScrollToDownload}
+              onEntranceComplete={() => setIsEntranceComplete(true)}
+            />
           </div>
         )}
 
@@ -72,13 +81,26 @@ export function App() {
         )}
       </main>
 
-      {/* Fixed Bottom Timeline Dock & Live Pulse Pill */}
-      <BottomFloatingDock
-        onPrev={() => setActiveView((prev) => (prev === 'arc' ? 'download' : prev === 'ambient' ? 'arc' : 'ambient'))}
-        onNext={() => setActiveView((prev) => (prev === 'arc' ? 'ambient' : prev === 'ambient' ? 'download' : 'arc'))}
-        onOpenOptions={() => setFeedbackOpen(true)}
-        onGoToDownload={handleScrollToDownload}
-      />
+      {/* Fixed Bottom Timeline Dock & Live Pulse Pill with Smooth Entrance */}
+      <motion.div
+        initial={{ opacity: 0, y: 25 }}
+        animate={isEntranceComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: 25 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        className="relative z-40"
+      >
+        <BottomFloatingDock
+          onPrev={() => {
+            setIsEntranceComplete(true);
+            setActiveView((prev) => (prev === 'arc' ? 'download' : prev === 'ambient' ? 'arc' : 'ambient'));
+          }}
+          onNext={() => {
+            setIsEntranceComplete(true);
+            setActiveView((prev) => (prev === 'arc' ? 'ambient' : prev === 'ambient' ? 'download' : 'arc'));
+          }}
+          onOpenOptions={() => setFeedbackOpen(true)}
+          onGoToDownload={handleScrollToDownload}
+        />
+      </motion.div>
 
       {/* Page Footer */}
       <Footer

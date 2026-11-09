@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { APP_VERSION_TAG } from '../config/version';
 
 interface AmbientQuoteSectionProps {
   onActionClick: () => void;
+  onEntranceComplete?: () => void;
 }
 
 interface ClueFeatureQuote {
@@ -195,11 +196,44 @@ const CLUE_FEATURES: ClueFeatureQuote[] = [
   },
 ];
 
-export function AmbientQuoteSection({ onActionClick }: AmbientQuoteSectionProps) {
+const LINE_1 = ['The', 'undetected'];
+const LINE_2 = ['copilot', 'for'];
+const LINE_3 = ['technical', 'interviews'];
+
+export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: AmbientQuoteSectionProps) {
+  const [isBloomed, setIsBloomed] = useState(false);
+
+  useEffect(() => {
+    // Pure black focus for 1.4s, then smoothly unblur the background universe
+    const timer = setTimeout(() => {
+      setIsBloomed(true);
+      onEntranceComplete?.();
+    }, 1400);
+
+    return () => clearTimeout(timer);
+  }, [onEntranceComplete]);
+
+  const handleFastForward = () => {
+    if (!isBloomed) {
+      setIsBloomed(true);
+      onEntranceComplete?.();
+    }
+  };
+
   return (
-    <section className="relative w-full min-h-screen overflow-hidden flex items-center justify-center py-20">
-      {/* Ambient Quotes Grid / Layer with Framer Motion & Glow on Hover */}
-      <div
+    <section
+      className="relative w-full min-h-screen overflow-hidden flex items-center justify-center py-20 cursor-default select-none"
+      onClick={handleFastForward}
+    >
+      {/* Background Quotes Universe with Cinematic Framer Motion Blur-Bloom Transition */}
+      <motion.div
+        initial={{ opacity: 0, filter: 'blur(35px)', scale: 1.08 }}
+        animate={
+          isBloomed
+            ? { opacity: 1, filter: 'blur(0px)', scale: 1 }
+            : { opacity: 0, filter: 'blur(35px)', scale: 1.08 }
+        }
+        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         className="absolute inset-0 pointer-events-none grid grid-cols-6 grid-rows-5 gap-3 p-8 overflow-hidden"
         data-purpose="ambient-quote-cloud"
       >
@@ -208,7 +242,7 @@ export function AmbientQuoteSection({ onActionClick }: AmbientQuoteSectionProps)
             key={idx}
             initial={{ opacity: 0.6 }}
             animate={{
-              y: [0, (idx % 2 === 0 ? -4 : 4), 0],
+              y: [0, idx % 2 === 0 ? -4 : 4, 0],
               opacity: [0.55, 0.75, 0.55],
             }}
             transition={{
@@ -232,42 +266,45 @@ export function AmbientQuoteSection({ onActionClick }: AmbientQuoteSectionProps)
             </span>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
 
-      {/* BEGIN: Hero Focus Quote (Exact from code.html) */}
+      {/* BEGIN: Hero Focus Quote - Pure Black Origin with Seamless Center Lock */}
       <div
         className="relative z-20 flex flex-col items-center justify-center text-center px-4 max-w-5xl mx-auto pointer-events-auto"
         data-purpose="hero-quote-container"
       >
-        {/* Dominant Foreground Quote with Per-Word Blur Animation */}
-        <h1 className="text-white text-5xl sm:text-7xl md:text-8xl lg:text-[104px] font-black tracking-[-0.04em] leading-[0.93] select-text drop-shadow-[0_10px_25px_rgba(0,0,0,0.9)]">
-          {['This', 'is', 'no'].map((w, i) => (
+        {/* Dominant Clue AI Headline with Modern Per-Word Blur In */}
+        <h1 className="text-white text-5xl sm:text-7xl md:text-8xl lg:text-[100px] font-black tracking-[-0.04em] leading-[0.93] select-text drop-shadow-[0_10px_35px_rgba(0,0,0,0.95)]">
+          {LINE_1.map((w, i) => (
             <motion.span
-              key={`top-${w}`}
-              initial={{ opacity: 0, filter: 'blur(14px)', y: 15 }}
-              animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-              transition={{ duration: 0.55, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              key={`line1-${w}`}
+              initial={{ opacity: 0, filter: 'blur(22px)', y: 26, scale: 0.94 }}
+              animate={{ opacity: 1, filter: 'blur(0px)', y: 0, scale: 1 }}
+              transition={{ duration: 0.55, delay: 0.1 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
               className="inline-block mr-3 md:mr-5"
             >
               {w}
             </motion.span>
           ))}
           <br />
-          <motion.span
-            initial={{ opacity: 0, filter: 'blur(14px)', y: 15 }}
-            animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-            transition={{ duration: 0.55, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="inline-block"
-          >
-            substitute
-          </motion.span>
-          <br />
-          {['for', 'hard', 'code'].map((w, i) => (
+          {LINE_2.map((w, i) => (
             <motion.span
-              key={`bot-${w}`}
-              initial={{ opacity: 0, filter: 'blur(14px)', y: 15 }}
-              animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-              transition={{ duration: 0.55, delay: 0.5 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              key={`line2-${w}`}
+              initial={{ opacity: 0, filter: 'blur(22px)', y: 26, scale: 0.94 }}
+              animate={{ opacity: 1, filter: 'blur(0px)', y: 0, scale: 1 }}
+              transition={{ duration: 0.55, delay: 0.38 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+              className="inline-block mr-3 md:mr-5 last:mr-0"
+            >
+              {w}
+            </motion.span>
+          ))}
+          <br />
+          {LINE_3.map((w, i) => (
+            <motion.span
+              key={`line3-${w}`}
+              initial={{ opacity: 0, filter: 'blur(22px)', y: 26, scale: 0.94 }}
+              animate={{ opacity: 1, filter: 'blur(0px)', y: 0, scale: 1 }}
+              transition={{ duration: 0.55, delay: 0.62 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
               className="inline-block mr-3 md:mr-5 last:mr-0"
             >
               {w}
@@ -277,9 +314,9 @@ export function AmbientQuoteSection({ onActionClick }: AmbientQuoteSectionProps)
 
         {/* Clue AI Technical Interview Copilot Core Message */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.5, ease: 'easeOut' }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={isBloomed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ duration: 0.7, delay: 0.1, ease: 'easeOut' }}
           className="mt-6 md:mt-8 max-w-2xl mx-auto space-y-1.5 px-4"
         >
           <p className="text-base sm:text-lg md:text-xl font-bold tracking-tight text-white drop-shadow-[0_0_15px_rgba(0,232,93,0.35)]">
@@ -290,16 +327,20 @@ export function AmbientQuoteSection({ onActionClick }: AmbientQuoteSectionProps)
           </p>
         </motion.div>
 
-        {/* Neon Green Action CTA Button (Exact from code.html) */}
-        <div className="mt-8 sm:mt-10">
+        {/* Neon Green Action CTA Button with Spring Entrance */}
+        <motion.div
+          initial={{ opacity: 0, y: 20, scale: 0.92 }}
+          animate={isBloomed ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.92 }}
+          transition={{ duration: 0.6, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-8 sm:mt-10"
+        >
           <button
             onClick={onActionClick}
-            className="neon-glow-btn inline-flex items-center space-x-2 bg-[#00E85D] hover:bg-[#05f566] text-black font-extrabold text-sm sm:text-base px-6 py-3 rounded-full cursor-pointer transition transform hover:scale-105 active:scale-95 shadow-[0_0_24px_rgba(0,232,93,0.6)]"
+            className="neon-glow-btn inline-flex items-center space-x-2.5 bg-[#00E85D] hover:bg-[#05f566] text-black font-extrabold text-sm sm:text-base px-7 py-3.5 rounded-full cursor-pointer transition transform hover:scale-105 active:scale-95 shadow-[0_0_28px_rgba(0,232,93,0.65)]"
           >
-            {/* Person / Speaker Icon */}
             <svg
               className="w-5 h-5 stroke-black fill-none"
-              strokeWidth="2.2"
+              strokeWidth="2.3"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -309,9 +350,9 @@ export function AmbientQuoteSection({ onActionClick }: AmbientQuoteSectionProps)
                 strokeLinejoin="round"
               />
             </svg>
-            <span>Who said that? / Get Clue AI</span>
+            <span>Get Clue AI · Undetected Copilot</span>
           </button>
-        </div>
+        </motion.div>
       </div>
       {/* END: Hero Focus Quote */}
     </section>
