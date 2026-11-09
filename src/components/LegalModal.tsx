@@ -63,7 +63,7 @@ export function LegalModal({ isOpen, initialTab = 'license', onClose }: LegalMod
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
           {/* Backdrop Blur */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -73,32 +73,32 @@ export function LegalModal({ isOpen, initialTab = 'license', onClose }: LegalMod
             className="fixed inset-0 bg-black/85 backdrop-blur-md cursor-pointer"
           />
 
-          {/* Modal Container */}
+          {/* Modal Container with Safe Corner Padding */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 15 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-3xl bg-neutral-950 border border-neutral-800 rounded-2xl shadow-2xl overflow-hidden z-10 flex flex-col max-h-[88vh]"
+            className="relative w-full max-w-3xl bg-neutral-950 border border-neutral-800 rounded-2xl shadow-2xl overflow-hidden z-10 flex flex-col max-h-[90vh] my-auto"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-900 bg-neutral-950/80">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-neutral-900 border border-neutral-800 text-[#00E85D]">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-neutral-900 bg-neutral-950/80">
+              <div className="flex items-center gap-2.5 sm:gap-3">
+                <div className="p-1.5 sm:p-2 rounded-xl bg-neutral-900 border border-neutral-800 text-[#00E85D] shrink-0">
                   {activeTab === 'license' ? (
-                    <FileText className="w-5 h-5" />
+                    <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
                   ) : (
-                    <ShieldCheck className="w-5 h-5" />
+                    <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />
                   )}
                 </div>
                 <div>
-                  <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                    <span>{activeTab === 'license' ? 'Official MIT License' : 'Privacy & Zero-Telemetry Architecture'}</span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-neutral-900 text-[#00E85D] border border-[#00E85D]/30">
+                  <h3 className="text-sm sm:text-lg font-bold text-white flex items-center gap-2">
+                    <span className="truncate">{activeTab === 'license' ? 'Official MIT License' : 'Privacy Architecture'}</span>
+                    <span className="text-[9px] sm:text-[10px] font-mono px-1.5 sm:px-2 py-0.5 rounded-full bg-neutral-900 text-[#00E85D] border border-[#00E85D]/30 shrink-0">
                       {APP_VERSION_TAG}
                     </span>
                   </h3>
-                  <p className="text-xs text-neutral-400">
+                  <p className="text-[11px] sm:text-xs text-neutral-400">
                     Engineered by{' '}
                     <a
                       href={CREATOR.website}
@@ -115,21 +115,21 @@ export function LegalModal({ isOpen, initialTab = 'license', onClose }: LegalMod
               {/* Close Button */}
               <button
                 onClick={onClose}
-                className="p-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-neutral-400 hover:text-white transition-colors cursor-pointer"
+                className="p-1.5 sm:p-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-neutral-400 hover:text-white transition-colors cursor-pointer shrink-0 ml-2"
                 title="Close Modal"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
 
             {/* Segmented Tab Switcher */}
-            <div className="flex items-center px-6 pt-3 pb-2 border-b border-neutral-900/80 bg-neutral-950 gap-2">
+            <div className="flex items-center px-4 sm:px-6 pt-2.5 pb-2 border-b border-neutral-900/80 bg-neutral-950 gap-2 overflow-x-auto">
               <button
                 onClick={() => {
                   setActiveTab('license');
                   window.history.replaceState(null, '', '#license');
                 }}
-                className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                className={`inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
                   activeTab === 'license'
                     ? 'bg-white text-black shadow-sm'
                     : 'bg-neutral-900/80 text-neutral-400 hover:text-white border border-neutral-800'
@@ -143,7 +143,7 @@ export function LegalModal({ isOpen, initialTab = 'license', onClose }: LegalMod
                   setActiveTab('privacy');
                   window.history.replaceState(null, '', '#privacy');
                 }}
-                className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                className={`inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
                   activeTab === 'privacy'
                     ? 'bg-white text-black shadow-sm'
                     : 'bg-neutral-900/80 text-neutral-400 hover:text-white border border-neutral-800'
@@ -155,7 +155,7 @@ export function LegalModal({ isOpen, initialTab = 'license', onClose }: LegalMod
             </div>
 
             {/* Content Area */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6 text-neutral-300 text-xs sm:text-sm leading-relaxed">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-6 text-neutral-300 text-xs sm:text-sm leading-relaxed">
               {activeTab === 'license' ? (
                 <div>
                   <div className="flex items-center justify-between mb-3">
@@ -278,3 +278,4 @@ export function LegalModal({ isOpen, initialTab = 'license', onClose }: LegalMod
     </AnimatePresence>
   );
 }
+

@@ -12,11 +12,11 @@ export function ArcHorizonShowcase({ onGoToDownload, onOpenFeedback }: ArcHorizo
 
   return (
     <div className="w-full flex flex-col items-center">
-      {/* BEGIN: Hero Showcase & Arc Stage (Exact from code7.html) */}
-      <section className="relative w-full overflow-hidden pt-12 md:pt-16 min-h-[640px] flex flex-col items-center">
+      {/* BEGIN: Hero Showcase & Arc Stage (Exact from code7.html with Mobile Scaling) */}
+      <section className="relative w-full overflow-hidden pt-8 md:pt-16 min-h-[520px] sm:min-h-[640px] flex flex-col items-center">
         {/* Top Gallery Curved Radial Display */}
         <div
-          className="relative w-full max-w-[1700px] h-[340px] flex justify-center pointer-events-none"
+          className="relative w-full max-w-[1700px] h-[260px] xs:h-[300px] sm:h-[340px] flex justify-center pointer-events-none scale-[0.58] xs:scale-[0.72] sm:scale-100 origin-top overflow-hidden"
           data-purpose="curved-gallery-viewport"
         >
           {/* Arched Planet/Dome Horizon (Exact from code7.html) */}
@@ -353,13 +353,13 @@ export function ArcHorizonShowcase({ onGoToDownload, onOpenFeedback }: ArcHorizo
       {/* END: Hero Showcase & Arc Stage */}
 
       {/* BEGIN: Main Section (Awards - Interactive with AwardModal) */}
-      <section className="relative z-20 w-full max-w-4xl mx-auto px-6 py-8 md:py-10">
+      <section className="relative z-20 w-full max-w-4xl mx-auto px-4 sm:px-6 py-6 md:py-10">
         <div
           aria-label="Recognition & Awards"
-          className="border-t border-b border-neutral-800/80 py-6 px-3 flex flex-col md:flex-row items-center justify-between gap-6"
+          className="border-t border-b border-neutral-800/80 py-5 sm:py-6 px-2 sm:px-3 flex flex-col md:flex-row items-center justify-between gap-5 sm:gap-6"
         >
           {/* Left Column: Title & Description */}
-          <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 md:gap-6 text-left">
+          <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 md:gap-6 text-center sm:text-left">
             <h2 className="text-white text-sm md:text-base font-bold whitespace-nowrap">
               Awards for the wall
             </h2>
@@ -369,7 +369,7 @@ export function ArcHorizonShowcase({ onGoToDownload, onOpenFeedback }: ArcHorizo
           </div>
 
           {/* Right Column: 4 Circular Monochrome Badges (Interactive with AwardModal) */}
-          <div className="flex items-center gap-3 shrink-0" data-purpose="awards-badges">
+          <div className="flex items-center justify-center flex-wrap gap-2.5 sm:gap-3 shrink-0" data-purpose="awards-badges">
             {/* Badge 1: Best UI Design */}
             <button
               onClick={() => setSelectedAward('ui')}

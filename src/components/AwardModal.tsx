@@ -118,7 +118,7 @@ export function AwardModal({ awardType, onClose }: AwardModalProps) {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-[120] flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -134,7 +134,7 @@ export function AwardModal({ awardType, onClose }: AwardModalProps) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.94, y: 16 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 w-full max-w-lg bg-[#0d0d0f] border border-neutral-800 rounded-2xl p-6 sm:p-7 shadow-[0_20px_60px_rgba(0,0,0,0.9),0_0_30px_rgba(0,232,93,0.15)] overflow-hidden"
+          className="relative z-10 w-full max-w-lg bg-[#0d0d0f] border border-neutral-800 rounded-2xl p-4 sm:p-7 shadow-[0_20px_60px_rgba(0,0,0,0.9),0_0_30px_rgba(0,232,93,0.15)] overflow-hidden max-h-[90vh] overflow-y-auto my-auto"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Top Decorative Emerald Glow */}

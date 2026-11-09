@@ -225,7 +225,7 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
       className="relative w-full min-h-screen overflow-hidden flex items-center justify-center py-20 cursor-default select-none"
       onClick={handleFastForward}
     >
-      {/* Background Quotes Universe with Cinematic Framer Motion Blur-Bloom Transition */}
+      {/* Background Quotes Universe with Cinematic Framer Motion Blur-Bloom Transition (Responsive on Desktop/Tablet) */}
       <motion.div
         initial={{ opacity: 0, filter: 'blur(35px)', scale: 1.08 }}
         animate={
@@ -234,7 +234,7 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
             : { opacity: 0, filter: 'blur(35px)', scale: 1.08 }
         }
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute inset-0 pointer-events-none grid grid-cols-6 grid-rows-5 gap-3 p-8 overflow-hidden"
+        className="absolute inset-0 pointer-events-none hidden md:grid md:grid-cols-6 md:grid-rows-5 gap-3 p-8 overflow-hidden"
         data-purpose="ambient-quote-cloud"
       >
         {CLUE_FEATURES.map((item, idx) => (
@@ -268,15 +268,20 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
         ))}
       </motion.div>
 
+      {/* Atmospheric Mobile Background Glow (Subtle and clean, zero text collisions) */}
+      <div className="absolute inset-0 pointer-events-none md:hidden flex items-center justify-center overflow-hidden">
+        <div className="w-72 h-72 rounded-full bg-[#00E85D]/10 blur-[100px] pointer-events-none" />
+      </div>
+
       {/* BEGIN: Hero Focus Quote - Pure Black Origin with Seamless Center Lock */}
       <div
-        className="relative z-20 flex flex-col items-center justify-center text-center px-4 max-w-3xl sm:max-w-4xl mx-auto pointer-events-auto"
+        className="relative z-20 flex flex-col items-center justify-center text-center px-3 sm:px-4 max-w-[94vw] sm:max-w-4xl mx-auto pointer-events-auto"
         data-purpose="hero-quote-container"
       >
-        {/* Dominant Clue AI Headline with Flush Optical Alignment & Per-Word Blur In */}
+        {/* Dominant Clue AI Headline with Flush Optical Alignment & Responsive Scaling */}
         <h1 className="flex flex-col items-center justify-center text-center font-black select-text drop-shadow-[0_10px_35px_rgba(0,0,0,0.95)] w-full space-y-1 sm:space-y-2">
           {/* Line 1: The Undetected */}
-          <div className="flex items-center justify-center gap-2.5 sm:gap-4 text-3xl sm:text-5xl md:text-6xl lg:text-[60px] tracking-tight text-white leading-[1.08] font-black">
+          <div className="flex items-center justify-center gap-2 sm:gap-4 text-xl xs:text-2xl sm:text-4xl md:text-5xl lg:text-[60px] tracking-tight text-white leading-[1.1] font-black">
             {LINE_1.map((w, i) => (
               <motion.span
                 key={`line1-${w}`}
@@ -291,7 +296,7 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
           </div>
 
           {/* Line 2: Copilot For */}
-          <div className="flex items-center justify-center gap-3 sm:gap-5 text-4xl sm:text-6xl md:text-7xl lg:text-[78px] tracking-tight text-white leading-[1.05] font-black">
+          <div className="flex items-center justify-center gap-2.5 sm:gap-5 text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-[78px] tracking-tight text-white leading-[1.08] font-black">
             {LINE_2.map((w, i) => (
               <motion.span
                 key={`line2-${w}`}
@@ -306,7 +311,7 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
           </div>
 
           {/* Line 3: Technical Interviews */}
-          <div className="flex items-center justify-center gap-2.5 sm:gap-4 text-2xl sm:text-4xl md:text-5xl lg:text-[44px] tracking-normal text-white leading-[1.12] font-black">
+          <div className="flex items-center justify-center gap-2 sm:gap-4 text-base xs:text-lg sm:text-3xl md:text-4xl lg:text-[44px] tracking-normal text-white leading-[1.15] font-black whitespace-nowrap">
             {LINE_3.map((w, i) => (
               <motion.span
                 key={`line3-${w}`}
@@ -326,14 +331,14 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
           initial={{ opacity: 0, y: 20, scale: 0.92 }}
           animate={isBloomed ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.92 }}
           transition={{ duration: 0.6, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-6 sm:mt-10"
+          className="mt-6 sm:mt-10 w-full sm:w-auto flex justify-center"
         >
           <button
             onClick={onActionClick}
-            className="neon-glow-btn inline-flex items-center space-x-2.5 bg-[#00E85D] hover:bg-[#05f566] text-black font-extrabold text-sm sm:text-base px-7 py-3.5 rounded-full cursor-pointer transition transform hover:scale-105 active:scale-95 shadow-[0_0_28px_rgba(0,232,93,0.65)]"
+            className="neon-glow-btn inline-flex items-center justify-center space-x-2 bg-[#00E85D] hover:bg-[#05f566] text-black font-extrabold text-xs sm:text-base px-6 sm:px-7 py-3 sm:py-3.5 rounded-full cursor-pointer transition transform hover:scale-105 active:scale-95 shadow-[0_0_28px_rgba(0,232,93,0.65)] w-full sm:w-auto max-w-xs"
           >
             <svg
-              className="w-5 h-5 stroke-black fill-none"
+              className="w-4 h-4 sm:w-5 sm:h-5 stroke-black fill-none shrink-0"
               strokeWidth="2.3"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
@@ -344,7 +349,7 @@ export function AmbientQuoteSection({ onActionClick, onEntranceComplete }: Ambie
                 strokeLinejoin="round"
               />
             </svg>
-            <span>Get Clue AI · Undetected Copilot</span>
+            <span className="whitespace-nowrap">Get Clue AI · Undetected Copilot</span>
           </button>
         </motion.div>
       </div>

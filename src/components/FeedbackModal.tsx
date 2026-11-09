@@ -260,7 +260,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose })
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 overflow-y-auto select-none">
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 overflow-y-auto select-none">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -275,7 +275,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose })
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative w-full max-w-lg bg-[#0d0d0d] border border-neutral-800 rounded-2xl p-6 sm:p-8 shadow-[0_25px_80px_rgba(0,0,0,0.9),0_0_50px_rgba(0,232,93,0.15)] text-white overflow-hidden z-10"
+          className="relative w-full max-w-lg bg-[#0d0d0d] border border-neutral-800 rounded-2xl p-4 sm:p-8 shadow-[0_25px_80px_rgba(0,0,0,0.9),0_0_50px_rgba(0,232,93,0.15)] text-white overflow-hidden z-10 max-h-[92vh] overflow-y-auto my-auto"
         >
           {/* Close button */}
           <button

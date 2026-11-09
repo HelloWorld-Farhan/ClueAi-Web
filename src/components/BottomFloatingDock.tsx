@@ -120,9 +120,9 @@ export function BottomFloatingDock({
   };
 
   return (
-    <footer className="fixed bottom-6 left-0 w-full z-40 px-6 flex items-center justify-between pointer-events-none select-none">
-      {/* Bottom Left: Live Audience / Active User Status Pill */}
-      <div className="relative pointer-events-auto" ref={infoPopoverRef}>
+    <footer className="fixed bottom-3 sm:bottom-6 left-0 w-full z-40 px-3 sm:px-6 flex items-center justify-between pointer-events-none select-none">
+      {/* Bottom Left: Live Audience / Active User Status Pill (Visible on md+) */}
+      <div className="relative pointer-events-auto hidden md:block" ref={infoPopoverRef}>
         <div
           className="flex items-center space-x-2.5 bg-[#141416]/95 border border-neutral-800/80 px-4 py-2 rounded-full shadow-2xl backdrop-blur-md hover:border-[#00E85D]/50 transition-all cursor-pointer"
           data-purpose="live-status-pill"
@@ -132,7 +132,7 @@ export function BottomFloatingDock({
           <div className="w-5 h-5 rounded-full bg-[#00E85D]/20 flex items-center justify-center border border-[#00E85D]/50 shadow-[0_0_10px_rgba(0,232,93,0.3)]">
             <span className="w-2 h-2 rounded-full bg-[#00E85D] animate-ping" />
           </div>
-          <span className="text-xs text-neutral-200 font-medium tracking-tight">Just you watching right now</span>
+          <span className="text-xs text-neutral-200 font-medium tracking-tight whitespace-nowrap">Just you watching right now</span>
           <span
             className="text-neutral-400 hover:text-[#00E85D] transition-colors text-xs ml-0.5"
             title="Click for Stealth Status Info"
@@ -196,24 +196,24 @@ export function BottomFloatingDock({
 
       {/* Bottom Center: Player / Real-Time Floating Dock */}
       <div
-        className="pointer-events-auto absolute left-1/2 -translate-x-1/2 flex items-center bg-[#141416]/95 border border-neutral-800/90 px-3.5 py-1.5 rounded-full shadow-[0_10px_35px_rgba(0,0,0,0.9),0_0_20px_rgba(0,232,93,0.15)] backdrop-blur-xl space-x-4 hover:border-[#00E85D]/50 transition-all duration-300 group"
+        className="pointer-events-auto absolute left-1/2 -translate-x-1/2 flex items-center bg-[#141416]/95 border border-neutral-800/90 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full shadow-[0_10px_35px_rgba(0,0,0,0.9),0_0_20px_rgba(0,232,93,0.15)] backdrop-blur-xl space-x-2 sm:space-x-4 hover:border-[#00E85D]/50 transition-all duration-300 group max-w-[calc(100vw-20px)] shrink-0"
         data-purpose="timeline-dock"
       >
         {/* Date Indicator Circle */}
-        <div className="relative flex flex-col items-center justify-center w-9 h-9 rounded-full border border-[#00E85D] bg-black/80 shadow-[0_0_12px_rgba(0,232,93,0.4)] shrink-0 py-0.5">
-          <span className="text-[11px] font-black leading-tight text-white tracking-tight">{day}</span>
-          <span className="text-[7px] text-[#00E85D] font-extrabold tracking-widest uppercase leading-none mt-0.5">
+        <div className="relative flex flex-col items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[#00E85D] bg-black/80 shadow-[0_0_12px_rgba(0,232,93,0.4)] shrink-0 py-0.5">
+          <span className="text-[10px] sm:text-[11px] font-black leading-tight text-white tracking-tight">{day}</span>
+          <span className="text-[6px] sm:text-[7px] text-[#00E85D] font-extrabold tracking-widest uppercase leading-none mt-0.5">
             {month}
           </span>
         </div>
 
         {/* Real-Time 24-Hour Clock with Pause Indicator */}
-        <div className="flex items-center space-x-2 text-xs font-medium">
+        <div className="flex items-center space-x-1.5 sm:space-x-2 text-[11px] sm:text-xs font-medium shrink-0">
           <span className="text-neutral-400 hidden sm:inline">
             {isPlaying ? 'Live 24H' : 'Clock Paused'}
           </span>
           <span
-            className={`font-mono font-bold tracking-wider transition-colors ${
+            className={`font-mono font-bold tracking-wider transition-colors whitespace-nowrap ${
               isPlaying
                 ? 'text-[#00E85D] drop-shadow-[0_0_8px_rgba(0,232,93,0.6)]'
                 : 'text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]'
@@ -336,7 +336,7 @@ export function BottomFloatingDock({
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 12, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
-                className="absolute bottom-12 right-0 w-72 bg-[#0e0e12] border border-neutral-800 rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.95),0_0_30px_rgba(0,232,93,0.2)] z-50 text-left"
+                className="absolute bottom-12 right-0 max-w-[calc(100vw-32px)] w-72 bg-[#0e0e12] border border-neutral-800 rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.95),0_0_30px_rgba(0,232,93,0.2)] z-50 text-left"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex items-center justify-between border-b border-neutral-800/80 pb-2.5 mb-3">

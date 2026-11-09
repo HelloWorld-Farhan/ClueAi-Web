@@ -37,7 +37,7 @@ export function FeatureModal({ featureKey, onClose, onGoToDownload }: FeatureMod
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[125] flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-[125] flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -53,7 +53,7 @@ export function FeatureModal({ featureKey, onClose, onGoToDownload }: FeatureMod
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.94, y: 16 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 w-full max-w-xl bg-[#0e0e11] border border-neutral-800 rounded-2xl p-6 sm:p-7 shadow-[0_20px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(0,232,93,0.15)] max-h-[90vh] overflow-y-auto"
+          className="relative z-10 w-full max-w-xl bg-[#0e0e11] border border-neutral-800 rounded-2xl p-4 sm:p-7 shadow-[0_20px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(0,232,93,0.15)] max-h-[90vh] overflow-y-auto my-auto"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Top Emerald Glow */}
